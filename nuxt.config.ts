@@ -22,6 +22,9 @@ export default defineNuxtConfig({
         },
       },
     },
+    experimental: {
+      sqliteConnector: 'native',
+    },
   },
   shadcn: {
     prefix: '',
