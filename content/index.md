@@ -4,6 +4,19 @@ This is the main page displaying Markdown located at [content/index.md](https://
 
 Move to [about](/about) page.
 
+```vue [index.vue]
+<script lang="ts" setup>
+const route = useRoute()
+const { data: page } = await useAsyncData(route.path, () => {
+  return queryCollection('docs').path(route.path).first()
+})
+</script>
+
+<template>
+  <ContentRenderer v-if="page" :value="page" />
+</template>
+```
+
 ```vue
 <script lang="ts" setup>
 const route = useRoute()
