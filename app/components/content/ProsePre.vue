@@ -70,5 +70,6 @@ const { copy, copied } = useClipboard()
 .shiki span.line.highlight {
   margin: 0 -16px;
   padding: 0 16px;
+  background-color: color-mix(in oklab, var(--code-highlight) 50%, transparent);
 }
 </style>

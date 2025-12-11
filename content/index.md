@@ -17,7 +17,7 @@ const { data: page } = await useAsyncData(route.path, () => {
 </template>
 ```
 
-```vue
+```vue {3}
 <script lang="ts" setup>
 const route = useRoute()
 const { data: page } = await useAsyncData(route.path, () => {

@@ -139,6 +139,8 @@
   --sidebar-border: oklch(0.922 0 0);
 
   --sidebar-ring: oklch(0.708 0 0);
+
+  --code-highlight: oklch(92.9% 0.013 255.508);
 }
 
 .dark {
@@ -203,6 +205,8 @@
   --sidebar-border: oklch(1 0 0 / 10%);
 
   --sidebar-ring: oklch(0.556 0 0);
+
+  --code-highlight: oklch(37.2% 0.044 257.287);
 }
 
 @layer base {
