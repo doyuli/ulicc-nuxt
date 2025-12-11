@@ -43,7 +43,13 @@ function startViewTransition(event: MouseEvent) {
 
 <template>
   <ClientOnly>
-    <Button variant="outline" size="icon" aria-label="Toggle theme" @click="startViewTransition">
+    <Button
+      class="rounded-full"
+      variant="outline"
+      size="icon"
+      aria-label="Toggle theme"
+      @click="startViewTransition"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"

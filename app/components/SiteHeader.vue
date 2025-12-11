@@ -18,11 +18,17 @@ const headers = [
   },
 ]
 
-const { y } = useWindowScroll()
+const { y } = useWindowScroll({
+  behavior: 'smooth',
+})
 
 const headerBgClass = computed(() => {
   return y.value > 50 ? 'bg-background border-b border-border' : 'bg-transparent border-b-0'
 })
+
+function scrollTop() {
+  y.value = 0
+}
 </script>
 
 <template>
@@ -36,8 +42,9 @@ const headerBgClass = computed(() => {
           </NuxtLink>
         </Button>
       </div>
-      <div class="flex gap-8 items-center justify-end">
+      <div class="flex gap-4 items-center justify-end">
         <ColorMode />
+        <ScrollMode :scroll-y="y" @scroll-top="scrollTop" />
       </div>
     </div>
   </header>
