@@ -31,6 +31,11 @@ export default defineNuxtConfig({
     prefix: '',
     componentDir: '@/components/ui',
   },
+  colorMode: {
+    classPrefix: '',
+    preference: 'system',
+    fallback: 'light',
+  },
   vite: {
     plugins: [
       tailwindcss(),
