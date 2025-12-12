@@ -30,22 +30,23 @@ function scrollTop() {
 </script>
 
 <template>
-  <Transition
-    enter-from-class="opacity-0 scale-75 translate-x-[-10px]"
-    enter-active-class="transition-all duration-200 ease-out"
-    leave-to-class="opacity-0 scale-75 translate-x-[-10px]"
-    leave-active-class="transition-all duration-200 ease-in"
-  >
-    <Button
-      v-if="scrollPercent"
-      class="rounded-full group"
-      variant="outline"
-      size="icon"
-      aria-label="Scroll to top"
-      @click="scrollTop"
+  <div>
+    <Transition
+      enter-from-class="opacity-0 scale-0 w-0"
+      enter-active-class="transition-all duration-300"
+      leave-to-class="opacity-0 scale-0 w-0"
+      leave-active-class="transition-all duration-300"
     >
-      <ArrowUpIcon class="hidden group-hover:block" />
-      <span class="block group-hover:hidden text-xs">{{ scrollPercent }}</span>
-    </Button>
-  </Transition>
+      <Button
+        v-if="scrollPercent"
+        class="rounded-full group"
+        size="icon"
+        aria-label="Scroll to top"
+        @click="scrollTop"
+      >
+        <ArrowUpIcon class="hidden group-hover:block" />
+        <span class="block group-hover:hidden text-xs">{{ scrollPercent }}</span>
+      </Button>
+    </Transition>
+  </div>
 </template>
