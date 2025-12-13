@@ -53,5 +53,12 @@
     "reka",
     "shadcn",
     "shiki"
-  ]
+  ],
+  // tailwind
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  }
 }
