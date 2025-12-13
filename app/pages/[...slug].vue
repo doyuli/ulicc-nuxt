@@ -44,7 +44,7 @@ if (!post.value) {
       </div>
     </div>
   </div>
-  <Card>
+  <Card class="animate-fade-up delay-200">
     <CardContent>
       <ContentRenderer v-if="post" :value="post" />
     </CardContent>

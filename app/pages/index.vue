@@ -14,12 +14,13 @@ const { data: posts } = await useAsyncData('posts-all', () => {
   <div class="flex w-full flex-col gap-6">
     <ItemGroup class="gap-4">
       <Item
-        v-for="post in posts"
+        v-for="(post, i) in posts"
         :key="post.id"
         variant="outline"
         as-child
         role="listitem"
-        class="bg-background"
+        class="bg-background animate-fade-up"
+        :style="{ animationDelay: `${0.2 + i * 0.1}s` }"
       >
         <NuxtLink :to="post.path">
           <ItemContent>
@@ -44,3 +45,20 @@ const { data: posts } = await useAsyncData('posts-all', () => {
     </ItemGroup>
   </div>
 </template>
+
+<!-- <style>
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s 0.3s backwards;
+}
+</style> -->
