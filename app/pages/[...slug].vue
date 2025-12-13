@@ -14,33 +14,39 @@ if (!post.value) {
 </script>
 
 <template>
-  <div class="mb-12">
-    <div v-if="post?.tags?.length" class="flex items-center gap-2">
-      <Button v-for="tag in post.tags" :key="tag" size="sm" variant="secondary">
-        <HashIcon class="size-3" />
-        <span>{{ tag }}</span>
+  <div class="mb-8">
+    <div v-if="post?.tags?.length" class="flex flex-wrap items-center gap-2 mb-6">
+      <Button
+        v-for="tag in post.tags"
+        :key="tag"
+        size="sm"
+        variant="secondary"
+        class="h-7 px-2.5 text-xs"
+        as-child
+      >
+        <NuxtLink :to="`/tags/${encodeURIComponent(tag)}`" prefetch>
+          <HashIcon class="size-3" />
+          {{ tag }}
+        </NuxtLink>
       </Button>
     </div>
-    <h1 class="text-4xl my-4 font-bold">
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
       {{ post?.title }}
     </h1>
     <div class="flex items-center gap-4 text-sm text-muted-foreground">
-      <div class="flex items-center gap-1 shrink-0">
-        <CalendarIcon class="size-3" />
-        <span>{{ dateFormatter.custom(new Date(post!.date), { dateStyle: 'medium' }) }}</span>
+      <div class="flex items-center gap-1">
+        <CalendarIcon class="size-4 shrink-0" />
+        <span>{{ dateFormatter.custom(new Date(post!.date), { dateStyle: 'long' }) }}</span>
       </div>
-      <div v-if="post?.minRead" class="flex items-center gap-1 shrink-0">
-        <ClockIcon class="size-3" />
-        <span>{{ post.minRead }}min</span>
+      <div v-if="post?.minRead" class="flex items-center gap-1">
+        <ClockIcon class="size-4 shrink-0" />
+        <span>{{ post.minRead }} min read</span>
       </div>
     </div>
   </div>
   <Card>
     <CardContent>
-      <ContentRenderer
-        v-if="post"
-        :value="post"
-      />
+      <ContentRenderer v-if="post" :value="post" />
     </CardContent>
   </Card>
 </template>
