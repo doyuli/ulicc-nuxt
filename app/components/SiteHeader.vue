@@ -32,7 +32,7 @@ function scrollTop() {
 </script>
 
 <template>
-  <header :class="cn('fixed w-full top-0 left-0 z-1000', headerBgClass)" :style="{ height: global.headerHeight }">
+  <header :class="cn('fixed w-full top-0 left-0 z-1000 h-(--header-height)', headerBgClass)">
     <div class="px-8 grid grid-cols-3 items-center mx-auto size-full" :style="{ maxWidth: global.pageMaxWidth }">
       <NuxtLink to="/">
         {{ site.title }}
