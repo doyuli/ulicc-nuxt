@@ -1,6 +1,6 @@
 export default defineAppConfig({
   global: {
-    pageMaxWidth: '1200px',
+    pageMaxWidth: '1400px',
   },
   site: {
     title: 'Doyuli',
