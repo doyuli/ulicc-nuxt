@@ -1,9 +1,7 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div data-slot="sidebar" class="pl-4">
-    Sidebar
+    <AuthorCard />
   </div>
-</template>r
+</template>
