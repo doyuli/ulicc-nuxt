@@ -13,4 +13,5 @@ useSeoMeta({
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <ArtPlum />
 </template>
