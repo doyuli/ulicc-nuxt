@@ -9,7 +9,7 @@ const { data: posts } = await useAsyncData('posts-all', () => {
 
 <template>
   <div class="py-20 text-center">
-    Banner
+    <SiteBanner />
   </div>
   <div class="flex w-full" style="--sidebar-width: 300px">
     <div class="w-[calc(100%-var(--sidebar-width))] max-lg:w-full transition-[width] duration-300">
