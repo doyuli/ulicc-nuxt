@@ -65,7 +65,7 @@ const icon = computed(() => {
       <component :is="copied ? CopyCheck : Copy" />
     </Button>
 
-    <pre :class="cn('group font-mono text-sm/6 border border-muted bg-muted rounded-md px-4 py-3 whitespace-pre-wrap break-words overflow-x-auto focus:outline-none', $props.class)" v-bind="$attrs"><slot /></pre>
+    <pre :class="cn('group font-mono text-sm/6 border border-muted bg-muted rounded-md px-4 py-3 whitespace-pre-wrap wrap-break-word overflow-x-auto focus:outline-none', $props.class)" v-bind="$attrs"><slot /></pre>
   </div>
 </template>
 
