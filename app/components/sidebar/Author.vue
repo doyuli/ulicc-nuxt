@@ -6,7 +6,7 @@ const { author } = useAppConfig()
 </script>
 
 <template>
-  <div data-slot="author-card" class="flex flex-col items-center p-4 w-full min-h-16 bg-primary rounded-md animate-fade-up delay-200">
+  <div data-slot="author-card" class="flex flex-col items-center p-4 w-full min-h-16 bg-primary rounded-md">
     <Button variant="light-primary-hover" class="h-7 px-3 text-xs rounded-full ">
       {{ dailyMessage }}
     </Button>
