@@ -2,6 +2,16 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'zh-Hans',
+      },
+      link: [
+        { rel: 'stylesheet', href: 'https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css' },
+      ],
+    },
+  },
   modules: [
     '@nuxt/content',
     '@nuxt/image',

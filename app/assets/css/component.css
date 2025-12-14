@@ -1,3 +1,7 @@
+html {
+  font-family: 'HarmonyOS_Regular', sans-serif;
+}
+
 body::before {
   content: '';
   position: fixed;
