@@ -39,7 +39,7 @@ function scrollTop() {
     >
       <Button
         v-if="scrollPercent"
-        class="rounded-full group"
+        class="rounded-full group text-white"
         size="icon"
         aria-label="Scroll to top"
         @click="scrollTop"
