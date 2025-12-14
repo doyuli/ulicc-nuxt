@@ -25,7 +25,7 @@ const { posts = [] } = defineProps<{
       <NuxtLink :to="post.path">
         <ItemContent>
           <ItemTitle>
-            <span>{{ post.title }}</span>
+            <span class="text-lg">{{ post.title }}</span>
             <Badge v-if="post.priority! >= 1000" variant="secondary">
               <ArrowUpToLine class="size-3" />
             </Badge>

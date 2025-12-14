@@ -8,7 +8,7 @@ const { data: posts } = await useAsyncData('posts-all', () => {
 </script>
 
 <template>
-  <div class="py-20 text-center">
+  <div class="py-20 text-lg text-center">
     <SiteBanner />
   </div>
   <SidebarProvider>
