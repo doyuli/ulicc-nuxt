@@ -1,8 +1,28 @@
 <script setup lang="ts">
 import { GithubIcon, MailIcon } from 'lucide-vue-next'
+import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
+import { DAY_MESSAGES, HOLIDAY_MESSAGES, TIME_RANGES } from '~/constants/greeting'
 
-const { dailyMessage } = useDailyGreeting()
+const { globalTime } = useConfigProviderContext()
 const { author } = useAppConfig()
+
+const dailyMessage = computed(() => {
+  const hour = globalTime.value.getHours()
+  const dayOfWeek = globalTime.value.getDay()
+  const month = globalTime.value.getMonth() + 1
+  const dayOfMonth = globalTime.value.getDate()
+
+  const holiday = HOLIDAY_MESSAGES.find(def => def.month === month && def.dayOfMonth === dayOfMonth)
+  if (holiday)
+    return holiday.message
+
+  if (dayOfWeek in DAY_MESSAGES) {
+    return DAY_MESSAGES[dayOfWeek]
+  }
+
+  const timeRange = TIME_RANGES.find(({ start, end }) => hour >= start && hour < end)
+  return timeRange?.message ?? '你好，欢迎回来！'
+})
 </script>
 
 <template>
