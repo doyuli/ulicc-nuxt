@@ -1,7 +1,7 @@
 export const HOLIDAY_MESSAGES = [
-  { name: '元旦', month: 1, dayOfMonth: 1, message: '元旦快乐，万象更新' },
-  { name: '国庆节', month: 10, dayOfMonth: 1, message: '国庆佳节，山河壮丽' },
-  { name: '圣诞节', month: 12, dayOfMonth: 25, message: '圣诞喜乐，平安顺遂' },
+  { name: '元旦', month: 1, day: 1, message: '元旦快乐，万象更新' },
+  { name: '国庆节', month: 10, day: 1, message: '国庆佳节，山河壮丽' },
+  { name: '圣诞节', month: 12, day: 25, message: '圣诞喜乐，平安顺遂' },
 ]
 
 export const TIME_RANGES = [
@@ -15,7 +15,7 @@ export const TIME_RANGES = [
   { start: 22, end: 24, message: '夜深了，晚安好梦' },
 ] as const
 
-export enum DayOfWeek {
+export enum DAY_OF_WEEK {
   SUNDAY = 0,
   MONDAY = 1,
   TUESDAY = 2,
@@ -26,8 +26,8 @@ export enum DayOfWeek {
 }
 
 export const DAY_MESSAGES: Record<number, string> = {
-  [DayOfWeek.SATURDAY]: '好好享受一下周末',
-  [DayOfWeek.SUNDAY]: '周日愉快，充电蓄能',
+  [DAY_OF_WEEK.SATURDAY]: '好好享受一下周末',
+  [DAY_OF_WEEK.SUNDAY]: '周日愉快，充电蓄能',
 }
 
 export const NEXT_NEW_YEAR_DATES = [

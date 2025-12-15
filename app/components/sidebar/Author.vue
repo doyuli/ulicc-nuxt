@@ -12,7 +12,7 @@ const dailyMessage = computed(() => {
   const month = globalTime.value.getMonth() + 1
   const dayOfMonth = globalTime.value.getDate()
 
-  const holiday = HOLIDAY_MESSAGES.find(def => def.month === month && def.dayOfMonth === dayOfMonth)
+  const holiday = HOLIDAY_MESSAGES.find(def => def.month === month && def.day === dayOfMonth)
   if (holiday)
     return holiday.message
 
