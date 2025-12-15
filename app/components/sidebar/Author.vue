@@ -26,11 +26,11 @@ const dailyMessage = computed(() => {
 </script>
 
 <template>
-  <div data-slot="author-card" class="flex flex-col items-center p-4 w-full min-h-16 bg-primary rounded-md">
-    <Button variant="light-primary-hover" class="h-7 px-3 text-xs rounded-full ">
+  <div data-slot="author-card" class="flex flex-col items-center p-4 w-full min-h-16 bg-primary rounded-md shadow-(--card-shadow)">
+    <Button variant="light-primary-hover" class="px-3 py-1 min-w-30 text-sm rounded-full">
       {{ dailyMessage }}
     </Button>
-    <Avatar class="mt-8 mb-10 size-[140px] border-2 border-white">
+    <Avatar class="mt-6 mb-8 size-[150px] border-2 border-white">
       <AvatarImage src="/avatar.jpg" alt="@doyuli" />
       <AvatarFallback class="animate-pulse">
         Doyuli

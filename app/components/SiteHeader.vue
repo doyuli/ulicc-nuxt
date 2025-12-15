@@ -34,11 +34,11 @@ function scrollTop() {
 <template>
   <header :class="cn('fixed w-full top-0 left-0 z-1000 h-(--header-height)', headerBgClass)">
     <div class="px-8 grid grid-cols-3 items-center mx-auto size-full" :style="{ maxWidth: global.pageMaxWidth }">
-      <NuxtLink to="/">
+      <NuxtLink class="text-md font-bold opacity-90" to="/">
         {{ site.title }}
       </NuxtLink>
       <div class="flex gap-8 items-center justify-center">
-        <Button v-for="item in headers" :key="item.label" variant="ghost" as-child>
+        <Button v-for="item in headers" :key="item.label" class="text-md font-bold opacity-90" variant="ghost" as-child>
           <NuxtLink :to="item.href">
             {{ item.label }}
           </NuxtLink>

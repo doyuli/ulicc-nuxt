@@ -11,9 +11,9 @@ if (!post.value) {
 </script>
 
 <template>
-  <PostMeta class="mb-8" :post="post!" />
+  <PostMeta class="mt-24 mb-12" :post="post!" />
   <SidebarProvider>
-    <Card class="py-6 animate-fade-up delay-200">
+    <Card class="py-8 animate-fade-up delay-200">
       <CardContent class="px-6">
         <ContentRenderer v-if="post" :value="post" />
       </CardContent>

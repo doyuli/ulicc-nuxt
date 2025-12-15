@@ -25,7 +25,7 @@ defineProps<{
         </NuxtLink>
       </Button>
     </div>
-    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4 opacity-90">
       {{ post?.title }}
     </h1>
     <div class="flex items-center gap-4 text-sm text-muted-foreground">

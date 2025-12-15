@@ -19,7 +19,7 @@ const { posts = [] } = defineProps<{
       variant="outline"
       as-child
       role="listitem"
-      class="bg-background animate-fade-up"
+      class="bg-background shadow-(--card-shadow) animate-fade-up"
       :style="{ animationDelay: `${0.2 + i * 0.1}s` }"
     >
       <NuxtLink :to="post.path">

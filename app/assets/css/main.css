@@ -20,6 +20,7 @@
 
 @theme inline {
   --color-primary-light: color-mix(in oklab, var(--color-primary) 80%, white);
+  --card-shadow: 0 8px 16px -4px oklch(24.8% 0.006 262deg / 0.047);
 }
 
 @theme inline {
