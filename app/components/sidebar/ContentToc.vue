@@ -20,24 +20,24 @@ const { activeAnchor, indicatorState } = useContentToc(tocContainerRef)
       <Icon icon="material-symbols:list-alt-rounded" />
       <span>目录</span>
     </CardHeader>
-    <CardContent class="relative">
-      <div
-        class="absolute left-4 w-1 bg-primary rounded-md transition-all duration-300"
-        :style="{
-          top: indicatorState.top,
-          opacity: indicatorState.opacity,
-          height: indicatorState.height,
-        }"
-      />
-      <div ref="toc-container" class="pl-4 max-h-[calc(70vh-58px)] overflow-y-auto border-l-4 border-accent">
+    <CardContent>
+      <div ref="toc-container" class="relative max-h-[calc(70vh-58px)] overflow-y-auto">
+        <div
+          class="absolute left-0 my-2 w-1 bg-primary-light rounded-md transition-[top] duration-200"
+          :style="{
+            top: indicatorState.top,
+            opacity: indicatorState.opacity,
+            height: indicatorState.height,
+          }"
+        />
         <DefineListTemplate v-slot="{ links, level }">
-          <ul :class="cn(level > 0 && 'ml-4 text-sm')">
-            <li v-for="link in links" :key="link.id" class="list-none">
+          <ul :class="cn(level === 0 && 'pl-4 border-l-4 border-accent', level > 0 && 'pl-2 text-sm')">
+            <li v-for="link in links" :key="link.id" class="list-none my-0.5">
               <a
-                :class="cn('flex p-1.5 text-muted-foreground hover:bg-accent hover:text-primary rounded-md truncate', activeAnchor?.id === link.id && 'bg-accent')"
+                :class="cn('flex p-1.5 text-muted-foreground hover:bg-accent hover:text-primary-light rounded-md transition', activeAnchor?.id === link.id && 'bg-accent text-foreground')"
                 :href="`#${link.id}`"
               >
-                <span>{{ link.text }}</span>
+                <span class="min-w-0 truncate">{{ link.text }}</span>
               </a>
               <ReuseListTemplate v-if="link.children?.length" :links="(link.children)" :level="level + 1" />
             </li>

@@ -37,12 +37,12 @@ export function useContentToc(tocContainerRef: TemplateRef<HTMLElement>) {
     if (activeLink) {
       activeAnchor.value = anchor
       indicatorState.top = `${activeLink.offsetTop}px`
-      indicatorState.height = `${activeLink.offsetHeight}px`
+      indicatorState.height = `${activeLink.offsetHeight - 16}px`
       indicatorState.opacity = 1
     }
   }
 
-  const updateAnchors = () => {
+  const initialAnchors = () => {
     const scrollY = window.scrollY
     anchors = [...document.querySelectorAll('div[data-content-id] :where(h2,h3)')]
       .filter(el => el.id && el.hasChildNodes())
@@ -63,8 +63,6 @@ export function useContentToc(tocContainerRef: TemplateRef<HTMLElement>) {
     const offsetHeight = document.body.offsetHeight
     const isBottom = Math.abs(scrollY + innerHeight - offsetHeight) < 1
 
-    updateAnchors()
-
     if (!anchors.length || scrollY < 1) {
       setActiveAnchor(null)
       return
@@ -77,9 +75,9 @@ export function useContentToc(tocContainerRef: TemplateRef<HTMLElement>) {
 
     let lastAnchor: AnchorItem
     for (const anchor of anchors) {
-      if (anchor.top > scrollY + SCROLL_OFFSET_HEIGHT) {
+      if (anchor.top > scrollY + SCROLL_OFFSET_HEIGHT)
         break
-      }
+
       lastAnchor = anchor
     }
     setActiveAnchor(lastAnchor!)
@@ -88,6 +86,7 @@ export function useContentToc(tocContainerRef: TemplateRef<HTMLElement>) {
   const onScroll = useThrottleFn(scrollFn, 100)
 
   onMounted(() => {
+    initialAnchors()
     requestAnimationFrame(scrollFn)
     useEventListener('scroll', onScroll)
   })
@@ -95,6 +94,5 @@ export function useContentToc(tocContainerRef: TemplateRef<HTMLElement>) {
   return {
     activeAnchor,
     indicatorState,
-    anchors,
   }
 }
