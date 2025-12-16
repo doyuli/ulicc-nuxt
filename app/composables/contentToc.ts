@@ -20,6 +20,19 @@ export function useContentToc(tocContainerRef: TemplateRef<HTMLElement>) {
 
   let anchors: AnchorItem[] = []
 
+  const setActiveLinkVisible = (container: HTMLElement, link: HTMLElement, offset = 8) => {
+    const { scrollTop, clientHeight } = container
+    const top = link.offsetTop
+    const bottom = top + link.offsetHeight
+
+    if (top < scrollTop) {
+      container.scrollTo({ top: top - offset, behavior: 'smooth' })
+    }
+    else if (bottom > scrollTop + clientHeight) {
+      container.scrollTo({ top: bottom - clientHeight + offset, behavior: 'smooth' })
+    }
+  }
+
   const setActiveAnchor = (anchor: AnchorItem | null) => {
     const tocContainer = unrefElement(tocContainerRef)
     if (!tocContainer)
@@ -39,6 +52,8 @@ export function useContentToc(tocContainerRef: TemplateRef<HTMLElement>) {
       indicatorState.top = `${activeLink.offsetTop}px`
       indicatorState.height = `${activeLink.offsetHeight - 16}px`
       indicatorState.opacity = 1
+
+      setActiveLinkVisible(tocContainer, activeLink)
     }
   }
 
@@ -73,14 +88,14 @@ export function useContentToc(tocContainerRef: TemplateRef<HTMLElement>) {
       return
     }
 
-    let lastAnchor: AnchorItem
+    let lastAnchor: AnchorItem | null = null
     for (const anchor of anchors) {
       if (anchor.top > scrollY + SCROLL_OFFSET_HEIGHT)
         break
 
       lastAnchor = anchor
     }
-    setActiveAnchor(lastAnchor!)
+    setActiveAnchor(lastAnchor)
   }
 
   const onScroll = useThrottleFn(scrollFn, 100)
