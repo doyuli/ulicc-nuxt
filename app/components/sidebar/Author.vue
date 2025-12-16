@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { GithubIcon, MailIcon } from 'lucide-vue-next'
+import { MailIcon } from 'lucide-vue-next'
 import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
+import { GithubIcon } from '~/components/icons'
 import { DAY_MESSAGES, HOLIDAY_MESSAGES, TIME_RANGES } from '~/constants/greeting'
 
 const { globalTime } = useConfigProviderContext()
