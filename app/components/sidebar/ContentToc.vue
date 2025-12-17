@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TocLink } from '@nuxt/content'
-import { Icon } from '@iconify/vue'
+import { TocIcon } from '~/components/icons'
 import { cn } from '~/lib/utils'
 
 const { links = [] } = defineProps<{
@@ -17,7 +17,7 @@ const { activeAnchor, indicatorState } = useContentToc(tocContainerRef)
 <template>
   <Card>
     <CardHeader class="flex items-center gap-1 text-secondary-foreground">
-      <Icon icon="material-symbols:list-alt-rounded" />
+      <TocIcon class="size-4 shrink-0" />
       <span>目录</span>
     </CardHeader>
     <CardContent>
