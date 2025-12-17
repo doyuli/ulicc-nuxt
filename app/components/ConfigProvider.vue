@@ -1,6 +1,9 @@
 <script lang="ts">
+import type { PostsCollectionItem } from '@nuxt/content'
+
 interface ConfigProviderContext {
   globalTime: Ref<Date>
+  posts: Ref<PostsCollectionItem[] | undefined>
 }
 
 const [useConfigProviderContext, provideConfigProviderContext] = createContext<ConfigProviderContext>('ConfigProvider')
@@ -17,8 +20,16 @@ defineOptions({
 
 const globalTime = useNow({ interval: 60 * 1000 })
 
+const { data: posts } = await useAsyncData('posts-all', () => {
+  return queryCollection('posts')
+    .order('priority', 'DESC')
+    .order('date', 'DESC')
+    .all()
+})
+
 provideConfigProviderContext({
   globalTime,
+  posts,
 })
 </script>
 

@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { HashIcon } from 'lucide-vue-next'
+import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
 
-const { data: posts } = await useAsyncData('posts-all', () => {
-  return queryCollection('posts')
-    .order('priority', 'DESC')
-    .order('date', 'DESC')
-    .all()
-})
+const { posts } = useConfigProviderContext()
 
 const tags = computed(() => {
   const result: Record<string, number> = {}

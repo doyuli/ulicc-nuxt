@@ -1,10 +1,7 @@
 <script setup lang="ts">
-const { data: posts } = await useAsyncData('posts-all', () => {
-  return queryCollection('posts')
-    .order('priority', 'DESC')
-    .order('date', 'DESC')
-    .all()
-})
+import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
+
+const { posts } = useConfigProviderContext()
 </script>
 
 <template>
