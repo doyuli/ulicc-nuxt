@@ -9,6 +9,7 @@ export default defineAppConfig({
   site: {
     title: 'Doyuli',
     description: 'Doyuli\'s Blog',
+    since: '2024-09-13',
   },
   author: {
     name: '阿沥',
