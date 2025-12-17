@@ -1,14 +1,7 @@
 import { NEXT_NEW_YEAR_DATES } from '~/constants/greeting'
-
-const MS_PER_HOUR = 60 * 60 * 1000
-const MS_PER_DAY = 24 * MS_PER_HOUR
+import { msToDaysCeil, msToHoursCeil, padZero, startOfNextDay } from '~/utils/date'
 
 export function useTimeCapsule(globalTime: MaybeRef<Date>) {
-  const formatRemainingDays = (ms: number) => Math.ceil(ms / MS_PER_DAY)
-  const formatRemainingHours = (ms: number) => Math.ceil(ms / MS_PER_HOUR)
-
-  const padZero = (num: number) => String(num).padStart(2, '0')
-
   const clampProgress = (value: number) => Math.min(100, Math.max(0, value))
 
   const calcProgress = (now: Date, start: Date, end: Date) => {
@@ -24,13 +17,6 @@ export function useTimeCapsule(globalTime: MaybeRef<Date>) {
       progress: clampProgress((passed / total) * 100),
       remainingMs: Math.max(0, remaining),
     }
-  }
-
-  const getStartOfTomorrow = (now: Date) => {
-    const startOfTomorrow = new Date(now)
-    startOfTomorrow.setDate(now.getDate() + 1)
-    startOfTomorrow.setHours(0, 0, 0, 0)
-    return startOfTomorrow
   }
 
   const getDayRange = (now: Date) => {
@@ -93,40 +79,40 @@ export function useTimeCapsule(globalTime: MaybeRef<Date>) {
     return {
       rangeName: '今日',
       progress,
-      rangeText: `还剩${formatRemainingHours(remainingMs)}小时`,
+      rangeText: `还剩${msToHoursCeil(remainingMs)}小时`,
     }
   })
 
   const week = computed(() => {
-    const tomorrow = getStartOfTomorrow(unref(globalTime))
-    const { start, end } = getWeekRange(tomorrow)
-    const { progress, remainingMs } = calcProgress(tomorrow, start, end)
+    const next = startOfNextDay(unref(globalTime))
+    const { start, end } = getWeekRange(next)
+    const { progress, remainingMs } = calcProgress(next, start, end)
     return {
       rangeName: '本周',
       progress,
-      rangeText: `还剩${formatRemainingDays(remainingMs)}天`,
+      rangeText: `还剩${msToDaysCeil(remainingMs)}天`,
     }
   })
 
   const month = computed(() => {
-    const tomorrow = getStartOfTomorrow(unref(globalTime))
-    const { start, end } = getMonthRange(tomorrow)
-    const { progress, remainingMs } = calcProgress(tomorrow, start, end)
+    const next = startOfNextDay(unref(globalTime))
+    const { start, end } = getMonthRange(next)
+    const { progress, remainingMs } = calcProgress(next, start, end)
     return {
       rangeName: '本月',
       progress,
-      rangeText: `还剩${formatRemainingDays(remainingMs)}天`,
+      rangeText: `还剩${msToDaysCeil(remainingMs)}天`,
     }
   })
 
   const year = computed(() => {
-    const tomorrow = getStartOfTomorrow(unref(globalTime))
-    const { start, end } = getYearRange(tomorrow)
-    const { progress, remainingMs } = calcProgress(tomorrow, start, end)
+    const next = startOfNextDay(unref(globalTime))
+    const { start, end } = getYearRange(next)
+    const { progress, remainingMs } = calcProgress(next, start, end)
     return {
       rangeName: '本年',
       progress,
-      rangeText: `还剩${formatRemainingDays(remainingMs)}天`,
+      rangeText: `还剩${msToDaysCeil(remainingMs)}天`,
     }
   })
 
@@ -138,20 +124,20 @@ export function useTimeCapsule(globalTime: MaybeRef<Date>) {
   ])
 
   const newYear = computed(() => {
-    const tomorrow = getStartOfTomorrow(unref(globalTime))
-    const next = findNextNewYear(tomorrow)
+    const next = startOfNextDay(unref(globalTime))
+    const nextNewYear = findNextNewYear(next)
 
-    if (!next)
+    if (!nextNewYear)
       return null
 
-    const start = new Date(tomorrow.getFullYear(), 0, 1)
+    const start = new Date(next.getFullYear(), 0, 1)
 
-    const { remainingMs } = calcProgress(tomorrow, start, next.date)
+    const { remainingMs } = calcProgress(next, start, nextNewYear.date)
 
     return {
       rangeName: '春节',
-      daysLeft: formatRemainingDays(remainingMs),
-      date: next.toString(),
+      daysLeft: msToDaysCeil(remainingMs),
+      date: nextNewYear.toString(),
     }
   })
 

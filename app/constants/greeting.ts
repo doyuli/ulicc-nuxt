@@ -42,3 +42,6 @@ export const NEXT_NEW_YEAR_DATES = [
   { year: 2034, month: 2, day: 19 },
   { year: 2035, month: 2, day: 8 },
 ] as const
+
+export const MS_PER_HOUR = 60 * 60 * 1000
+export const MS_PER_DAY = 24 * MS_PER_HOUR
