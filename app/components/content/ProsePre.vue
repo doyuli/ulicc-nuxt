@@ -62,7 +62,7 @@ const icon = computed(() => {
       tabindex="-1"
       @click="copy(code || '')"
     >
-      <component :is="copied ? CopyCheck : Copy" />
+      <component :is="copied ? CopyCheck : Copy" class="size-4 shrink-0 text-muted-foreground" />
     </Button>
 
     <pre :class="cn('group font-mono text-sm/6 border border-muted bg-muted rounded-md px-4 py-3 whitespace-pre-wrap wrap-break-word overflow-x-auto focus:outline-none', $props.class)" v-bind="$attrs"><slot /></pre>
