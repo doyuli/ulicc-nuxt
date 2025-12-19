@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { NavMenu } from './SiteNavigation.vue'
+import { PencilRuler, SquareChevronRight } from 'lucide-vue-next'
 import { cn } from '~/lib/utils'
 
 const { global, site } = useAppConfig()
 
-const headers = [
+const headers: NavMenu[] = [
   {
     label: '文库',
     href: '/',
@@ -11,6 +13,18 @@ const headers = [
   {
     label: '专栏',
     href: '/',
+    children: [
+      {
+        label: '效率工具',
+        href: '/',
+        icon: PencilRuler,
+      },
+      {
+        label: '代码片段',
+        href: '/',
+        icon: SquareChevronRight,
+      },
+    ],
   },
   {
     label: '友链',
@@ -37,12 +51,8 @@ function scrollTop() {
       <NuxtLink class="font-bold opacity-90" to="/">
         {{ site.title }}
       </NuxtLink>
-      <div class="flex gap-8 items-center justify-center">
-        <Button v-for="item in headers" :key="item.label" class="text-base font-bold opacity-90" variant="ghost" as-child>
-          <NuxtLink :to="item.href">
-            {{ item.label }}
-          </NuxtLink>
-        </Button>
+      <div class="flex items-center justify-center">
+        <SiteNavigation :menus="headers" />
       </div>
       <div class="flex gap-4 items-center justify-end">
         <ColorMode />
