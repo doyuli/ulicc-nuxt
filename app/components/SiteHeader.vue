@@ -1,36 +1,8 @@
 <script setup lang="ts">
-import type { NavMenu } from './SiteNavigation.vue'
-import { PencilRuler, SquareChevronRight } from 'lucide-vue-next'
+import { navigation } from '~/constants/navigation'
 import { cn } from '~/lib/utils'
 
 const { global, site } = useAppConfig()
-
-const headers: NavMenu[] = [
-  {
-    label: '文库',
-    href: '/',
-  },
-  {
-    label: '专栏',
-    href: '/',
-    children: [
-      {
-        label: '效率工具',
-        href: '/',
-        icon: PencilRuler,
-      },
-      {
-        label: '代码片段',
-        href: '/',
-        icon: SquareChevronRight,
-      },
-    ],
-  },
-  {
-    label: '友链',
-    href: '/',
-  },
-]
 
 const { y } = useWindowScroll({
   behavior: 'smooth',
@@ -52,7 +24,7 @@ function scrollTop() {
         {{ site.title }}
       </NuxtLink>
       <div class="flex items-center justify-center">
-        <SiteNavigation :menus="headers" />
+        <SiteNavigation :menus="navigation" />
       </div>
       <div class="flex gap-4 items-center justify-end">
         <ColorMode />
