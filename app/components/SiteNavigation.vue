@@ -23,38 +23,40 @@ defineProps<{
 
 <template>
   <NavigationMenu :viewport="false">
-    <NavigationMenuList v-for="menu in menus" :key="menu.label">
-      <NavigationMenuItem v-if="menu.children?.length">
-        <NavigationMenuTrigger>
-          {{ menu.label }}
-        </NavigationMenuTrigger>
-        <NavigationMenuContent>
-          <ul class="grid gap-2">
-            <li v-for="child in menu.children" :key="child.label">
-              <NavigationMenuLink as-child>
-                <NuxtLink class="text-nowrap" :to="menu.href">
-                  <div class="flex items-center gap-2">
-                    <component :is="child.icon" v-if="child.icon" class="size-4 shrink-0 text-muted-foreground" />
-                    <span>
-                      {{ child.label }}
-                    </span>
-                  </div>
-                  <div v-if="child.description" class="text-muted-foreground">
-                    {{ child.description }}
-                  </div>
-                </NuxtLink>
-              </NavigationMenuLink>
-            </li>
-          </ul>
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-      <NavigationMenuItem v-else>
-        <NavigationMenuLink as-child :class="cn(navigationMenuTriggerStyle(), 'text-base')">
-          <NuxtLink class="text-nowrap" :to="menu.href">
+    <NavigationMenuList>
+      <template v-for="menu in menus" :key="menu.label">
+        <NavigationMenuItem v-if="menu.children?.length">
+          <NavigationMenuTrigger>
             {{ menu.label }}
-          </NuxtLink>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul class="grid gap-2">
+              <li v-for="child in menu.children" :key="child.label">
+                <NavigationMenuLink as-child>
+                  <NuxtLink class="text-nowrap" :to="menu.href">
+                    <div class="flex items-center gap-2">
+                      <component :is="child.icon" v-if="child.icon" class="size-4 shrink-0 text-muted-foreground" />
+                      <span>
+                        {{ child.label }}
+                      </span>
+                    </div>
+                    <div v-if="child.description" class="text-muted-foreground">
+                      {{ child.description }}
+                    </div>
+                  </NuxtLink>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem v-else>
+          <NavigationMenuLink as-child :class="cn(navigationMenuTriggerStyle(), 'text-base')">
+            <NuxtLink class="text-nowrap" :to="menu.href">
+              {{ menu.label }}
+            </NuxtLink>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </template>
     </NavigationMenuList>
   </NavigationMenu>
 </template>
