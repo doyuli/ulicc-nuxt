@@ -5,9 +5,11 @@ const { global } = useAppConfig()
 </script>
 
 <template>
-  <SiteHeader />
-  <main :class="cn('py-16 mx-auto', global.appShellClass)">
-    <slot />
-  </main>
-  <SiteFooter />
+  <div class="flex flex-col min-h-screen">
+    <SiteHeader />
+    <main :class="cn('flex-1 py-16 mx-auto', global.appShellClass)">
+      <slot />
+    </main>
+    <SiteFooter />
+  </div>
 </template>
