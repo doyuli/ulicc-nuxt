@@ -7,7 +7,7 @@ const { global } = useAppConfig()
 <template>
   <div class="flex flex-col min-h-screen">
     <SiteHeader />
-    <main :class="cn('flex-1 py-16 mx-auto', global.appShellClass)">
+    <main :class="cn('flex-1 py-16', global.appShellClass)">
       <slot />
     </main>
     <SiteFooter />
