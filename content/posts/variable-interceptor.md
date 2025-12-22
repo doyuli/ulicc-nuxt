@@ -1,7 +1,7 @@
 ---
 title: 打造一个安全可靠的 JavaScript 表达式沙箱
 date: 2025-10-18
-description: 在低代码平台、表单引擎、模板渲染等场景中，我们通常需要让用户输入一段 JavaScript 表达式，并在受控环境中执行。但直接使用 `eval` 或 `new Function` 会带来严重的安全风险。本文将带你从零实现一个**兼顾安全性与灵活性**的表达式沙箱，并深入剖析其设计原理。
+description: 基于 Proxy 与 with 构建受控沙箱，黑名单拦截敏感全局，上下文只读注入，安全执行用户表达式，兼顾性能与易用性。
 hidden: false
 minRead: 8
 tags:

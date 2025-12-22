@@ -1,7 +1,7 @@
 ---
 title: 自动为 async 函数添加 try...catch，告别手动错误处理
 date: 2025-10-29
-description: 在现代前端开发中，`async/await` 已成为异步编程的主流方式。然而，一个常见的痛点是：**每一个 `await` 表达式都可能抛出异常，但手动包裹 `try...catch` 既繁琐又容易遗漏**。尤其在大型项目中，忘记处理异步错误可能导致页面白屏、数据丢失，甚至影响用户体验，本文将带你从零实现一个 **Vite 插件**，自动为包含 `await` 的 `async` 函数添加 `try...catch`（甚至 `finally`）。
+description: 基于构建期自动注入 try...catch，统一为异步函数植入错误捕获与 finally 逻辑，提升异步错误处理的可靠性与一致性。
 hidden: false
 minRead: 8
 tags:

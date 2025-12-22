@@ -1,7 +1,7 @@
 ---
 title: 原来 VueUse 中的 useVirtualList 也没有那么神奇
 date: 2025-08-16
-description: 虚拟列表是一种是一种用于**优化长列表渲染性能**的技术，他的核心思想是**按需渲染**，即只对可见区域内渲染，对非可见区域中的数据不渲染或部分渲染的技术，从而达到极高的渲染性能。
+description: 从视窗容量与偏移计算到占位策略，拆解 VueUse useVirtualList 的关键原理，理解按需渲染如何显著提升长列表性能与体验。
 hidden: false
 minRead: 6
 tags:

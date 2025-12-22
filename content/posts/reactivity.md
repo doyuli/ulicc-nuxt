@@ -1,7 +1,7 @@
 ---
 title: 实现一个最基础的响应式模块
 date: 2025-06-08
-description: 几行代码搞懂 vue 响应式核心逻辑
+description: 用极简代码实现 ref 与 effect，演示依赖追踪与触发更新流程，快速掌握 Vue 响应式的基础原理与运行机制。
 hidden: false
 tags:
   - Vue3
