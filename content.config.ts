@@ -31,6 +31,13 @@ function createToolsSchema() {
   })
 }
 
+function createSnippetsSchema() {
+  return createBaseSchema().extend({
+    language: z.string(),
+    tags: z.array(z.string()).default([]),
+  })
+}
+
 export default defineContentConfig({
   collections: {
     posts: defineCollection({
@@ -39,9 +46,14 @@ export default defineContentConfig({
       schema: createPostSchema(),
     }),
     tools: defineCollection({
-      type: 'tools',
+      type: 'data',
       source: 'tools/*.json',
       schema: createToolsSchema(),
+    }),
+    snippets: defineCollection({
+      type: 'page',
+      source: 'snippets/*.md',
+      schema: createSnippetsSchema(),
     }),
   },
 })
