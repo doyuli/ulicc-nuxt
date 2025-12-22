@@ -5,6 +5,8 @@ language: javascript
 tags: [uni-app, request]
 ---
 
+::code-group
+
 ```ts [request.ts]
 import { isHttp } from './utils'
 
@@ -129,3 +131,5 @@ export function getExampleList(data?: ExamplePageParams) {
   })
 }
 ```
+
+::
