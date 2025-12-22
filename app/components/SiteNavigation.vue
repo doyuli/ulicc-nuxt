@@ -5,7 +5,7 @@ import { cn } from '~/lib/utils'
 
 export interface NavMenu {
   label: string
-  href: string
+  href?: string
   children?: NavItem[]
 }
 
@@ -33,7 +33,7 @@ defineProps<{
             <ul class="grid gap-2">
               <li v-for="child in menu.children" :key="child.label">
                 <NavigationMenuLink as-child>
-                  <NuxtLink class="text-nowrap" :to="menu.href">
+                  <NuxtLink class="text-nowrap" :to="child.href">
                     <div class="flex items-center gap-2">
                       <component :is="child.icon" v-if="child.icon" class="size-4 shrink-0 text-muted-foreground" />
                       <span>

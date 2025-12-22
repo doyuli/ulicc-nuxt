@@ -8,16 +8,15 @@ export const navigation: NavMenu[] = [
   },
   {
     label: '专栏',
-    href: '/',
     children: [
       {
         label: '效率工具',
-        href: '/',
+        href: '/tools',
         icon: PencilRuler,
       },
       {
         label: '代码片段',
-        href: '/',
+        href: '/snippets',
         icon: SquareChevronRight,
       },
     ],

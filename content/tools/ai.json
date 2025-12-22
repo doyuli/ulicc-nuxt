@@ -1,0 +1,36 @@
+{
+  "title": "AI工具",
+  "description": "一些AI工具",
+  "links": [
+    {
+      "name": "ChatGPT",
+      "href": "https://chatgpt.com/",
+      "image": "https://cdn.oaistatic.com/assets/favicon-o20kmmos.svg",
+      "description": "一款重量级的 AI 辅助工具，懂的都懂"
+    },
+    {
+      "name": "Midjourney",
+      "href": "https://www.midjourney.com/",
+      "image": "https://www.midjourney.com/apple-touch-icon.png",
+      "description": "AI 绘图的王者，就是有亿点贵"
+    },
+    {
+      "name": "豆包",
+      "href": "https://www.doubao.com/chat/",
+      "image": "https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/doubao/web/logo-icon.png",
+      "description": "一款字节旗下的 AI 智能助手"
+    },
+    {
+      "name": "通义千问",
+      "href": "https://tongyi.aliyun.com/qianwen/",
+      "image": "https://img.alicdn.com/imgextra/i1/O1CN01AKUdEM1qP6BQVaYhT_!!6000000005487-2-tps-512-512.png",
+      "description": "通情、达义的全能 AI 助手"
+    },
+    {
+      "name": "DeepSeek",
+      "href": "https://chat.deepseek.com/",
+      "image": "https://chat.deepseek.com/favicon.svg",
+      "description": "深度求索,大语言模型"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "title": "常用工具",
+  "description": "常用的一些工具",
+  "priority": 1000,
+  "links": [
+    {
+      "name": "Excalidraw",
+      "href": "https://excalidraw.com/",
+      "image": "https://excalidraw.com/apple-touch-icon.png",
+      "description": "虚拟手绘风格白板工具"
+    },
+    {
+      "name": "Obsidian",
+      "href": "https://obsidian.md/",
+      "image": "https://obsidian.md/favicon.svg",
+      "description": "笔记和知识库管理工具"
+    },
+    {
+      "name": "StackBlitz",
+      "href": "https://stackblitz.com",
+      "image": "https://stackblitz.com/_astro/favicon.svg",
+      "description": "基于浏览器的协作 IDE"
+    },
+    {
+      "name": "CodePen",
+      "href": "https://codepen.io/",
+      "image": "https://cpwebassets.codepen.io/assets/social/facebook-default-05cf522ae1d4c215ae0f09d866d97413a2204b6c9339c6e7a1b96ab1d4a7340f.png",
+      "description": "在线前端代码编辑工具"
+    },
+    {
+      "name": "MDN Playground",
+      "href": "https://developer.mozilla.org/zh-CN/play",
+      "image": "https://developer.mozilla.org/favicon-48x48.bc390275e955dacb2e65.png",
+      "description": "MDN 在线代码编辑器"
+    },
+    {
+      "name": "Squoosh",
+      "href": "https://squoosh.app/",
+      "image": "https://squoosh.app/c/icon-large-maskable-c2078ced.png",
+      "description": "非常不错的图片压缩工具"
+    },
+    {
+      "name": "Icones",
+      "href": "https://icones.js.org/collection/all",
+      "image": "https://icones.js.org/favicon.svg",
+      "description": "非常不错的 Icon 图标库"
+    },
+    {
+      "name": "Emoji6",
+      "href": "https://search.emoji6.com/",
+      "image": "https://search.emoji6.com/logo.png",
+      "description": "好用的 Emoji 表情库"
+    }
+  ]
+}

@@ -1,17 +1,33 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 
-function createPostSchema() {
+function createBaseSchema() {
   return z.object({
     title: z.string(),
     description: z.string(),
-    minRead: z.number(),
-    date: z.date(),
-    hidden: z.boolean().default(false),
     /**
      * 优先级，0-1000，1000 为置顶
      */
     priority: z.number().min(0).max(1000).int().default(0),
+  })
+}
+
+function createPostSchema() {
+  return createBaseSchema().extend({
+    minRead: z.number(),
+    date: z.date(),
+    hidden: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
+  })
+}
+
+function createToolsSchema() {
+  return createBaseSchema().extend({
+    links: z.array(z.object({
+      name: z.string(),
+      href: z.string().url(),
+      image: z.string().url(),
+      description: z.string(),
+    })),
   })
 }
 
@@ -21,6 +37,11 @@ export default defineContentConfig({
       type: 'page',
       source: 'posts/*.md',
       schema: createPostSchema(),
+    }),
+    tools: defineCollection({
+      type: 'tools',
+      source: 'tools/*.json',
+      schema: createToolsSchema(),
     }),
   },
 })
