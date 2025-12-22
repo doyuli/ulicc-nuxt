@@ -1,56 +1,25 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
+import type { HTMLAttributes } from 'vue'
 import { Copy, CopyCheck } from 'lucide-vue-next'
-import { icons } from '~/constants/icons'
 import { cn } from '~/lib/utils'
 
-const props = defineProps({
-  code: {
-    type: String,
-    default: '',
-  },
-  language: {
-    type: String,
-    default: null,
-  },
-  filename: {
-    type: String,
-    default: null,
-  },
-  highlights: {
-    type: Array as () => number[],
-    default: () => [],
-  },
-  meta: {
-    type: String,
-    default: null,
-  },
-  class: {
-    type: String,
-    default: null,
-  },
-})
+defineProps<{
+  code?: string
+  language?: string
+  filename?: string
+  highlights?: () => number[]
+  meta?: string
+  class?: HTMLAttributes['class']
+  hideHeader?: boolean
+}>()
 
 const { copy, copied } = useClipboard()
-
-const icon = computed(() => {
-  if (!props.filename) {
-    return
-  }
-
-  const cleanFilename = props.filename.replace(/\s*\(.*\)\s*$/, '')
-
-  const extension = cleanFilename.includes('.') && cleanFilename.split('.').pop()
-  const name = cleanFilename.split('/').pop()
-
-  return (name && icons[name.toLowerCase()]) ?? (extension && (icons[extension] ?? `vscode-icons:file-type-${extension}`))
-})
 </script>
 
 <template>
   <div :class="cn('relative my-5 group', filename && '[&>pre]:rounded-t-none [&>pre]:my-0 my-5')">
-    <div v-if="filename" class="flex items-center gap-1.5 border border-muted bg-background border-b-0 relative rounded-t-md px-4 py-3">
-      <Icon v-if="icon" class="size-4 shrink-0" :icon="icon" />
+    <div v-if="filename && !hideHeader" class="flex items-center gap-1.5 border border-muted bg-background border-b-0 relative rounded-t-md px-4 py-3">
+      <CodeIcon class="size-4 shrink-0" :filename="filename" />
       <span class="text-default text-sm/6">{{ filename }}</span>
     </div>
 
