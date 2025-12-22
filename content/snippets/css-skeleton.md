@@ -5,6 +5,8 @@ language: css
 tags: [css, skeleton]
 ---
 
+::code-collapse
+
 ```css
 *[loading='true'] > div:not([loading='true']) {
   background-image: linear-gradient(90deg, #f0f2f5 25%, #e6e8eb 37%, #f0f2f5 63%) !important;
@@ -24,5 +26,5 @@ tags: [css, skeleton]
     background-position: 0 50%;
   }
 }
-
+::
 ```

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
 import { Copy, CopyCheck } from 'lucide-vue-next'
 import { cn } from '~/lib/utils'
 
@@ -9,7 +8,6 @@ defineProps<{
   filename?: string
   highlights?: () => number[]
   meta?: string
-  class?: HTMLAttributes['class']
   hideHeader?: boolean
 }>()
 
