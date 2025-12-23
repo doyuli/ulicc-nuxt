@@ -1,9 +1,10 @@
 <script lang="ts">
-import type { PostsCollectionItem } from '@nuxt/content'
+import type { PostsCollectionItem, ToolsCollectionItem } from '@nuxt/content'
 
 interface ConfigProviderContext {
   globalTime: Ref<Date>
   posts: Ref<PostsCollectionItem[] | undefined>
+  tools: Ref<ToolsCollectionItem[] | undefined>
   tags: ComputedRef<Record<string, PostsCollectionItem[]>>
 }
 
@@ -28,6 +29,12 @@ const { data: posts } = await useAsyncData('posts-all', () => {
     .all()
 })
 
+const { data: tools } = await useAsyncData('all-tools', () => {
+  return queryCollection('tools')
+    .order('priority', 'DESC')
+    .all()
+})
+
 const tags = computed(() => {
   const result: Record<string, Set<PostsCollectionItem>> = {}
   posts.value?.forEach((post) => {
@@ -43,6 +50,7 @@ const tags = computed(() => {
 provideConfigProviderContext({
   globalTime,
   posts,
+  tools,
   tags,
 })
 </script>

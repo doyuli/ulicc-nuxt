@@ -1,9 +1,7 @@
 <script setup lang="ts">
-const { data: tools } = await useAsyncData('all-tools', () => {
-  return queryCollection('tools')
-    .order('priority', 'DESC')
-    .all()
-})
+import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
+
+const { tools } = useConfigProviderContext()
 </script>
 
 <template>
