@@ -1,55 +1,49 @@
 {
   "title": "常用工具",
-  "description": "常用的一些工具",
+  "description": "高效实用的开发者与创作者工具集",
   "priority": 1000,
   "links": [
     {
       "name": "Excalidraw",
       "href": "https://excalidraw.com/",
       "image": "https://excalidraw.com/apple-touch-icon.png",
-      "description": "虚拟手绘风格白板工具"
+      "description": "虚拟白板工具，用于绘制图表和思维导图。"
+    },
+    {
+      "name": "沉浸式翻译",
+      "href": "https://immersivetranslate.com/zh-Hans/",
+      "image": "https://immersivetranslate.com/webapp_assets/_next/static/media/logo.c14b6e7c.png",
+      "description": "一款优秀的 AI 双语对照网页翻译工具。"
     },
     {
       "name": "Obsidian",
       "href": "https://obsidian.md/",
       "image": "https://obsidian.md/favicon.svg",
-      "description": "笔记和知识库管理工具"
-    },
-    {
-      "name": "StackBlitz",
-      "href": "https://stackblitz.com",
-      "image": "https://stackblitz.com/_astro/favicon.svg",
-      "description": "基于浏览器的协作 IDE"
-    },
-    {
-      "name": "CodePen",
-      "href": "https://codepen.io/",
-      "image": "https://cpwebassets.codepen.io/assets/social/facebook-default-05cf522ae1d4c215ae0f09d866d97413a2204b6c9339c6e7a1b96ab1d4a7340f.png",
-      "description": "在线前端代码编辑工具"
-    },
-    {
-      "name": "MDN Playground",
-      "href": "https://developer.mozilla.org/zh-CN/play",
-      "image": "https://developer.mozilla.org/favicon-48x48.bc390275e955dacb2e65.png",
-      "description": "MDN 在线代码编辑器"
+      "description": "强大的知识管理和笔记软件。"
     },
     {
       "name": "Squoosh",
       "href": "https://squoosh.app/",
       "image": "https://squoosh.app/c/icon-large-maskable-c2078ced.png",
-      "description": "非常不错的图片压缩工具"
+      "description": "轻量级的在线图像压缩和优化工具"
     },
     {
-      "name": "Icones",
-      "href": "https://icones.js.org/collection/all",
-      "image": "https://icones.js.org/favicon.svg",
-      "description": "非常不错的 Icon 图标库"
+      "name": "Picsum",
+      "href": "https://picsum.photos/",
+      "image": "",
+      "description": "好用的图片占位工具。"
     },
     {
-      "name": "Emoji6",
-      "href": "https://search.emoji6.com/",
-      "image": "https://search.emoji6.com/logo.png",
-      "description": "好用的 Emoji 表情库"
+      "name": "Bundler Explorer",
+      "href": "https://bundler.sxzz.dev/",
+      "image": "",
+      "description": "在线打包分析平台。"
+    },
+    {
+      "name": "JavaScript Visualizer",
+      "href": "https://www.jsv9000.app/",
+      "image": "",
+      "description": "可视化执行JavaScript代码，帮助理解其运行机制"
     }
   ]
 }

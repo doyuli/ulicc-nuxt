@@ -1,36 +1,30 @@
 {
-  "title": "AI工具",
-  "description": "一些AI工具",
+  "title": "AI 生产力",
+  "description": "基于大语言模型的前沿 AI 工具集",
   "links": [
     {
       "name": "ChatGPT",
       "href": "https://chatgpt.com/",
       "image": "https://cdn.oaistatic.com/assets/favicon-o20kmmos.svg",
-      "description": "一款重量级的 AI 辅助工具，懂的都懂"
+      "description": "全能型 AI 助手，擅长写作、编程与逻辑推理。"
     },
     {
-      "name": "Midjourney",
-      "href": "https://www.midjourney.com/",
-      "image": "https://www.midjourney.com/apple-touch-icon.png",
-      "description": "AI 绘图的王者，就是有亿点贵"
-    },
-    {
-      "name": "豆包",
-      "href": "https://www.doubao.com/chat/",
-      "image": "https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/doubao/web/logo-icon.png",
-      "description": "一款字节旗下的 AI 智能助手"
+      "name": "Gemini",
+      "href": "https://gemini.google.com/app",
+      "image": "https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg",
+      "description": "Google 多模态 AI，深度集成 Workspace，高效协同。"
     },
     {
       "name": "通义千问",
-      "href": "https://tongyi.aliyun.com/qianwen/",
+      "href": "https://www.qianwen.com/",
       "image": "https://img.alicdn.com/imgextra/i1/O1CN01AKUdEM1qP6BQVaYhT_!!6000000005487-2-tps-512-512.png",
-      "description": "通情、达义的全能 AI 助手"
+      "description": "阿里自研大模型，中文理解强，办公场景优化佳。"
     },
     {
       "name": "DeepSeek",
       "href": "https://chat.deepseek.com/",
       "image": "https://chat.deepseek.com/favicon.svg",
-      "description": "深度求索,大语言模型"
+      "description": "国产高性能模型，专注数学、代码与复杂推理。"
     }
   ]
 }
