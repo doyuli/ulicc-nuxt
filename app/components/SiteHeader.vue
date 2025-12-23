@@ -18,7 +18,7 @@ function scrollTop() {
 </script>
 
 <template>
-  <header :class="cn('fixed w-full top-0 left-0 z-1000 h-(--header-height)', headerBgClass)">
+  <header :class="cn('fixed w-full top-0 left-0 z-10 h-(--header-height)', headerBgClass)">
     <div :class="cn('grid grid-cols-3 items-center mx-auto size-full', global.appShellClass)">
       <NuxtLink class="font-bold opacity-90" to="/">
         {{ site.title }}
@@ -27,6 +27,7 @@ function scrollTop() {
         <SiteNavigation :menus="navigation" />
       </div>
       <div class="flex gap-4 items-center justify-end">
+        <SearchMode />
         <ColorMode />
         <ScrollMode :scroll-y="y" @scroll-top="scrollTop" />
       </div>
