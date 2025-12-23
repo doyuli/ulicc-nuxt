@@ -53,7 +53,7 @@ function navigateAndClose(path: string, _blank = false) {
         <CommandItem v-for="(link, i) in allLinks" :key="i" :value="`${link.name}${link.description}`" @select="navigateAndClose(link.href, true)">
           <LinkIcon class="size-4 shrink-0 text-muted-foreground" />
           <span class="truncate flex items-center gap-0.5">
-            <SearchHighlight :text="link.name " />
+            <span>{{ link.name }}</span>
             <ChevronRight v-if="link.description " class="size-3 shrink-0 text-muted-foreground" />
             <SearchHighlight :text="link.description" class="flex-1 truncate text-muted-foreground" />
           </span>
@@ -63,7 +63,7 @@ function navigateAndClose(path: string, _blank = false) {
         <CommandItem v-for="section in sections" :key="section.id" :value="`${section.title}${section.content}`" @select="navigateAndClose(section.id)">
           <component :is="section.type === 'post' ? FileText : SquareChevronRight" class="size-4 shrink-0 text-muted-foreground" />
           <span class="truncate flex items-center gap-0.5">
-            <SearchHighlight :text="section.title " />
+            <span>{{ section.title }}</span>
             <ChevronRight v-if="section.content " class="size-3 shrink-0 text-muted-foreground" />
             <SearchHighlight :text="section.content" class="flex-1 truncate text-muted-foreground" />
           </span>
