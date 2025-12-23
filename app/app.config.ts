@@ -4,7 +4,7 @@ export default defineAppConfig({
      * Shared class applied to app shell containers (header, main, footer)
      * Used to keep global horizontal spacing consistent
      */
-    appShellClass: 'px-8 max-w-[1400px]',
+    appShellClass: 'px-4 sm:px-8 w-full max-w-[1400px]',
   },
   site: {
     title: 'Doyuli',
