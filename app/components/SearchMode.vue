@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronRight, FileText, SearchIcon } from 'lucide-vue-next'
+import { ChevronRight, FileText, SearchIcon, SquareChevronRight } from 'lucide-vue-next'
 
 const { data: sections } = await useAsyncData('search-sections', async () => {
   const [posts, snippets] = await Promise.all([
@@ -71,14 +71,14 @@ watchEffect(() => {
             <template v-for="(value, key) in navigation" :key="key">
               <CommandGroup v-for="nav in value" :key="nav.stem" :heading="nav.title">
                 <CommandItem v-for="child in nav.children" :key="child.stem" :value="child.title" @select="navigateAndClose(child.path)">
-                  <FileText class="size-4 shrink-0 text-muted-foreground" />
+                  <component :is="key === 'posts' ? FileText : SquareChevronRight" class="size-4 shrink-0 text-muted-foreground" />
                   <span class="truncate">{{ child.title }}</span>
                 </CommandItem>
               </CommandGroup>
             </template>
             <CommandGroup heading="Sections">
               <CommandItem v-for="section in sections" :key="section.id" :value="`${section.title}${section.content}`" @select="navigateAndClose(section.id)">
-                <FileText class="size-4 shrink-0 text-muted-foreground" />
+                <component :is="section.type === 'post' ? FileText : SquareChevronRight" class="size-4 shrink-0 text-muted-foreground" />
                 <span class="truncate flex items-center gap-0.5">
                   <span>{{ section.title }}</span>
                   <ChevronRight v-if="section.content " class="size-3 shrink-0 text-muted-foreground" />
