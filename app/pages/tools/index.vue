@@ -7,14 +7,7 @@ const { data: tools } = await useAsyncData('all-tools', () => {
 </script>
 
 <template>
-  <Card class="mt-24 mb-12">
-    <CardContent class="flex flex-col gap-2">
-      <h1 class="text-3xl font-bold">
-        效率工具
-      </h1>
-      <span class="text-sm text-muted-foreground">开发生产力</span>
-    </CardContent>
-  </Card>
+  <PageTitle title="效率工具" description="开发生产力" />
   <div v-for="tool in tools" :key="tool.id" class="my-8">
     <div class="mb-4 flex flex-col gap-2">
       <h2 class="text-2xl font-bold">
