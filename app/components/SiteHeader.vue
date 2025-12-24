@@ -4,8 +4,20 @@ import { cn } from '~/lib/utils'
 
 const { global, site } = useAppConfig()
 
-const { y } = useWindowScroll({
+const { y, directions, isScrolling } = useWindowScroll({
   behavior: 'smooth',
+})
+
+const isScrollingDown = shallowRef(false)
+
+watchEffect(() => {
+  if (!isScrolling.value)
+    return
+
+  if (directions.bottom)
+    isScrollingDown.value = true
+  else
+    isScrollingDown.value = false
 })
 
 const headerBgClass = computed(() => {
@@ -23,8 +35,22 @@ function scrollTop() {
       <NuxtLink class="font-bold opacity-90" to="/">
         {{ site.title }}
       </NuxtLink>
-      <div class="flex items-center justify-center">
-        <SiteNavigation :menus="navigation" />
+      <div class="flex items-center justify-center size-full overflow-hidden">
+        <div
+          :class="cn(
+            'flex flex-col items-center h-[200%] w-full transition-transform duration-500',
+            isScrollingDown ? '-translate-y-1/4' : 'translate-y-1/4',
+          )"
+        >
+          <div class="h-1/2 w-full flex items-center justify-center">
+            <SiteNavigation :menus="navigation" />
+          </div>
+          <div class="h-1/2 w-full flex items-center justify-center">
+            <span class="truncate whitespace-nowrap font-medium text-sm">
+              {{ site.description }}
+            </span>
+          </div>
+        </div>
       </div>
       <div class="flex gap-4 items-center justify-end">
         <SearchMode />
