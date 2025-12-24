@@ -1,0 +1,19 @@
+{
+  "title": "开发调试与可视化",
+  "description": "深入理解代码运行逻辑和构建原理的专业工具。",
+  "priority": 1,
+  "links": [
+    {
+      "name": "Bundler Explorer",
+      "href": "https://bundler.sxzz.dev/",
+      "image": "",
+      "description": "分析打包后的文件构成，找出导致包体积过大的“元凶”。"
+    },
+    {
+      "name": "JavaScript Visualizer",
+      "href": "https://www.jsv9000.app/",
+      "image": "https://www.jsv9000.app/favicon.ico",
+      "description": "可视化 Event Loop 和执行栈，彻底搞懂 JS 运行机制。"
+    }
+  ]
+}

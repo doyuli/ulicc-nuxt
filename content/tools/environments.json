@@ -1,0 +1,31 @@
+{
+  "title": "部署与线上环境",
+  "description": "这类工具主要用于代码的实际运行、部署以及云端协作开发。",
+  "priority": 0,
+  "links": [
+    {
+      "name": "Vercel",
+      "href": "https://vercel.com/",
+      "image": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-256x256.png",
+      "description": "现代 Web 应用的最佳部署平台（Serverless/Static）。"
+    },
+    {
+      "name": "StackBlitz",
+      "href": "https://stackblitz.com",
+      "image": "https://stackblitz.com/_astro/favicon.svg",
+      "description": "基于浏览器的全栈 IDE，适合快速搭建项目原型。"
+    },
+    {
+      "name": "CodePen",
+      "href": "https://codepen.io/",
+      "image": "https://cpwebassets.codepen.io/assets/social/facebook-default-05cf522ae1d4c215ae0f09d866d97413a2204b6c9339c6e7a1b96ab1d4a7340f.png",
+      "description": "轻量级代码沙箱，专注于前端样式和动效展示。"
+    },
+    {
+      "name": "MDN Playground",
+      "href": "https://developer.mozilla.org/zh-CN/play",
+      "image": "https://developer.mozilla.org/favicon.ico",
+      "description": "官方权威的测试场，用于验证标准语法和兼容性。"
+    }
+  ]
+}

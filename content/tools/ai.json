@@ -1,6 +1,7 @@
 {
   "title": "AI 生产力",
   "description": "基于大语言模型的前沿 AI 工具集",
+  "priority": 100,
   "links": [
     {
       "name": "ChatGPT",

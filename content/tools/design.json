@@ -1,0 +1,49 @@
+{
+  "title": "图像与设计资源",
+  "description": "常用这类工具能帮你处理视觉资产，提升页面审美。",
+  "priority": 10,
+  "links": [
+    {
+      "name": "Iconify",
+      "href": "https://icon-sets.iconify.design/",
+      "image": "https://icon-sets.iconify.design/favicon.svg",
+      "description": "图标集合搜索器，支持各种矢量图标集。"
+    },
+    {
+      "name": "Lucide",
+      "href": "https://lucide.dev/icons/",
+      "image": "https://lucide.dev/logo.dark.svg",
+      "description": "简洁美观的线性图标集，现代感十足。"
+    },
+    {
+      "name": "Emoji6",
+      "href": "https://search.emoji6.com/",
+      "image": "https://search.emoji6.com/logo.png",
+      "description": "表情符号搜索引擎，适合内容创作。"
+    },
+    {
+      "name": "Squoosh",
+      "href": "https://squoosh.app/",
+      "image": "https://squoosh.app/c/icon-large-maskable-c2078ced.png",
+      "description": "谷歌出品的高质量图片压缩，优化加载速度。"
+    },
+    {
+      "name": "Picsum",
+      "href": "https://picsum.photos/",
+      "image": "https://picsum.photos/200",
+      "description": "只需要一个链接就能生成的随机图片占位符。"
+    },
+    {
+      "name": "Cravatar",
+      "href": "https://cravatar.com/",
+      "image": "https://cravatar.cn/avatar/avatar?s=60",
+      "description": "解决国内头像显示问题的公共头像服务。"
+    },
+    {
+      "name": "Hero Patterns",
+      "href": "https://heropatterns.com/",
+      "image": "https://pic.efefee.cn/uploads/2024/04/22/6625d6cf45efb.webp",
+      "description": "快速生成极简、美观的 SVG 平铺背景纹理。"
+    }
+  ]
+}

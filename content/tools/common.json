@@ -1,6 +1,6 @@
 {
   "title": "常用工具",
-  "description": "高效实用的开发者与创作者工具集",
+  "description": "用于日常办公、翻译以及思维整理的辅助工具。",
   "priority": 1000,
   "links": [
     {
@@ -20,30 +20,6 @@
       "href": "https://obsidian.md/",
       "image": "https://obsidian.md/favicon.svg",
       "description": "强大的知识管理和笔记软件。"
-    },
-    {
-      "name": "Squoosh",
-      "href": "https://squoosh.app/",
-      "image": "https://squoosh.app/c/icon-large-maskable-c2078ced.png",
-      "description": "轻量级的在线图像压缩和优化工具"
-    },
-    {
-      "name": "Picsum",
-      "href": "https://picsum.photos/",
-      "image": "",
-      "description": "好用的图片占位工具。"
-    },
-    {
-      "name": "Bundler Explorer",
-      "href": "https://bundler.sxzz.dev/",
-      "image": "",
-      "description": "在线打包分析平台。"
-    },
-    {
-      "name": "JavaScript Visualizer",
-      "href": "https://www.jsv9000.app/",
-      "image": "",
-      "description": "可视化执行JavaScript代码，帮助理解其运行机制"
     }
   ]
 }
