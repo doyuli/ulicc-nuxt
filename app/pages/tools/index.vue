@@ -20,10 +20,10 @@ const { tools } = useConfigProviderContext()
         variant="outline"
         as-child
         role="tool-item"
-        class="bg-background shadow-(--card-shadow) animate-fade-up"
+        class="flex-nowrap bg-background shadow-(--card-shadow) animate-fade-up"
         :style="{ animationDelay: `${0.2 + i * 0.1}s` }"
       >
-        <NuxtLink class="flex items-center" :to="link.href" target="_blank" rel="noopener noreferrer">
+        <NuxtLink :to="link.href" target="_blank" rel="noopener noreferrer">
           <ItemMedia>
             <Avatar class="size-15">
               <AvatarImage :src="link.image" :alt="link.name" />
