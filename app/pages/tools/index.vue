@@ -28,7 +28,7 @@ const { tools } = useConfigProviderContext()
             <Avatar class="size-15">
               <AvatarImage :src="link.image" :alt="link.name" />
               <AvatarFallback class="animate-pulse">
-                {{ link.name.slice(0, 2) }}
+                {{ link.name.slice(0, 2).toLocaleUpperCase() }}
               </AvatarFallback>
             </Avatar>
           </ItemMedia>
