@@ -22,7 +22,7 @@ export const navigation: NavMenu[] = [
     ],
   },
   {
-    label: '友链',
-    href: '/',
+    label: '关于',
+    href: '/about',
   },
 ]

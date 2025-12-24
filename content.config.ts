@@ -55,5 +55,10 @@ export default defineContentConfig({
       source: 'snippets/*.md',
       schema: createSnippetsSchema(),
     }),
+    about: defineCollection({
+      type: 'page',
+      source: 'about.md',
+      schema: createBaseSchema(),
+    }),
   },
 })
