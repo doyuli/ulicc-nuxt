@@ -15,15 +15,15 @@ const { data: snippets } = await useAsyncData('all-snippets', () => {
       variant="outline"
       as-child
       role="snippet-item"
-      class="bg-background shadow-(--card-shadow) animate-fade-up"
+      class="group bg-background shadow-(--card-shadow) hover:bg-primary-light! animate-fade-up"
       :style="{ animationDelay: `${0.2 + i * 0.1}s` }"
     >
       <NuxtLink :to="snippet.path">
         <ItemContent>
-          <ItemTitle class="text-lg">
+          <ItemTitle class="text-base md:text-lg group-hover:text-white">
             {{ snippet.title }}
           </ItemTitle>
-          <ItemDescription>
+          <ItemDescription class="group-hover:text-white">
             {{ snippet.description }}
           </ItemDescription>
         </ItemContent>

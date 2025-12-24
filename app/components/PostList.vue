@@ -19,13 +19,13 @@ const { posts = [] } = defineProps<{
       variant="outline"
       as-child
       role="listitem"
-      class="bg-background shadow-(--card-shadow) animate-fade-up"
+      class="group bg-background shadow-(--card-shadow) hover:bg-background! hover:border-primary-light animate-fade-up"
       :style="{ animationDelay: `${0.2 + i * 0.1}s` }"
     >
       <NuxtLink :to="post.path">
         <ItemContent>
           <ItemTitle>
-            <span class="text-lg">{{ post.title }}</span>
+            <span class="text-lg group-hover:text-primary">{{ post.title }}</span>
             <Badge v-if="post.priority! >= 1000" variant="secondary">
               <ArrowUpToLine class="size-3" />
             </Badge>

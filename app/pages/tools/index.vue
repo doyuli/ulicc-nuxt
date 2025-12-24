@@ -20,12 +20,12 @@ const { tools } = useConfigProviderContext()
         variant="outline"
         as-child
         role="tool-item"
-        class="flex-nowrap bg-background shadow-(--card-shadow) animate-fade-up"
+        class="group flex-nowrap bg-background shadow-(--card-shadow) hover:bg-primary-light! animate-fade-up"
         :style="{ animationDelay: `${0.2 + i * 0.1}s` }"
       >
         <NuxtLink :to="link.href" target="_blank" rel="noopener noreferrer">
-          <ItemMedia>
-            <Avatar class="size-15">
+          <ItemMedia class="size-15 self-center! group-hover:size-0 group-hover:opacity-0 group-hover:-mr-4 transition-all duration-600">
+            <Avatar class="size-full">
               <AvatarImage :src="link.image" :alt="link.name" />
               <AvatarFallback class="animate-pulse">
                 {{ link.name.slice(0, 2).toLocaleUpperCase() }}
@@ -33,8 +33,12 @@ const { tools } = useConfigProviderContext()
             </Avatar>
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>{{ link.name }}</ItemTitle>
-            <ItemDescription>{{ link.description }}</ItemDescription>
+            <ItemTitle class="text-base md:text-lg group-hover:text-white">
+              {{ link.name }}
+            </ItemTitle>
+            <ItemDescription class="group-hover:text-white">
+              {{ link.description }}
+            </ItemDescription>
           </ItemContent>
         </NuxtLink>
       </Item>
