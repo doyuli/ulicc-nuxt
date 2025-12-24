@@ -5,4 +5,345 @@ language: json
 tags: [setting]
 ---
 
-[查看完整配置 →](https://github.com/doyuli/dotfiles){target="\_blank"}
+[查看最新配置 →](https://github.com/doyuli/dotfiles){target="\_blank"}
+
+::code-collapse
+::code-group
+
+```json [settings.json]
+{
+  // ========== Visuals ==========
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.guides.bracketPairs": "active",
+  "editor.renderWhitespace": "boundary",
+  "workbench.fontAliasing": "antialiased",
+  "workbench.list.smoothScrolling": true,
+  "workbench.sideBar.location": "left",
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.tree.expandMode": "singleClick",
+  "workbench.tree.indent": 10,
+  "workbench.iconTheme": "catppuccin-mocha",
+  "workbench.productIconTheme": "icons-carbon",
+  "workbench.colorTheme": "One Dark Pro",
+  "oneDarkPro.italic": false,
+  "explorer.compactFolders": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  // ========== Editor ==========
+  "emmet.triggerExpansionOnTab": true,
+  "debug.onTaskErrors": "debugAnyway",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
+  "editor.inlineSuggest.enabled": true,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.suggestSelection": "first",
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.stickyScroll.enabled": true,
+  "editor.hover.sticky": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+  "files.insertFinalNewline": true,
+  "files.simpleDialog.enable": true,
+  "workbench.editor.closeOnFileDelete": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.perEditorGroup": true,
+  "workbench.editor.limit.value": 5,
+  "search.exclude": {
+    "**/*.snap": true,
+    "**/*.svg": true,
+    "**/.git": true,
+    "**/.github": false,
+    "**/.nuxt": true,
+    "**/.output": true,
+    "**/.pnpm": true,
+    "**/.vscode": true,
+    "**/.yarn": true,
+    "**/assets": true,
+    "**/bower_components": true,
+    "**/dist/**": true,
+    "**/logs": true,
+    "**/node_modules": true,
+    "**/out/**": true,
+    "**/package-lock.json": true,
+    "**/pnpm-lock.yaml": true,
+    "**/public": true,
+    "**/temp": true,
+    "**/yarn.lock": true,
+    "**/CHANGELOG*": true,
+    "**/LICENSE*": true
+  },
+  // ========== Git ==========
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.untrackedChanges": "separate",
+  "gitlens.codeLens.authors.enabled": false,
+  "gitlens.codeLens.enabled": false,
+  "gitlens.codeLens.recentChange.enabled": false,
+  "gitlens.menus": {
+    "editor": {
+      "blame": false,
+      "clipboard": true,
+      "compare": true,
+      "history": false,
+      "remote": false
+    },
+    "editorGroup": {
+      "blame": true,
+      "compare": false
+    },
+    "editorTab": {
+      "clipboard": true,
+      "compare": true,
+      "history": true,
+      "remote": true
+    },
+    "explorer": {
+      "clipboard": true,
+      "compare": true,
+      "history": true,
+      "remote": true
+    },
+    "scm": {
+      "authors": true
+    },
+    "scmGroup": {
+      "compare": true,
+      "openClose": true,
+      "stash": true
+    },
+    "scmGroupInline": {
+      "stash": true
+    },
+    "scmItem": {
+      "clipboard": true,
+      "compare": true,
+      "history": true,
+      "remote": false,
+      "stash": true
+    }
+  },
+  // ========== Terminal ==========
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.fontWeight": "300",
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "terminal.integrated.tabs.enabled": true,
+  // ==========  Global Level Config, needs to put in User Settings ==========
+  "window.dialogStyle": "custom",
+  "window.nativeTabs": true,
+  "window.title": "${rootName}",
+  "window.titleBarStyle": "custom",
+  "window.customTitleBarVisibility": "never",
+  "extensions.autoUpdate": "onlyEnabledExtensions",
+  // ========== Eslint ==========
+  "eslint.codeAction.showDocumentation": {
+    "enable": true
+  },
+  "eslint.quiet": true,
+  "eslint.rules.customizations": [
+    { "rule": "style/*", "severity": "off" },
+    { "rule": "format/*", "severity": "off" },
+    { "rule": "*-indent", "severity": "off" },
+    { "rule": "*-spacing", "severity": "off" },
+    { "rule": "*-spaces", "severity": "off" },
+    { "rule": "*-order", "severity": "off" },
+    { "rule": "*-dangle", "severity": "off" },
+    { "rule": "*-newline", "severity": "off" },
+    { "rule": "*quotes", "severity": "off" },
+    { "rule": "*semi", "severity": "off" }
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml",
+    "toml"
+  ],
+  // I only use Prettier for manually formatting
+  "prettier.enable": false,
+  "prettier.printWidth": 200,
+  "prettier.semi": false,
+  "prettier.singleQuote": true,
+  "prettier.arrowParens": "avoid",
+  // ========== Copilot ==========
+  "github.copilot.enable": {
+    "*": true,
+    "markdown": true,
+    "plaintext": false,
+    "nextEditSuggestions": true
+  },
+  // ========== Extensions ==========
+  "errorLens.enabledDiagnosticLevels": [
+    "warning",
+    "error"
+  ],
+  "errorLens.excludeBySource": [
+    "cSpell",
+    "Grammarly",
+    "eslint"
+  ],
+  "cSpell.allowCompoundWords": true,
+  "cSpell.language": "en,en-US",
+  "cSpell.userWords": [
+    "antfu",
+    "iconify",
+    "jsdom",
+    "pico",
+    "picocolors",
+    "pinia",
+    "rollup",
+    "shikijs",
+    "tinyglobby",
+    "tsdown",
+    "unocss",
+    "unplugin",
+    "vite",
+    "vitejs",
+    "vitepress",
+    "vitest",
+    "vueuse"
+  ],
+  // ========== Custom ==========
+  "vue.autoInsert.dotValue": true
+}
+```
+
+```json [extensions.json]
+{
+  "recommendations": [
+    // themes & icons
+    "zhuangtongfa.material-theme",
+    "antfu.icons-carbon",
+    "Catppuccin.catppuccin-vsc-icons",
+
+    // life savers
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "Vue.volar",
+    "GitHub.copilot",
+    "usernamehw.errorlens",
+    "streetsidesoftware.code-spell-checker",
+    "bradlc.vscode-tailwindcss",
+    "chakrounanas.turbo-console-log",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+
+    // up to you
+    "antfu.where-am-i",
+    "antfu.open-in-github-button",
+    "eamodio.gitlens",
+    "ritwickdey.liveserver",
+    "naumovs.color-highlight",
+    "techer.open-in-browser"
+  ]
+}
+```
+
+```json [global.code-snippets]
+{
+  "import": {
+    "scope": "javascript,typescript",
+    "prefix": "im",
+    "body": [
+      "import { $2 } from '$1';"
+    ],
+    "description": "Import a module"
+  },
+  "export": {
+    "scope": "javascript,typescript",
+    "prefix": "ex",
+    "body": [
+      "export { $2 } from '$1';"
+    ],
+    "description": "Export a module"
+  },
+  "export-all": {
+    "scope": "javascript,typescript",
+    "prefix": "exa",
+    "body": [
+      "export * from '$2';"
+    ],
+    "description": "Export all module"
+  },
+  "Destructure Object": {
+    "prefix": "cc",
+    "body": "const { $2 } = $1"
+  },
+  "vue-template-ref": {
+    "scope": "javascript,typescript,vue",
+    "prefix": "utf",
+    "body": [
+      "const ${2:el} = useTemplateRef<HTMLDivElement>($1)"
+    ]
+  },
+  "vue-computed": {
+    "scope": "javascript,typescript,vue",
+    "prefix": "com",
+    "body": [
+      "computed(() => { $1 })"
+    ]
+  },
+  "vue-watch-effect": {
+    "scope": "javascript,typescript,vue",
+    "prefix": "we",
+    "body": [
+      "watchEffect(() => {",
+      " $1",
+      "})"
+    ]
+  },
+  "vue-script-setup": {
+    "scope": "vue",
+    "prefix": "<sc",
+    "body": [
+      "<script setup lang=\"ts\">",
+      "const props = defineProps<{",
+      "  modelValue?: boolean,",
+      "}>()",
+      "$1",
+      "</script>",
+      "",
+      "<template>",
+      "  <div>",
+      "    <slot/>",
+      "  </div>",
+      "</template>"
+    ]
+  },
+  "vue-temp-script": {
+    "scope": "vue",
+    "prefix": "vte",
+    "body": [
+      "<template>",
+      "  <div>",
+      "    <slot/>",
+      "  </div>",
+      "</template>",
+      "",
+      "<script setup lang=\"ts\">",
+      "import { ref } from 'vue'",
+      "",
+      "const props = defineProps<{",
+      "  modelValue?: boolean,",
+      "}>()",
+      "$1",
+      "</script>"
+    ]
+  }
+}
+```
+
+::
+::
