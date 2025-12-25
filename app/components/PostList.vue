@@ -5,9 +5,10 @@ import { ArrowUpToLine, CalendarIcon } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import { dateFormatter } from '~/utils/formatter'
 
-const { posts = [] } = defineProps<{
+const { posts = [], variant = 'default' } = defineProps<{
   posts?: PostsCollectionItem[]
   class?: HTMLAttributes['class']
+  variant?: 'default' | 'simple'
 }>()
 </script>
 
@@ -34,7 +35,7 @@ const { posts = [] } = defineProps<{
             {{ post.description }}
           </ItemDescription>
         </ItemContent>
-        <ItemFooter>
+        <ItemFooter v-if="variant === 'default'">
           <div class="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
             <CalendarIcon class="size-3" />
             <span>{{ dateFormatter.custom(new Date(post.date), { dateStyle: 'medium' }) }}</span>
