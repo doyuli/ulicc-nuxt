@@ -1,49 +1,62 @@
 <script setup lang="ts">
-import { ArrowRightIcon } from 'lucide-vue-next'
 import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
 
 const { tags } = useConfigProviderContext()
+
+type Tags = keyof typeof tags.value
+
+const selectedTag = shallowRef<Tags | null>(null)
+
+const currentPosts = computed(() => selectedTag.value ? tags.value[selectedTag.value] : [])
+
+function handleSelect(tag: Tags) {
+  if (selectedTag.value === tag)
+    selectedTag.value = null
+  else
+    selectedTag.value = tag
+}
 </script>
 
 <template>
-  <header class="mt-24 mb-12 text-center">
+  <div class=" my-12 text-center">
     <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
       标签索引
     </h1>
     <p class="mt-4 text-muted-foreground">
       目前共计 {{ Object.keys(tags).length }} 个分类标签
     </p>
-  </header>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    <Card
+  </div>
+  <div class="flex flex-wrap justify-center gap-4 mb-8">
+    <Button
       v-for="(postList, tagName) in tags"
       :key="tagName"
-      class="group relative gap-2"
+      size="lg"
+      :variant="selectedTag === tagName ? 'default' : 'outline'"
+      @click="handleSelect(tagName)"
     >
-      <CardHeader>
-        <NuxtLink :to="`/tags/${encodeURIComponent(tagName)}`" class="flex items-center justify-between">
-          <div class="space-y-1">
-            <h2 class="text-xl font-semibold group-hover:text-primary transition-colors">
-              {{ tagName }}
-            </h2>
-            <p class="text-xs text-muted-foreground">
-              {{ postList.length }} 篇文章
-            </p>
-          </div>
-          <div class="size-8 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:-translate-x-3 transition-all">
-            <ArrowRightIcon class="size-4 text-primary" />
-          </div>
-        </NuxtLink>
-      </CardHeader>
-      <CardContent>
-        <ul class="space-y-2 border-t pt-4">
-          <li v-for="post in postList.slice(0, 2)" :key="post.id" class="line-clamp-1">
-            <NuxtLink :to="post.path" class="text-xs text-muted-foreground hover:text-primary">
-              • {{ post.title }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </CardContent>
-    </Card>
+      <span>{{ tagName }}</span>
+      <Badge variant="secondary">
+        {{ postList.length }}
+      </Badge>
+    </Button>
+  </div>
+  <template v-if="currentPosts?.length">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-bold">
+        带有标签 “<span class="text-primary">{{ selectedTag }}</span>” 的文章
+      </h2>
+      <button class="text-sm text-muted-foreground hover:text-secondary-foreground" @click="selectedTag = null">
+        清除筛选
+      </button>
+    </div>
+    <PostList :posts="currentPosts" />
+  </template>
+  <div v-else class="text-center py-20 bg-gray-50/50 border border-dashed border-gray-200 rounded-[2.5rem]">
+    <div class="text-4xl mb-4">
+      🏷️
+    </div>
+    <h3 class="text-lg font-medium text-gray-400 italic">
+      选择一个标签以查看相关文章
+    </h3>
   </div>
 </template>
