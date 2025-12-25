@@ -1,10 +1,21 @@
 import type { NavMenu } from '~/components/SiteNavigation.vue'
-import { PencilRuler, SquareChevronRight } from 'lucide-vue-next'
+import { FileTextIcon, HashIcon, PencilRuler, SquareChevronRight } from 'lucide-vue-next'
 
 export const navigation: NavMenu[] = [
   {
     label: '文库',
-    href: '/',
+    children: [
+      {
+        label: '文章归档',
+        href: '/archive',
+        icon: FileTextIcon,
+      },
+      {
+        label: '全部标签',
+        href: '/tags',
+        icon: HashIcon,
+      },
+    ],
   },
   {
     label: '专栏',
