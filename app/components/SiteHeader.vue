@@ -21,7 +21,7 @@ watchEffect(() => {
 })
 
 const headerBgClass = computed(() => {
-  return y.value > 50 ? 'bg-background/70 backdrop-blur-sm border-b border-border/50' : 'bg-transparent border-b-0'
+  return y.value > 50 ? 'bg-background/80 backdrop-blur-md border-b border-border/50' : 'bg-transparent border-b-0'
 })
 
 function scrollTop() {
@@ -32,8 +32,9 @@ function scrollTop() {
 <template>
   <header :class="cn('fixed w-full top-0 left-0 z-10 h-(--header-height)', headerBgClass)">
     <div :class="cn('grid grid-cols-3 items-center mx-auto size-full', global.appShellClass)">
-      <NuxtLink class="font-bold opacity-90" to="/">
-        {{ site.title }}
+      <NuxtLink class="font-bold tracking-tighter hover:opacity-70 transition-opacity" to="/">
+        <span>{{ site.title.toLocaleUpperCase() }}</span>
+        <span class="text-xl text-primary">.</span>
       </NuxtLink>
       <div :class="cn('relative size-full flex items-center justify-center', isScrolling && 'overflow-hidden')">
         <div

@@ -10,13 +10,13 @@ defineProps<{
 
 <template>
   <div>
-    <div v-if="post?.tags?.length" class="flex flex-wrap items-center gap-2 mb-6">
+    <div v-if="post?.tags?.length" class="flex flex-wrap items-center gap-2 mb-4">
       <Button
         v-for="tag in post.tags"
         :key="tag"
         size="sm"
         variant="secondary"
-        class="h-7 px-2.5 text-xs"
+        class="h-7 px-2.5 text-xs bg-primary/5 text-primary hover:bg-primary/10"
         as-child
       >
         <NuxtLink :to="`/tags/${encodeURIComponent(tag)}`" prefetch>
