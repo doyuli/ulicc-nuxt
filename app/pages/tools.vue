@@ -2,6 +2,10 @@
 import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
 
 const { tools } = useConfigProviderContext()
+
+usePageMeta({
+  title: '效率工具',
+})
 </script>
 
 <template>

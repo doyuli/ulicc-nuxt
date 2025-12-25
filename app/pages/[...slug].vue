@@ -7,6 +7,11 @@ const { data: post } = await useAsyncData(`post-${route.path}`, () => {
   return queryCollection('posts').path(route.path).first()
 })
 
+usePageMeta({
+  title: post.value?.title,
+  description: post.value?.description,
+})
+
 if (!post.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 }

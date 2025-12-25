@@ -8,6 +8,10 @@ const { data: about } = await useAsyncData('about', () => {
   return queryCollection('about').path(route.path).first()
 })
 
+usePageMeta({
+  title: '关于',
+})
+
 const { author } = useAppConfig()
 
 if (!about.value) {

@@ -2,6 +2,10 @@
 import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
 
 const { posts } = useConfigProviderContext()
+
+usePageMeta({
+  title: '首页',
+})
 </script>
 
 <template>

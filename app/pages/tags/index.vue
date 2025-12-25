@@ -15,6 +15,10 @@ function handleSelect(tag: Tags) {
   else
     selectedTag.value = tag
 }
+
+usePageMeta({
+  title: '标签索引',
+})
 </script>
 
 <template>

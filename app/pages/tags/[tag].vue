@@ -7,6 +7,10 @@ const tagName = route.params.tag as string
 const { tags } = useConfigProviderContext()
 
 const posts = computed(() => tags.value[decodeURIComponent(tagName)] ?? [])
+
+usePageMeta({
+  title: tagName,
+})
 </script>
 
 <template>

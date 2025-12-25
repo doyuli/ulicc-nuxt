@@ -22,6 +22,10 @@ const archive = computed(() => {
 const sortedYears = computed(() =>
   Object.keys(archive.value).sort((a, b) => Number(b) - Number(a)),
 )
+
+usePageMeta({
+  title: '文章归档',
+})
 </script>
 
 <template>

@@ -5,6 +5,11 @@ const { data: snippet } = await useAsyncData(`snippet-${route.path}`, () => {
   return queryCollection('snippets').path(route.path).first()
 })
 
+usePageMeta({
+  title: snippet.value?.title,
+  description: snippet.value?.description,
+})
+
 if (!snippet.value) {
   throw createError({ statusCode: 404, statusMessage: 'Snippet not found', fatal: true })
 }

@@ -4,6 +4,10 @@ const { data: snippets } = await useAsyncData('all-snippets', () => {
     .order('priority', 'DESC')
     .all()
 })
+
+usePageMeta({
+  title: '代码片段',
+})
 </script>
 
 <template>
