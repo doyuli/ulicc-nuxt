@@ -13,7 +13,10 @@ if (!post.value) {
 </script>
 
 <template>
-  <PostMeta class="mt-24 mb-12" :post="post!" />
+  <BackAction class="mt-4 mb-12">
+    Back to posts
+  </BackAction>
+  <PostMeta class="mt-8 mb-12" :post="post!" />
   <SidebarProvider>
     <template #sidebar-sticky-header>
       <ContentToc :links="post?.body.toc?.links" />

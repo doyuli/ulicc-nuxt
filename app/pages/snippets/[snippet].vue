@@ -11,7 +11,9 @@ if (!snippet.value) {
 </script>
 
 <template>
-  <SIteBackButton class="mb-4" />
+  <BackAction class="mt-4 mb-12">
+    Back to snippets
+  </BackAction>
   <SidebarProvider>
     <Card class="py-8 animate-fade-up delay-200">
       <CardHeader v-if="snippet">

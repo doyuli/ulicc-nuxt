@@ -10,7 +10,10 @@ const posts = computed(() => tags.value[decodeURIComponent(tagName)] ?? [])
 </script>
 
 <template>
-  <div class="mt-24 mb-12 flex flex-col items-center">
+  <BackAction class="mt-4 mb-12">
+    Back to page
+  </BackAction>
+  <div class="mt-8 mb-12 flex flex-col items-center">
     <div class="inline-flex items-center gap-3">
       <h1 class="text-4xl font-bold tracking-tight">
         {{ tagName }}
@@ -20,7 +23,6 @@ const posts = computed(() => tags.value[decodeURIComponent(tagName)] ?? [])
       </span>
     </div>
   </div>
-  <SIteBackButton class="mb-4" />
   <SidebarProvider>
     <PostList :posts="posts" />
   </SidebarProvider>
