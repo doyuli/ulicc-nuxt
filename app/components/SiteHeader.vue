@@ -21,7 +21,7 @@ watchEffect(() => {
 })
 
 const headerBgClass = computed(() => {
-  return y.value > 50 ? 'bg-background/30 backdrop-blur-sm border-b border-border/50' : 'bg-transparent border-b-0'
+  return y.value > 50 ? 'bg-background/70 backdrop-blur-sm border-b border-border/50' : 'bg-transparent border-b-0'
 })
 
 function scrollTop() {
