@@ -2,6 +2,8 @@
   "name": "ulicc-nuxt",
   "type": "module",
   "private": true,
+  "description": "My Blog Theme with Nuxt Content.",
+  "author": "doyuli",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
