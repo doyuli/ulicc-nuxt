@@ -1,11 +1,10 @@
 <script setup lang="ts">
 const { site: { title, description } } = useAppConfig()
 
-useSeoMeta({
+usePageMeta({
   title,
   description,
-  ogTitle: title,
-  ogDescription: description,
+  titleTemplate: `%s - ${title.toLocaleUpperCase()}`,
 })
 </script>
 
