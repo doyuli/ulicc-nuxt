@@ -1,6 +1,11 @@
 ---
 title: doyuli
 description: 分享技术与生活
+currentStacks:
+  - TypeScript
+  - Vue
+  - Nuxt
+  - Tailwind
 ---
 
 ## 👋 你好，我是 doyuli
@@ -31,8 +36,6 @@ description: 分享技术与生活
 - 用 **Vercel** 部署灵感。
 - 用 **Excalidraw** 具象化碎片思维。
 - 用 **Obsidian** 构建我的第二大脑。
-
----
 
 ### 📫 联系我
 

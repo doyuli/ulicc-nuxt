@@ -58,7 +58,9 @@ export default defineContentConfig({
     about: defineCollection({
       type: 'page',
       source: 'about.md',
-      schema: createBaseSchema(),
+      schema: createBaseSchema().extend({
+        currentStacks: z.array(z.string()).default([]),
+      }),
     }),
   },
 })
