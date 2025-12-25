@@ -8,23 +8,44 @@ tags: [css, skeleton]
 ::code-collapse
 
 ```css
-*[loading='true'] > div:not([loading='true']) {
-  background-image: linear-gradient(90deg, #f0f2f5 25%, #e6e8eb 37%, #f0f2f5 63%) !important;
-  background-size: 400% 100% !important;
-  animation: skeleton-loading 1.4s infinite ease !important;
-  border: none !important;
-  min-height: 30px;
-}
-*[loading='true'] > div:not([loading='true']) > * {
-  display: none !important;
-}
-@keyframes skeleton-loading {
+@keyframes skeleton-shimmer {
   0% {
-    background-position: 100% 50%;
+    transform: translateX(-100%);
   }
   100% {
-    background-position: 0 50%;
+    transform: translateX(100%);
   }
 }
-::
+
+*[loading='true'] > div:not([loading='true']) {
+  position: relative;
+  overflow: hidden;
+  background-color: #eff1f3 !important;
+  border: none !important;
+  min-height: 30px;
+  cursor: default;
+  pointer-events: none;
+}
+
+*[loading='true'] > div:not([loading='true'])::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+*[loading='true'] > div:not([loading='true']) > * {
+  visibility: hidden !important;
+}
 ```
+
+::
