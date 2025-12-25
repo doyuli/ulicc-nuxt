@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import { navigationMenuTriggerStyle } from '~/components/ui/navigation-menu'
-import { cn } from '~/lib/utils'
 
 export interface NavMenu {
   label: string
@@ -50,7 +49,7 @@ defineProps<{
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem v-else>
-          <NavigationMenuLink as-child :class="cn(navigationMenuTriggerStyle(), 'text-base')">
+          <NavigationMenuLink as-child :class="navigationMenuTriggerStyle()">
             <NuxtLink class="text-nowrap" :to="menu.href">
               {{ menu.label }}
             </NuxtLink>

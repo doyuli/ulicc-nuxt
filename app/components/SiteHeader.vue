@@ -21,7 +21,7 @@ watchEffect(() => {
 })
 
 const headerBgClass = computed(() => {
-  return y.value > 50 ? 'bg-background border-b border-border' : 'bg-transparent border-b-0'
+  return y.value > 50 ? 'bg-background/30 backdrop-blur-sm border-b border-border/50' : 'bg-transparent border-b-0'
 })
 
 function scrollTop() {
@@ -35,21 +35,25 @@ function scrollTop() {
       <NuxtLink class="font-bold opacity-90" to="/">
         {{ site.title }}
       </NuxtLink>
-      <div class="flex items-center justify-center size-full overflow-hidden">
+      <div :class="cn('relative size-full flex items-center justify-center', isScrolling && 'overflow-hidden')">
         <div
           :class="cn(
-            'flex flex-col items-center h-[200%] w-full transition-transform duration-500',
-            isScrollingDown ? '-translate-y-1/4' : 'translate-y-1/4',
+            'absolute inset-0 flex items-center justify-center transition-all duration-500',
+            isScrollingDown ? 'opacity-0 -translate-y-full pointer-events-none' : 'opacity-100 translate-y-0',
           )"
         >
-          <div class="h-1/2 w-full flex items-center justify-center">
-            <SiteNavigation :menus="navigation" />
-          </div>
-          <div class="h-1/2 w-full flex items-center justify-center">
-            <span class="truncate whitespace-nowrap font-medium text-sm">
-              {{ site.description }}
-            </span>
-          </div>
+          <SiteNavigation :menus="navigation" />
+        </div>
+
+        <div
+          :class="cn(
+            'absolute inset-0 flex items-center justify-center transition-all duration-500',
+            isScrollingDown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full pointer-events-none',
+          )"
+        >
+          <span class="truncate whitespace-nowrap font-medium text-sm">
+            {{ site.description }}
+          </span>
         </div>
       </div>
       <div class="flex gap-4 items-center justify-end">
