@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { TagIcon } from 'lucide-vue-next'
 import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
+import { cn } from '~/lib/utils'
 
 const { tags } = useConfigProviderContext()
 
@@ -35,7 +37,8 @@ usePageMeta({
       v-for="(postList, tagName) in tags"
       :key="tagName"
       size="lg"
-      :variant="selectedTag === tagName ? 'default' : 'outline'"
+      variant="outline"
+      :class="cn('py-5', selectedTag === tagName && 'bg-primary/70 hover:bg-primary/70 text-white hover:text-white')"
       @click="handleSelect(tagName)"
     >
       <span>{{ tagName }}</span>
@@ -55,11 +58,9 @@ usePageMeta({
     </div>
     <PostList :posts="currentPosts" />
   </template>
-  <div v-else class="text-center py-20 bg-gray-50/50 border border-dashed border-gray-200 rounded-[2.5rem]">
-    <div class="text-4xl mb-4">
-      🏷️
-    </div>
-    <h3 class="text-lg font-medium text-gray-400 italic">
+  <div v-else class="flex  gap-2 justify-center items-center py-20 text-gray-400 bg-accent/30 border border-dashed border-muted rounded-md">
+    <TagIcon class="size-5 shrink-0" />
+    <h3 class="text-lg italic">
       选择一个标签以查看相关文章
     </h3>
   </div>
