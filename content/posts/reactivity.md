@@ -48,17 +48,19 @@ function ref(value) {
 let activeSub
 
 class ReactiveEffect {
-	constructor(public fn) {}
+  constructor(fn) {
+    this.fn = fn
+  }
 
-	run() {
-		activeSub = this
-		this.fn()
-		activeSub = undefined
-	}
+  run() {
+    activeSub = this
+    this.fn()
+    activeSub = undefined
+  }
 }
 
 function effect(fn) {
-	return new ReactiveEffect(fn)
+  return new ReactiveEffect(fn)
 }
 ```
 
