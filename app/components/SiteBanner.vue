@@ -29,7 +29,7 @@ const quote = computed(() => `「 ${data?.value?.hitokoto ?? fallback.value} 」
 </script>
 
 <template>
-  <div :class="cn('min-h-48 flex items-center justify-center cursor-pointer', $props.class)" @click="() => refresh()">
+  <div :class="cn('min-h-48 flex items-center justify-center', $props.class)">
     <Transition
       mode="out-in"
       enter-active-class="transition-opacity duration-500"
@@ -37,7 +37,7 @@ const quote = computed(() => `「 ${data?.value?.hitokoto ?? fallback.value} 」
       leave-active-class="transition-opacity duration-500"
       leave-to-class="opacity-0"
     >
-      <span :key="quote" class="text-gray-600 dark:text-gray-300 font-light tracking-widest text-sm text-center italic">
+      <span :key="quote" class="text-gray-600 dark:text-gray-300 font-light tracking-widest text-sm md:text-base text-center italic cursor-pointer" @click="() => refresh()">
         {{ quote }}
       </span>
     </Transition>
