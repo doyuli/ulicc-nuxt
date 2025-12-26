@@ -1,5 +1,5 @@
 import type { NavMenu } from '~/components/SiteNavigation.vue'
-import { FileTextIcon, HashIcon, PencilRuler, SquareChevronRight } from 'lucide-vue-next'
+import { FileTextIcon, HashIcon, PencilRuler, SquareChevronRight, UserRound } from 'lucide-vue-next'
 
 export const navigation: NavMenu[] = [
   {
@@ -35,5 +35,6 @@ export const navigation: NavMenu[] = [
   {
     label: '关于',
     href: '/about',
+    icon: UserRound,
   },
 ]

@@ -5,6 +5,7 @@ import { navigationMenuTriggerStyle } from '~/components/ui/navigation-menu'
 export interface NavMenu {
   label: string
   href?: string
+  icon?: Component
   children?: NavItem[]
 }
 

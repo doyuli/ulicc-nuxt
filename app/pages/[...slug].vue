@@ -19,7 +19,7 @@ if (!post.value) {
 
 <template>
   <BackAction class="mt-4 mb-12">
-    Back to posts
+    Back to page
   </BackAction>
   <PostMeta class="mt-8 mb-12" :post="post!" />
   <SidebarProvider>
