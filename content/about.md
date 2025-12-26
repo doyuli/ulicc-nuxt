@@ -18,7 +18,7 @@ currentStacks:
 
 - **核心技能**: TypeScript, Node.js, React, Vue, Nuxt
 - **工程化**: Vite, Webpack, Monorepo, Tsdown...
-- **UI/UX**: Tailwind CSS, UnoCSS, Reka UI
+- **UI/UX**: Tailwind CSS, UnoCSS, Shadcn
 - **后端边缘**: Hono, Express, MySQL
 
 ### 🚀 我在追求什么？

@@ -46,6 +46,7 @@ tags: [css, skeleton]
 *[loading='true'] > div:not([loading='true']) > * {
   visibility: hidden !important;
 }
+
 ```
 
 ::
