@@ -9,9 +9,7 @@ usePageMeta({
 </script>
 
 <template>
-  <div class="py-20 text-lg text-center">
-    <SiteBanner />
-  </div>
+  <SiteBanner />
   <SidebarProvider>
     <PostList :posts="posts" />
   </SidebarProvider>

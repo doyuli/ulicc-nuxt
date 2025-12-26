@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import type { HtmlHTMLAttributes } from 'vue'
+import { cn } from '~/lib/utils'
 import { randomInt } from '~/utils/random'
+
+defineProps<{
+  class?: HtmlHTMLAttributes['class']
+}>()
 
 const quotes = [
   '思君如流水，何有穷已时。',
@@ -17,13 +23,23 @@ function getFallback() {
 
 const fallback = useState('quote:fallback', () => getFallback())
 
-const { data } = useAsyncData('quote', () => $fetch<{ hitokoto: string }>('https://v1.hitokoto.cn/'))
+const { data, refresh } = useAsyncData('quote', () => $fetch<{ hitokoto: string }>('https://v1.hitokoto.cn/'))
 
 const quote = computed(() => `「 ${data?.value?.hitokoto ?? fallback.value} 」`)
 </script>
 
 <template>
-  <div>
-    {{ quote }}
+  <div :class="cn('min-h-48 flex items-center justify-center cursor-pointer', $props.class)" @click="() => refresh()">
+    <Transition
+      mode="out-in"
+      enter-active-class="transition-opacity duration-500"
+      enter-from-class="opacity-0"
+      leave-active-class="transition-opacity duration-500"
+      leave-to-class="opacity-0"
+    >
+      <span :key="quote" class="text-gray-600 dark:text-gray-300 font-light tracking-widest text-sm text-center italic">
+        {{ quote }}
+      </span>
+    </Transition>
   </div>
 </template>
