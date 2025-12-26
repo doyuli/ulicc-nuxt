@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import type { HtmlHTMLAttributes } from 'vue'
 import { Dice5Icon } from 'lucide-vue-next'
+import { cn } from '~/lib/utils'
 import { randomInt } from '~/utils/random'
 import { useConfigProviderContext } from './ConfigProvider.vue'
+
+defineProps<{
+  class?: HtmlHTMLAttributes['class']
+}>()
 
 const { posts } = useConfigProviderContext()
 const router = useRouter()
@@ -16,7 +22,7 @@ function goToRandomPost() {
 
 <template>
   <Button
-    class="rounded-full"
+    :class="cn('rounded-full', $props.class)"
     variant="outline"
     size="icon"
     aria-label="Random Post"

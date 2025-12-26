@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import type { HtmlHTMLAttributes } from 'vue'
 import { DarkIcon } from '~/components/icons'
+import { cn } from '~/lib/utils'
+
+defineProps<{
+  class?: HtmlHTMLAttributes['class']
+}>()
 
 const colorMode = useColorMode()
 
@@ -46,7 +52,7 @@ function startViewTransition(event: MouseEvent) {
 <template>
   <ClientOnly>
     <Button
-      class="rounded-full"
+      :class="cn('rounded-full', $props.class)"
       variant="outline"
       size="icon"
       aria-label="Toggle theme"

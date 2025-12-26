@@ -48,11 +48,11 @@ usePageMeta({
     </Button>
   </div>
   <template v-if="currentPosts?.length">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-bold">
-        带有标签 “<span class="text-primary">{{ selectedTag }}</span>” 的文章
+    <div class="mb-4 flex items-center justify-between gap-4">
+      <h2 class="text-xl font-bold truncate">
+        标签 “<span class="text-primary">{{ selectedTag }}</span>” 文章
       </h2>
-      <button class="text-sm text-muted-foreground hover:text-secondary-foreground" @click="selectedTag = null">
+      <button class="text-sm text-muted-foreground text-nowrap hover:text-secondary-foreground" @click="selectedTag = null">
         清除筛选
       </button>
     </div>
