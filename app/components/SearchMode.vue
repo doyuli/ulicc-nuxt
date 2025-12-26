@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import type { HtmlHTMLAttributes } from 'vue'
 import { CornerDownLeft, SearchIcon } from 'lucide-vue-next'
+import { cn } from '~/lib/utils'
+
+defineProps<{
+  class?: HtmlHTMLAttributes['class']
+}>()
 
 const open = shallowRef(false)
 
@@ -22,7 +28,7 @@ watch([meta_k, ctrl_k], ([_meta_k, _ctrl_k]) => {
     <Dialog v-model:open="open">
       <DialogTrigger as-child>
         <Button
-          class="rounded-full"
+          :class="cn('rounded-full', $props.class)"
           variant="outline"
           size="icon"
           aria-label="Search"

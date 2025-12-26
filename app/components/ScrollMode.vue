@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import type { HtmlHTMLAttributes } from 'vue'
 import { ArrowUpIcon } from 'lucide-vue-next'
+import { cn } from '~/lib/utils'
 
 const props = defineProps<{
   scrollY: number
+  class?: HtmlHTMLAttributes['class']
 }>()
 
 const emits = defineEmits(['scrollTop'])
@@ -39,7 +42,7 @@ function scrollTop() {
     >
       <Button
         v-if="scrollPercent"
-        class="rounded-full group text-white"
+        :class="cn('rounded-full group text-white', $props.class)"
         size="icon"
         aria-label="Scroll to top"
         @click="scrollTop"
