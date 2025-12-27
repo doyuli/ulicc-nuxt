@@ -7,7 +7,6 @@ tags:
   - Vue3
   - Reactivity
 priority: 0
-minRead: 4
 ---
 
 ## 响应式最基础的实现

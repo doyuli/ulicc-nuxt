@@ -3,7 +3,6 @@ title: 构建一个带智能上下文裁剪的搜索高亮组件
 date: 2025-12-24
 description: 从零实现一个高性能、通用化的搜索高亮组件。涵盖正则转义、智能上下文截断等进阶技巧。
 hidden: false
-minRead: 8
 tags:
   - 技术分享
 priority: 0
@@ -169,7 +168,6 @@ const parts = computed(() => parseHighlight(text, search, prefixOffset))
     </template>
   </span>
 </template>
-
 ```
 
 ::

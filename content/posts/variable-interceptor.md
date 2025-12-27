@@ -3,7 +3,6 @@ title: 打造一个安全可靠的 JavaScript 表达式沙箱
 date: 2025-10-18
 description: 基于 Proxy 与 with 构建受控沙箱，黑名单拦截敏感全局，上下文只读注入，安全执行用户表达式，兼顾性能与易用性。
 hidden: false
-minRead: 8
 tags:
   - Sandbox
 priority: 0

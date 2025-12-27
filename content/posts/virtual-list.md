@@ -3,7 +3,6 @@ title: 原来 VueUse 中的 useVirtualList 也没有那么神奇
 date: 2025-08-16
 description: 从视窗容量与偏移计算到占位策略，拆解 VueUse useVirtualList 的关键原理，理解按需渲染如何显著提升长列表性能与体验。
 hidden: false
-minRead: 6
 tags:
   - Vue3
   - VueUse

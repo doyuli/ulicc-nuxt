@@ -3,7 +3,6 @@ title: 自动为 async 函数添加 try...catch，告别手动错误处理
 date: 2025-10-29
 description: 基于构建期自动注入 try...catch，统一为异步函数植入错误捕获与 finally 逻辑，提升异步错误处理的可靠性与一致性。
 hidden: false
-minRead: 8
 tags:
   - Vite
   - Plugin
