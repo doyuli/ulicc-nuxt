@@ -22,7 +22,7 @@ defineOptions({
 
 const globalTime = useNow({ interval: 60 * 1000 })
 
-const { data: posts } = await useAsyncData('posts-all', () => {
+const { data: posts } = await useAsyncData('all-posts', () => {
   return queryCollection('posts')
     .order('priority', 'DESC')
     .order('date', 'DESC')
