@@ -2,11 +2,9 @@
 title: 实现一个最基础的响应式模块
 date: 2025-06-08
 description: 用极简代码实现 ref 与 effect，演示依赖追踪与触发更新流程，快速掌握 Vue 响应式的基础原理与运行机制。
-hidden: false
 tags:
   - Vue3
   - Reactivity
-priority: 0
 ---
 
 ## 响应式最基础的实现
