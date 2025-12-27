@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PostsCollectionItem } from '@nuxt/content'
 import type { HTMLAttributes } from 'vue'
-import { ArrowUpToLine, CalendarIcon } from 'lucide-vue-next'
+import { ArrowUpToLine, CalendarIcon, ClockIcon } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import { dateFormatter } from '~/utils/formatter'
 
@@ -35,10 +35,14 @@ const { posts = [], variant = 'default' } = defineProps<{
             {{ post.description }}
           </ItemDescription>
         </ItemContent>
-        <ItemFooter v-if="variant === 'default'">
-          <div class="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
-            <CalendarIcon class="size-3" />
+        <ItemFooter v-if="variant === 'default'" class="justify-baseline gap-4 text-xs text-muted-foreground">
+          <div class="flex items-center gap-1">
+            <CalendarIcon class="size-3 shrink-0" />
             <span>{{ dateFormatter.custom(new Date(post.date), { dateStyle: 'medium' }) }}</span>
+          </div>
+          <div class="flex items-center gap-1 opacity-80">
+            <ClockIcon class="size-3 shrink-0" />
+            <span>{{ post.minRead }} min read</span>
           </div>
         </ItemFooter>
       </NuxtLink>
