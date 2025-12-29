@@ -1,12 +1,15 @@
 import type { FileAfterParseHook } from '@nuxt/content'
 
-const CHARS_PER_MIN = 300
-const WORDS_PER_MIN = 180
-const CODE_LINES_PER_MIN = 60
-
 const CODE_BLOCK_REG = /```[\s\S]*?```/g
 
-export function transformContent(ctx: FileAfterParseHook) {
+export interface TransformOptions {
+  charsPerMinute: number
+  wordsPerMinute: number
+  codeLinesPerMinute: number
+}
+
+export function transformContent(ctx: FileAfterParseHook, options: TransformOptions) {
+  const { charsPerMinute, wordsPerMinute, codeLinesPerMinute } = options
   const { file, content } = ctx
 
   if (!file.id.endsWith('.md'))
@@ -30,9 +33,9 @@ export function transformContent(ctx: FileAfterParseHook) {
   const chineseChars = (text.match(/[\u4E00-\u9FA5]/g) ?? []).length
   const englishWords = (text.match(/[a-z]+/gi) ?? []).length
 
-  const minutes = chineseChars / CHARS_PER_MIN
-    + englishWords / WORDS_PER_MIN
-    + codeLines / CODE_LINES_PER_MIN
+  const minutes = chineseChars / charsPerMinute
+    + englishWords / wordsPerMinute
+    + codeLines / codeLinesPerMinute
 
   content.minRead = Math.max(1, Math.ceil(minutes))
 }

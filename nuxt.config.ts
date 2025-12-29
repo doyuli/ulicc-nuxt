@@ -37,6 +37,11 @@ export default defineNuxtConfig({
       sqliteConnector: 'native',
     },
   },
+  contentReadTime: {
+    charsPerMinute: 300,
+    wordsPerMinute: 180,
+    codeLinesPerMinute: 60,
+  },
   shadcn: {
     prefix: '',
     componentDir: '@/components/ui',
