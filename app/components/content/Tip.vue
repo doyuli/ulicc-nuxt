@@ -9,7 +9,7 @@ defineProps<{
 }>()
 
 const tipVariants = cva(
-  'my-4 px-5 py-3 bg-card text-card-foreground border border-l-6 shadow-(--card-shadow) rounded-md transition-all leading-8',
+  'my-4 px-5 py-3 bg-card text-card-foreground border border-l-6 shadow-(--card-shadow) rounded-md transition-all leading-7.5',
   {
     variants: {
       type: {
