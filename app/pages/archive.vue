@@ -29,7 +29,7 @@ usePageMeta({
 </script>
 
 <template>
-  <div class="mt-12">
+  <PageSection>
     <SidebarProvider>
       <Card class="py-8 animate-fade-up delay-200">
         <CardHeader class="flex">
@@ -49,5 +49,5 @@ usePageMeta({
         </CardContent>
       </Card>
     </SidebarProvider>
-  </div>
+  </PageSection>
 </template>

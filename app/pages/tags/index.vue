@@ -24,44 +24,51 @@ usePageMeta({
 </script>
 
 <template>
-  <div class=" my-12 text-center">
-    <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-      标签索引
-    </h1>
-    <p class="mt-4 text-muted-foreground">
-      目前共计 {{ Object.keys(tags).length }} 个分类标签
-    </p>
-  </div>
-  <div class="flex flex-wrap justify-center gap-4 mb-8">
-    <Button
-      v-for="(postList, tagName) in tags"
-      :key="tagName"
-      size="lg"
-      variant="outline"
-      :class="cn('py-5', selectedTag === tagName && 'bg-primary/70 hover:bg-primary/70 text-white hover:text-white')"
-      @click="handleSelect(tagName)"
-    >
-      <span>{{ tagName }}</span>
-      <Badge variant="secondary">
-        {{ postList.length }}
-      </Badge>
-    </Button>
-  </div>
-  <template v-if="currentPosts?.length">
-    <div class="mb-4 flex items-center justify-between gap-4">
-      <h2 class="text-xl font-bold truncate">
-        标签 “<span class="text-primary">{{ selectedTag }}</span>” 文章
-      </h2>
-      <button class="text-sm text-muted-foreground text-nowrap hover:text-secondary-foreground" @click="selectedTag = null">
-        清除筛选
-      </button>
+  <PageSection>
+    <BackAction>
+      Back to page
+    </BackAction>
+    <div class="flex flex-col items-center gap-4">
+      <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        标签索引
+      </h1>
+      <p class="text-muted-foreground">
+        目前共计 {{ Object.keys(tags).length }} 个分类标签
+      </p>
     </div>
-    <PostList :posts="currentPosts" />
-  </template>
-  <div v-else class="flex  gap-2 justify-center items-center py-20 text-gray-400 bg-accent/30 border border-dashed border-muted rounded-md">
-    <TagIcon class="size-5 shrink-0" />
-    <h3 class="text-lg italic">
-      选择一个标签以查看相关文章
-    </h3>
-  </div>
+    <div class="flex flex-wrap justify-center gap-4">
+      <Button
+        v-for="(postList, tagName) in tags"
+        :key="tagName"
+        size="lg"
+        variant="outline"
+        :class="cn('py-5', selectedTag === tagName && 'bg-primary/70 hover:bg-primary/70 text-white hover:text-white')"
+        @click="handleSelect(tagName)"
+      >
+        <span>{{ tagName }}</span>
+        <Badge variant="secondary">
+          {{ postList.length }}
+        </Badge>
+      </Button>
+    </div>
+    <div class="flex flex-col gap-4">
+      <template v-if="currentPosts?.length">
+        <div class="flex items-center justify-between gap-4">
+          <h2 class="text-xl font-bold truncate">
+            标签 “<span class="text-primary">{{ selectedTag }}</span>” 文章
+          </h2>
+          <button class="text-sm text-muted-foreground text-nowrap hover:text-secondary-foreground" @click="selectedTag = null">
+            清除筛选
+          </button>
+        </div>
+        <PostList :posts="currentPosts" />
+      </template>
+      <div v-else class="flex justify-center items-center gap-2 py-20 text-gray-400 bg-accent/30 border border-dashed border-muted rounded-md">
+        <TagIcon class="size-5 shrink-0" />
+        <h3 class="text-lg italic">
+          选择一个标签以查看相关文章
+        </h3>
+      </div>
+    </div>
+  </PageSection>
 </template>

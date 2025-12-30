@@ -18,18 +18,21 @@ if (!post.value) {
 </script>
 
 <template>
-  <BackAction class="mt-4 mb-12">
-    Back to page
-  </BackAction>
-  <PostMeta class="mt-8 mb-12" :post="post!" />
-  <SidebarProvider>
-    <template #sidebar-sticky-header>
-      <ContentToc :links="post?.body.toc?.links" />
-    </template>
-    <Card class="py-8 animate-fade-up delay-200">
-      <CardContent class="px-6">
-        <ContentRenderer v-if="post" :value="post" />
-      </CardContent>
-    </Card>
-  </SidebarProvider>
+  <PageSection>
+    <BackAction>
+      Back to page
+    </BackAction>
+    <PostMeta :post="post!" />
+    <SidebarProvider>
+      <template #sidebar-sticky-header>
+        <ContentToc :links="post?.body.toc?.links" />
+      </template>
+      <Card class="py-8 animate-fade-up delay-200">
+        <CardContent class="px-6">
+          <Robot v-if="post?.description" class="mb-4 md:mb-6" :text="post.description" />
+          <ContentRenderer v-if="post" :value="post" />
+        </CardContent>
+      </Card>
+    </SidebarProvider>
+  </PageSection>
 </template>

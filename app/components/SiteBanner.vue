@@ -29,7 +29,7 @@ const quote = computed(() => `「 ${data?.value?.hitokoto ?? fallback.value} 」
 </script>
 
 <template>
-  <div :class="cn('min-h-48 flex items-center justify-center', $props.class)">
+  <div :class="cn('min-h-32 flex items-center justify-center', $props.class)">
     <Transition
       mode="out-in"
       enter-active-class="transition-opacity duration-500"

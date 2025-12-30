@@ -16,22 +16,24 @@ if (!snippet.value) {
 </script>
 
 <template>
-  <BackAction class="mt-4 mb-12">
-    Back to snippets
-  </BackAction>
-  <SidebarProvider>
-    <Card class="py-8 animate-fade-up delay-200">
-      <CardHeader v-if="snippet">
-        <CardTitle class="text-3xl font-bold">
-          {{ snippet.title }}
-        </CardTitle>
-        <CardDescription>
-          {{ snippet.description }}
-        </CardDescription>
-      </CardHeader>
-      <CardContent class="px-6">
-        <ContentRenderer v-if="snippet" :value="snippet" />
-      </CardContent>
-    </Card>
-  </SidebarProvider>
+  <PageSection>
+    <BackAction>
+      Back to snippets
+    </BackAction>
+    <SidebarProvider>
+      <Card class="py-8 animate-fade-up delay-200">
+        <CardHeader v-if="snippet" class="px-6">
+          <CardTitle class="text-3xl font-bold">
+            {{ snippet.title }}
+          </CardTitle>
+          <CardDescription>
+            {{ snippet.description }}
+          </CardDescription>
+        </CardHeader>
+        <CardContent class="px-6">
+          <ContentRenderer v-if="snippet" :value="snippet" />
+        </CardContent>
+      </Card>
+    </SidebarProvider>
+  </PageSection>
 </template>

@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <Item variant="outline" class="p-6 mt-12 mb-8 bg-background">
+  <Item variant="outline" class="p-6 bg-background">
     <ItemContent>
       <ItemTitle class="text-3xl font-bold">
         {{ title }}

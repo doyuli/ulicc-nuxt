@@ -20,8 +20,8 @@ if (!about.value) {
 </script>
 
 <template>
-  <div class="px-6 py-16 animate-fade-up delay-200">
-    <section class="mb-8 py-8 flex flex-col md:flex-row items-center gap-8">
+  <PageSection class="animate-fade-up delay-200">
+    <section class="py-4 md:py-8 flex flex-col md:flex-row items-center gap-4 md:gap-8">
       <Avatar class="size-[150px] border-2 border-white">
         <AvatarImage src="/avatar.jpg" alt="@doyuli" />
         <AvatarFallback class="animate-pulse">
@@ -37,12 +37,10 @@ if (!about.value) {
         </p>
       </div>
     </section>
-
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
       <div class="md:col-span-2 prose prose-zinc dark:prose-invert max-w-none">
         <ContentRenderer v-if="about" :value="about" />
       </div>
-
       <aside class="space-y-8">
         <div class="p-6 rounded-2xl bg-accent/30 border border-border/50">
           <h3 class="font-bold mb-4 flex items-center gap-2">
@@ -55,7 +53,6 @@ if (!about.value) {
             </Badge>
           </div>
         </div>
-
         <div class="p-6 rounded-2xl bg-primary/5 border border-primary/10">
           <h3 class="font-bold mb-4">
             📫 保持联系
@@ -73,5 +70,5 @@ if (!about.value) {
         </div>
       </aside>
     </div>
-  </div>
+  </PageSection>
 </template>

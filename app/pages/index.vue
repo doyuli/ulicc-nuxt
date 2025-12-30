@@ -9,8 +9,10 @@ usePageMeta({
 </script>
 
 <template>
-  <SiteBanner />
-  <SidebarProvider>
-    <PostList :posts="posts" />
-  </SidebarProvider>
+  <PageSection>
+    <SiteBanner />
+    <SidebarProvider>
+      <PostList :posts="posts" />
+    </SidebarProvider>
+  </PageSection>
 </template>
