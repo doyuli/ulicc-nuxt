@@ -1,8 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <th class="px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+  <th class="py-3 px-4 font-semibold text-sm text-left border-e border-b first:border-s border-t border-muted">
     <slot />
   </th>
 </template>

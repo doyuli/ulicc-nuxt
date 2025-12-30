@@ -7,7 +7,7 @@ const generate = computed(() => id && ((typeof headings?.anchorLinks === 'boolea
 </script>
 
 <template>
-  <h3 :id="$props.id" class="font-heading mt-12 scroll-m-28 text-lg font-medium tracking-tight [&+p]:!mt-4 *:[code]:text-xl">
+  <h3 :id="$props.id" class="scroll-m-20 mt-8 mb-3 text-xl font-semibold tracking-tight">
     <a v-if="$props.id && generate" :href="`#${$props.id}`">
       <slot />
     </a>

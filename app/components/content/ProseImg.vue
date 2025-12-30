@@ -1,6 +1,5 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <img class="rounded-md">
+  <img class="rounded-md w-full">
 </template>

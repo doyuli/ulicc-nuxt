@@ -1,8 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <ol class="my-6 ml-6 list-decimal">
+  <ol class="list-decimal ps-6 my-5 marker:text-primary-light">
     <slot />
   </ol>
 </template>
