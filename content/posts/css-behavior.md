@@ -10,7 +10,22 @@ tags:
 
 ## 尽可能的使用 Flex
 
-### 告别间隔 Margin
+在我当前的开发实践中，只要布局逻辑是一维线性的，我都会优先选择 Flex。原因不仅是能用，更是因为它的语义清晰、行为可预测、调试成本低。
+
+### 子元素居中
+
+虽然 `grid` 可以通过 `place-items-center` 一行搞定居中，但 Flex 的写法更能表达对齐意图：
+
+```html
+<div class="flex justify-center items-center">
+  <section>第一部分</section>
+  <section>第二部分</section>
+  <section>第三部分</section>
+</div>
+
+```
+
+### 垂直等间距分布，拒绝 Margin 间隙
 
 在现代 Web 开发中，布局的核心应倾向于 **“容器分配空间，子项声明偏移”**。
 
@@ -25,17 +40,36 @@ tags:
 
 ```
 
-### 子元素居中
+### 利用 Margin 灵活分配空间
 
-对于大多数居中场景，`grid` 是最简短的写法。
+在 Flex 容器中，`margin: auto` 会自动吞掉对应方向的剩余空间。这在导航栏、表单等场景中比 `justify-content: space-between` 更具灵活性：
 
 ```html
-<div class="grid place-items-center"></div>
-<div class="flex justify-center items-center"></div>
+<header class="flex items-center">
+  <div>Logo</div>
+  <nav>导航链接</nav>
+  <button class="ml-auto">登录</button>
+</header>
+
+```
+
+### Flex 边界保护
+
+在横向布局中，文字过长经常会挤压图标或者头像，`shrink-0` 能强制元素保持原始物理尺寸：
+
+```html
+<div class="flex items-center gap-3">
+  <img src="avatar.jpg" class="size-10 shrink-0 rounded-full" />
+  <div class="min-w-0">
+    <h3 class="truncate">这里是一个非常长长长长长的用户名</h3>
+  </div>
+</div>
 
 ```
 
 ### 子项的自决权：Self 对齐
+
+Flex 允许子项在交叉轴上自主对齐，无需影响整体布局：
 
 ```html
 <div class="flex flex-col gap-4">
@@ -46,56 +80,43 @@ tags:
 
 ```
 
-### Flex 与 Margin 的剩余空间分配
+## 什么时候我会用 Grid
 
-在 Flex 容器中，`margin: auto` 会自动吞掉对应方向的剩余空间。这在处理左右对齐导航栏时比 `justify-content: space-between` 更具灵活性。
+尽管我偏爱 Flex，但当遇到以下明确的二维布局需求时，我会毫不犹豫切换到 Grid。
 
-```html
-<header class="flex items-center">
-  <div class="logo">Logo</div>
-  <nav>导航链接</nav>
-  <button class="ml-auto">登录</button>
-</header>
+### 响应式页面布局
 
-```
-
-### Flex 边界保护
-
-在横向布局中，当右侧文字过多时，左侧的图标或头像常会被挤压成椭圆。`shrink-0` 能强制元素保持原始物理尺寸。
-
-```html
-<div class="flex items-center gap-3">
-  <img src="avatar.jpg" class="size-10 shrink-0 rounded-full" />
-
-  <div class="min-w-0">
-    <h3 class="truncate">这里是一个非常长长长长长的用户名</h3>
-  </div>
-</div>
-
-```
-
-## Grid 实现响应式布局
-
-### 响应式无缝切换
-
-Grid 的强大之处在于通过一行类名即可改变整个页面的骨架，而无需修改 HTML 结构。
+Grid 最大的优势是用 CSS 控制 HTML 结构的视觉排列，无需改动 DOM：
 
 ```html
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-  <div class="md:col-span-2 text-lg">主要内容区域</div>
-  <div class="md:col-span-1 bg-gray-50">侧边栏辅助信息</div>
+  <div class="md:col-span-2">主要内容区域</div>
+  <div class="md:col-span-1">侧边栏</div>
 </div>
 
 ```
 
-### 侧边栏 + 主内容区
+### 不规则或固定比例布局
 
-使用 `minmax` 或特定宽度配合 `1fr`，可以轻松创建稳定的后台布局。
+当需要混合固定宽度与弹性区域时，Grid 的轨道定义极其直观：
 
 ```html
 <div class="grid grid-cols-[240px_1fr] gap-4">
   <aside>固定 240px 侧边栏</aside>
   <main>自适应主体</main>
+</div>
+
+```
+
+### 精确控制布局需求
+
+仪表盘、数据看板等场景中，某些模块需占据多个单元格，这种显式定位能力是 Flex 无法实现的。
+
+```html
+<div class="grid grid-cols-3 gap-4">
+  <div class="col-span-2">占据两列</div>
+  <div>占据一列</div>
+  <div class="col-span-3">占据三列</div>
 </div>
 
 ```
