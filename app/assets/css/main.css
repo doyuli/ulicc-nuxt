@@ -16,6 +16,18 @@
       transform: translateY(0);
     }
   }
+  --animate-blink: blink 1s infinite;
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 @theme inline {
