@@ -22,12 +22,11 @@ tags:
   <section>第二部分</section>
   <section>第三部分</section>
 </div>
-
 ```
 
 ### 垂直等间距分布，拒绝 Margin 间隙
 
-在现代 Web 开发中，布局的核心应倾向于 **“容器分配空间，子项声明偏移”**。
+在现代 Web 开发中，布局的核心应倾向于**容器分配空间，子项声明偏移**。
 
 传统的 `margin-top` 或 `margin-bottom` 容易导致样式耦合，通过容器的 `gap` 属性，可以实现更纯粹的布局解耦。
 
@@ -37,7 +36,6 @@ tags:
   <section>第二部分</section>
   <section>第三部分</section>
 </div>
-
 ```
 
 ### 利用 Margin 灵活分配空间
@@ -50,7 +48,6 @@ tags:
   <nav>导航链接</nav>
   <button class="ml-auto">登录</button>
 </header>
-
 ```
 
 ### Flex 边界保护
@@ -64,7 +61,6 @@ tags:
     <h3 class="truncate">这里是一个非常长长长长长的用户名</h3>
   </div>
 </div>
-
 ```
 
 ### 子项的自决权：Self 对齐
@@ -77,7 +73,6 @@ Flex 允许子项在交叉轴上自主对齐，无需影响整体布局：
   <button class="self-start">返回</button>
   <span class="self-center text-sm">无更多内容</span>
 </div>
-
 ```
 
 ## 什么时候我会用 Grid
@@ -93,7 +88,6 @@ Grid 最大的优势是用 CSS 控制 HTML 结构的视觉排列，无需改动 
   <div class="md:col-span-2">主要内容区域</div>
   <div class="md:col-span-1">侧边栏</div>
 </div>
-
 ```
 
 ### 不规则或固定比例布局
@@ -105,7 +99,6 @@ Grid 最大的优势是用 CSS 控制 HTML 结构的视觉排列，无需改动 
   <aside>固定 240px 侧边栏</aside>
   <main>自适应主体</main>
 </div>
-
 ```
 
 ### 精确控制布局需求
@@ -118,7 +111,6 @@ Grid 最大的优势是用 CSS 控制 HTML 结构的视觉排列，无需改动 
   <div>占据一列</div>
   <div class="col-span-3">占据三列</div>
 </div>
-
 ```
 
 ::tip
