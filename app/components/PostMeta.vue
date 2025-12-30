@@ -9,8 +9,8 @@ defineProps<{
 </script>
 
 <template>
-  <div>
-    <div v-if="post?.tags?.length" class="flex flex-wrap items-center gap-2 mb-4">
+  <div class="flex flex-col gap-4">
+    <div v-if="post?.tags?.length" class="flex flex-wrap items-center gap-2">
       <Button
         v-for="tag in post.tags"
         :key="tag"
@@ -25,7 +25,7 @@ defineProps<{
         </NuxtLink>
       </Button>
     </div>
-    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4 opacity-90">
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight opacity-90">
       {{ post?.title }}
     </h1>
     <div class="flex items-center gap-4 text-sm text-muted-foreground">
