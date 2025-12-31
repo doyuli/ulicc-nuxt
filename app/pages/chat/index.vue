@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { Chat } from '@ai-sdk/vue'
+import { DefaultChatTransport } from 'ai'
 
 const input = shallowRef('')
-const chat = new Chat({})
+const chat = new Chat({
+  transport: new DefaultChatTransport({
+    api: '/api/chat',
+  }),
+})
 
 function handleSubmit(e: Event) {
   e.preventDefault()
