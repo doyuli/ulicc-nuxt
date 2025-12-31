@@ -1,5 +1,5 @@
 import type { NavMenu } from '~/components/SiteNavigation.vue'
-import { FileTextIcon, HashIcon, PencilRuler, SquareChevronRight, UserRound } from 'lucide-vue-next'
+import { BotIcon, FileTextIcon, HashIcon, PencilRuler, SquareChevronRight, UserRound } from 'lucide-vue-next'
 
 export const navigation: NavMenu[] = [
   {
@@ -29,6 +29,11 @@ export const navigation: NavMenu[] = [
         label: '代码片段',
         href: '/snippets',
         icon: SquareChevronRight,
+      },
+      {
+        label: '站点助手',
+        href: '/chat',
+        icon: BotIcon,
       },
     ],
   },

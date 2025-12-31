@@ -22,6 +22,9 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css',
   ],
+  runtimeConfig: {
+    aiGatewayApiKey: '',
+  },
   content: {
     build: {
       markdown: {
