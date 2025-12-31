@@ -1,7 +1,8 @@
 import type { UIMessage } from 'ai'
 import { createDeepSeek } from '@ai-sdk/deepseek'
 import { convertToModelMessages, stepCountIs, streamText } from 'ai'
-import { convertFahrenheitToCelsius, weather } from '../chat/tools'
+import { systemPrompt } from '../chat/prompts'
+import { createPostsTool, createPostTool, createWeatherTool } from '../chat/tools'
 
 export default defineLazyEventHandler(async () => {
   const apiKey = useRuntimeConfig().aiGatewayApiKey
@@ -15,11 +16,13 @@ export default defineLazyEventHandler(async () => {
 
     const result = streamText({
       model: deepseek('deepseek-chat'),
+      system: systemPrompt,
       messages: await convertToModelMessages(messages),
       stopWhen: stepCountIs(5),
       tools: {
-        weather,
-        convertFahrenheitToCelsius,
+        weather: createWeatherTool(),
+        post: createPostTool(event),
+        posts: createPostsTool(event),
       },
     })
 
