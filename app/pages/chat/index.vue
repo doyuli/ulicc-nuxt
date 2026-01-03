@@ -1,43 +1,38 @@
 <script setup lang="ts">
 import { Chat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
+import { ChatMessage, PromptInput, PromptSubmit } from '~/components/chat'
 
-const input = shallowRef('')
 const chat = new Chat({
   transport: new DefaultChatTransport({
     api: '/api/chat',
   }),
 })
 
-function handleSubmit(e: Event) {
-  e.preventDefault()
-  chat.sendMessage({ text: input.value })
-  input.value = ''
+const inputText = shallowRef('')
+
+function onSubmit() {
+  chat.sendMessage({ text: inputText.value })
+
+  inputText.value = ''
 }
 </script>
 
 <template>
-  <div>
-    <div v-for="(m, index) in chat.messages" :key="m.id ? m.id : index">
-      {{ m.role === "user" ? "User: " : "AI: " }}
-      <div
-        v-for="(part, index) in m.parts"
-        :key="`${m.id}-${part.type}-${index}`"
-      >
-        <div v-if="part.type === 'text'">
-          {{ part.text }}
-        </div>
-        <pre
-          v-if="
-            part.type === 'tool-weather'
-              || part.type === 'tool-convertFahrenheitToCelsius'
-          "
-        >{{ JSON.stringify(part, null, 2) }}</pre>
+  <PageSection class="flex-1 justify-center gap-1!">
+    <div class="flex-1 h-full px-4">
+      <div class="max-w-4xl mx-auto divide-y divide-border/40">
+        <ChatMessage
+          v-for="m in chat.messages"
+          :key="m.id"
+          :message="m"
+        />
       </div>
     </div>
-
-    <form @submit="handleSubmit">
-      <input v-model="input" placeholder="Say something...">
-    </form>
-  </div>
+    <div class="max-w-4xl mx-auto w-full p-4">
+      <PromptInput v-model="inputText" @submit="onSubmit">
+        <PromptSubmit :status="chat.status" @reload="chat.regenerate()" @stop="chat.stop()" />
+      </PromptInput>
+    </div>
+  </PageSection>
 </template>
