@@ -19,8 +19,8 @@ function onSubmit() {
 </script>
 
 <template>
-  <PageSection class="max-w-3xl mx-auto w-full ">
-    <ChatPanel :class="chat.messages?.length && 'h-[calc(100vh-320px)]'" :messages="chat.messages" :status="chat.status" />
+  <PageSection class="max-w-3xl mx-auto w-full">
+    <ChatPanel :class="chat.messages?.length && 'h-[calc(100vh-380px)]'" :messages="chat.messages" :status="chat.status" />
     <PromptInput v-model="inputText" @submit="onSubmit">
       <PromptSubmit :status="chat.status" @reload="chat.regenerate()" @stop="chat.stop()" />
     </PromptInput>

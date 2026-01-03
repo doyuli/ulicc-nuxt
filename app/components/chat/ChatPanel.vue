@@ -12,6 +12,15 @@ const props = defineProps <{
 }>()
 
 const bottomAnchor = useTemplateRef<HTMLDivElement>('bottom-anchor')
+const scrollContainer = useTemplateRef<HTMLDivElement>('scroll-container')
+
+function isAtBottom() {
+  const el = scrollContainer.value
+  if (!el)
+    return true
+
+  return el.scrollHeight - el.scrollTop <= el.clientHeight + 159
+}
 
 function scrollToBottom(behavior: ScrollBehavior = 'smooth') {
   bottomAnchor.value?.scrollIntoView({ behavior })
@@ -24,9 +33,8 @@ watch(() => props.messages?.length, () => {
 watch(
   () => props.messages,
   () => {
-    if (props.status === 'streaming') {
+    if (props.status === 'streaming' && isAtBottom())
       scrollToBottom('auto')
-    }
   },
   { deep: true },
 )
@@ -39,7 +47,7 @@ watch(() => props.status, (status) => {
 </script>
 
 <template>
-  <div :class="cn('w-full overflow-y-auto scroll-smooth', $props.class)">
+  <div ref="scroll-container" :class="cn('w-full overflow-y-auto scroll-smooth', $props.class)">
     <div class="max-w-4xl mx-auto min-h-full flex flex-col px-4">
       <div v-if="!messages?.length" class="flex-1 flex flex-col items-center justify-center gap-2 opacity-50">
         <BotIcon class="size-12" />
