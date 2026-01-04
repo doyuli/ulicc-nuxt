@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import type { HtmlHTMLAttributes } from 'vue'
+import { cn } from '~/lib/utils'
+
 const { placeholder = 'Say something...' } = defineProps<{
   placeholder?: string
   disabled?: boolean
+  class?: HtmlHTMLAttributes['class']
 }>()
 
 const emit = defineEmits<{
@@ -20,7 +24,7 @@ function submit(e: Event) {
 </script>
 
 <template>
-  <form @submit="onSubmit">
+  <form :class="cn('w-full', $props.class)" @submit.prevent="submit">
     <InputGroup>
       <InputGroupTextarea
         v-model="modelValue"
@@ -28,7 +32,7 @@ function submit(e: Event) {
         :placeholder="placeholder"
         @keydown.enter.exact.prevent="submit"
       />
-      <InputGroupAddon align="block-end">
+      <InputGroupAddon align="inline-end">
         <slot />
       </InputGroupAddon>
     </InputGroup>

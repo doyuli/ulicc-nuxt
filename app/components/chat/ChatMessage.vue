@@ -17,7 +17,7 @@ defineProps <{
       </AvatarFallback>
     </Avatar>
 
-    <div :class="cn('flex flex-col gap-2 max-w-[85%] text-pretty', message.role === 'user' ? 'bg-primary text-primary-foreground px-4 py-2 rounded-2xl rounded-tr-none' : 'text-foreground')">
+    <div :class="cn('flex flex-col gap-2 max-w-[78%] text-pretty', message.role === 'user' ? 'bg-primary text-primary-foreground px-4 py-2 rounded-2xl rounded-tr-none' : 'text-foreground')">
       <slot v-bind="message">
         <template v-for="(part, index) in message.parts" :key="index">
           <div v-if="part.type === 'text'">

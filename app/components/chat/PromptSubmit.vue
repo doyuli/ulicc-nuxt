@@ -7,8 +7,8 @@ const { status = 'ready' } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'stop'): void
-  (e: 'reload'): void
+  (e: 'stop', event: Event): void
+  (e: 'reload', event: Event): void
 }>()
 
 const icon = computed(() => {
@@ -20,11 +20,13 @@ const icon = computed(() => {
     return CornerDownLeftIcon
 })
 
-function onClick() {
-  if (status === 'submitted' || status === 'streaming')
-    emit('stop')
-  else if (status === 'error')
-    emit('reload')
+function onClick(e: Event) {
+  if (status === 'submitted' || status === 'streaming') {
+    emit('stop', e)
+  }
+  else if (status === 'error') {
+    emit('reload', e)
+  }
 }
 </script>
 
@@ -33,7 +35,7 @@ function onClick() {
     variant="default"
     class="ml-auto rounded-full"
     size="icon-xs"
-    :type="status === 'ready' ? 'submit' : undefined"
+    :type="status === 'ready' ? 'submit' : 'button'"
     @click="onClick"
   >
     <component :is="icon" class="size-4 shrink-0" />

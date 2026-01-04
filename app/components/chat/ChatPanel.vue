@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ChatStatus, UIMessage } from 'ai'
 import type { HtmlHTMLAttributes } from 'vue'
-import { BotIcon, Loader2Icon } from 'lucide-vue-next'
+import { Loader2Icon } from 'lucide-vue-next'
 import { cn } from '~/lib/utils'
 import { ChatMessage } from '.'
 
@@ -9,6 +9,11 @@ const props = defineProps <{
   messages?: UIMessage[]
   status?: ChatStatus
   class?: HtmlHTMLAttributes['class']
+  suggestions?: string[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'suggest', event: string): void
 }>()
 
 const bottomAnchor = useTemplateRef<HTMLDivElement>('bottom-anchor')
@@ -47,29 +52,41 @@ watch(() => props.status, (status) => {
 </script>
 
 <template>
-  <div ref="scroll-container" :class="cn('w-full overflow-y-auto scroll-smooth', $props.class)">
-    <div class="max-w-4xl mx-auto min-h-full flex flex-col px-4">
-      <div v-if="!messages?.length" class="flex-1 flex flex-col items-center justify-center gap-2 opacity-50">
-        <BotIcon class="size-12" />
-        <p class="text-sm">
-          有什么可以帮你的？
-        </p>
+  <div ref="scroll-container" :class="cn('flex flex-col w-full overflow-y-auto scroll-smooth', $props.class)">
+    <div v-if="!messages?.length" class="flex-1 flex flex-col items-center justify-center gap-1">
+      <h4 class="text-xl font-bold text-slate-800">
+        有什么我可以帮您的吗？
+      </h4>
+      <span class="text-muted-foreground mb-4 max-w-sm text-xs">您可以尝试询问这些问题，或者直接输入您的想法。</span>
+      <div v-if="suggestions?.length" class="flex flex-wrap justify-center gap-2">
+        <Button
+          v-for="suggest in suggestions"
+          :key="suggest"
+          size="sm"
+          class="hover:bg-primary/5 hover:text-primary"
+          variant="secondary"
+          @click="emit('suggest', suggest)"
+        >
+          {{ suggest }}
+        </Button>
       </div>
+    </div>
 
-      <div class="flex flex-col">
+    <div class="flex flex-col">
+      <slot :messages="messages">
         <ChatMessage
           v-for="message in messages"
           :key="message.id"
           :message="message"
         />
-      </div>
-
-      <div v-if="status === 'submitted'" class="flex items-center gap-2 py-6 opacity-50">
-        <Loader2Icon class="size-4 animate-spin" />
-        <span class="text-xs font-medium">正在思考...</span>
-      </div>
-
-      <div ref="bottom-anchor" class="h-1 shrink-0" />
+      </slot>
     </div>
+
+    <div v-if="status === 'submitted'" class="flex items-center gap-2 py-6 opacity-50">
+      <Loader2Icon class="size-4 animate-spin" />
+      <span class="text-xs font-medium">正在思考...</span>
+    </div>
+
+    <div ref="bottom-anchor" class="h-1 shrink-0" />
   </div>
 </template>
