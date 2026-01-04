@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { UIMessage } from 'ai'
-import { BotIcon, UserIcon, WrenchIcon } from 'lucide-vue-next'
+import type { ToolUIPart, UIMessage } from 'ai'
+import { BotIcon, UserIcon } from 'lucide-vue-next'
 import MarkdownRender from 'markstream-vue'
 import { cn } from '~/lib/utils'
+import { ChatTool } from '.'
 
 defineProps <{
   message: UIMessage
@@ -22,13 +23,7 @@ defineProps <{
       <slot v-bind="message">
         <template v-for="(part, i) in message.parts" :key="i">
           <MarkdownRender v-if="part.type === 'text'" class="leading-7" :content="part.text" />
-          <div v-else-if="part.type.startsWith('tool-')" class="flex flex-col gap-2">
-            <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground border-l-2 pl-2">
-              <WrenchIcon class="size-3" />
-              <span>Tool: {{ part.type }}</span>
-            </div>
-            <pre class="max-h-48 overflow-y-scroll rounded-lg bg-secondary p-3 text-xs">{{ JSON.stringify(part, null, 2) }}</pre>
-          </div>
+          <ChatTool v-else-if="part.type.startsWith('tool-')" :part="(part as ToolUIPart)" :state="(part as ToolUIPart).state" />
         </template>
       </slot>
     </div>
