@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { UIMessage } from 'ai'
 import { BotIcon, UserIcon, WrenchIcon } from 'lucide-vue-next'
+import MarkdownRender from 'markstream-vue'
 import { cn } from '~/lib/utils'
 
 defineProps <{
@@ -19,10 +20,8 @@ defineProps <{
 
     <div :class="cn('flex flex-col gap-2 max-w-[78%] text-pretty', message.role === 'user' ? 'bg-primary text-primary-foreground px-4 py-2 rounded-2xl rounded-tr-none' : 'text-foreground')">
       <slot v-bind="message">
-        <template v-for="(part, index) in message.parts" :key="index">
-          <div v-if="part.type === 'text'">
-            {{ part.text }}
-          </div>
+        <template v-for="(part, i) in message.parts" :key="i">
+          <MarkdownRender v-if="part.type === 'text'" class="leading-7" :content="part.text" />
           <div v-else-if="part.type.startsWith('tool-')" class="flex flex-col gap-2">
             <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground border-l-2 pl-2">
               <WrenchIcon class="size-3" />
