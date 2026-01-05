@@ -50,15 +50,13 @@ function startViewTransition(event: MouseEvent) {
 </script>
 
 <template>
-  <ClientOnly>
-    <Button
-      :class="cn('rounded-full', $props.class)"
-      variant="outline"
-      size="icon"
-      aria-label="Toggle theme"
-      @click="startViewTransition"
-    >
-      <DarkIcon class="size-4.5 shrink-0" />
-    </Button>
-  </ClientOnly>
+  <Button
+    :class="cn('rounded-full', $props.class)"
+    variant="outline"
+    size="icon"
+    aria-label="Toggle theme"
+    @click="startViewTransition"
+  >
+    <DarkIcon class="size-4.5 shrink-0" />
+  </Button>
 </template>
