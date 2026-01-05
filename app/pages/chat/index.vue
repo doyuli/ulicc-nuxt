@@ -38,11 +38,23 @@ const suggestions = [
   <PageSection class="max-w-3xl mx-auto w-full">
     <Card class="rounded-2xl">
       <CardHeader class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <div class="flex items-center justify-center size-7 bg-primary text-white rounded-md">
-            <BotIcon class="size-4 shrink-0" />
+        <div class="flex items-center space-x-3">
+          <div class="relative">
+            <Avatar class="size-8 ">
+              <AvatarFallback class="bg-foreground text-primary-foreground text-xs font-bold">
+                AI
+              </AvatarFallback>
+            </Avatar>
+            <div class="absolute -bottom-0.5 -right-0.5 size-2.5 bg-green-500 border-2 border-primary-foreground rounded-full" />
           </div>
-          站点助手
+          <div>
+            <h2 class="text-sm font-bold tracking-tight">
+              SiteAssistant
+            </h2>
+            <p class="text-[10px] text-muted-foreground/70 uppercase tracking-tighter">
+              Always Ready
+            </p>
+          </div>
         </div>
         <Button v-if="chat.status === 'error'" variant="ghost" size="icon-sm" @click="chat.clearError()">
           <TrashIcon class="text-muted-foreground size-4 shrink-0" />
@@ -59,7 +71,7 @@ const suggestions = [
       </CardContent>
       <CardFooter>
         <PromptInput v-model="inputText" @submit="onSubmit">
-          <PromptSubmit :status="chat.status" @reload="chat.regenerate()" @stop="chat.stop()" />
+          <PromptSubmit :status="chat.status" :disabled="!inputText.trim()" @reload="chat.regenerate()" @stop="chat.stop()" />
         </PromptInput>
       </CardFooter>
     </Card>

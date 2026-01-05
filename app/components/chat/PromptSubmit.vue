@@ -4,6 +4,7 @@ import { CornerDownLeftIcon, RotateCcwIcon, SquareIcon } from 'lucide-vue-next'
 
 const { status = 'ready' } = defineProps<{
   status?: ChatStatus
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -35,6 +36,7 @@ function onClick(e: Event) {
     variant="default"
     class="ml-auto rounded-full"
     size="icon-xs"
+    :disabled="disabled"
     :type="status === 'ready' ? 'submit' : 'button'"
     @click="onClick"
   >

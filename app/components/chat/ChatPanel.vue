@@ -54,7 +54,7 @@ watch(() => props.status, (status) => {
 <template>
   <div ref="scroll-container" :class="cn('flex flex-col w-full overflow-y-auto scroll-smooth', $props.class)">
     <div v-if="!messages?.length" class="flex-1 flex flex-col items-center justify-center gap-1">
-      <h4 class="text-xl font-bold text-slate-800">
+      <h4 class="text-xl font-bold text-secondary-foreground">
         有什么我可以帮您的吗？
       </h4>
       <span class="text-muted-foreground mb-4 max-w-sm text-xs">您可以尝试询问这些问题，或者直接输入您的想法。</span>
@@ -64,7 +64,7 @@ watch(() => props.status, (status) => {
           :key="suggest"
           size="sm"
           class="hover:bg-primary/5 hover:text-primary"
-          variant="secondary"
+          variant="outline"
           @click="emit('suggest', suggest)"
         >
           {{ suggest }}
