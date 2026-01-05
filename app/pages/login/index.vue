@@ -8,6 +8,10 @@ definePageMeta({
   middleware: 'guest',
 })
 
+usePageMeta({
+  title: '登陆',
+})
+
 const route = useRoute()
 
 const { fetch: fetchSession } = useUserSession()

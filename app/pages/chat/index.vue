@@ -8,6 +8,10 @@ definePageMeta({
   middleware: 'auth',
 })
 
+usePageMeta({
+  title: '站点助手',
+})
+
 const chat = new Chat({
   transport: new DefaultChatTransport({
     api: '/api/chat',
