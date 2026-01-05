@@ -4,6 +4,10 @@ import { DefaultChatTransport } from 'ai'
 import { BotIcon, TrashIcon } from 'lucide-vue-next'
 import { ChatPanel, PromptInput, PromptSubmit } from '~/components/chat'
 
+definePageMeta({
+  middleware: 'auth',
+})
+
 const chat = new Chat({
   transport: new DefaultChatTransport({
     api: '/api/chat',
