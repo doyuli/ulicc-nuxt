@@ -2,7 +2,7 @@ export default defineEventHandler(async (event) => {
   const { code } = await readBody(event)
   const config = useRuntimeConfig()
 
-  if (code === config.siteAccessCode) {
+  if (code === config.siteAccessCode.toString()) {
     await setUserSession(event, {
       user: {
         role: 'authorized_visitor',
