@@ -41,7 +41,7 @@ const suggestions = [
         <div class="flex items-center space-x-3">
           <div class="relative">
             <Avatar class="size-8 ">
-              <AvatarFallback class="bg-foreground text-primary-foreground text-xs font-bold">
+              <AvatarFallback class="bg-primary-light text-primary-foreground text-xs font-bold">
                 AI
               </AvatarFallback>
             </Avatar>
