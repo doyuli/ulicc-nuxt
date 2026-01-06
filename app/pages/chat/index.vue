@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Chat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
-import { BotIcon, TrashIcon } from 'lucide-vue-next'
+import { Trash2Icon } from 'lucide-vue-next'
 import { ChatPanel, PromptInput, PromptSubmit } from '~/components/chat'
 
 definePageMeta({
@@ -19,11 +19,19 @@ const chat = new Chat({
 })
 
 const inputText = shallowRef('')
+const disabled = computed(() => !inputText.value.trim() && chat.status === 'ready')
 
 function onSubmit() {
+  if (disabled.value)
+    return
+
   chat.sendMessage({ text: inputText.value })
 
   inputText.value = ''
+}
+
+function clearMessages() {
+  chat.messages = []
 }
 
 const suggestions = [
@@ -37,11 +45,11 @@ const suggestions = [
 <template>
   <PageSection class="max-w-3xl mx-auto w-full">
     <Card class="rounded-2xl">
-      <CardHeader class="flex items-center justify-between">
+      <CardHeader class="flex items-center justify-between border-b">
         <div class="flex items-center space-x-3">
           <div class="relative">
             <Avatar class="size-8 ">
-              <AvatarFallback class="bg-primary-light text-primary-foreground text-xs font-bold">
+              <AvatarFallback class="text-primary-foreground uppercase text-xs font-bold bg-primary-light">
                 AI
               </AvatarFallback>
             </Avatar>
@@ -52,12 +60,12 @@ const suggestions = [
               SiteAssistant
             </h2>
             <p class="text-[10px] text-muted-foreground/70 uppercase tracking-tighter">
-              Always Ready
+              ONLINE
             </p>
           </div>
         </div>
-        <Button v-if="chat.status === 'error'" variant="ghost" size="icon-sm" @click="chat.clearError()">
-          <TrashIcon class="text-muted-foreground size-4 shrink-0" />
+        <Button v-if="chat.messages.length" variant="ghost" size="icon-sm" @click="clearMessages">
+          <Trash2Icon class="text-muted-foreground/60 size-4 shrink-0" />
         </Button>
       </CardHeader>
       <CardContent>
@@ -71,7 +79,7 @@ const suggestions = [
       </CardContent>
       <CardFooter>
         <PromptInput v-model="inputText" @submit="onSubmit">
-          <PromptSubmit :status="chat.status" :disabled="!inputText.trim()" @reload="chat.regenerate()" @stop="chat.stop()" />
+          <PromptSubmit :status="chat.status" :disabled="disabled" @reload="chat.regenerate()" @stop="chat.stop()" />
         </PromptInput>
       </CardFooter>
     </Card>
