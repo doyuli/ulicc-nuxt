@@ -9,7 +9,7 @@ const allLinks = computed(() => tools.value?.flatMap(v => v.links) ?? [])
 
 const { data: sections } = await useAsyncData('search-sections', async () => {
   const [posts, snippets] = await Promise.all([
-    queryCollectionSearchSections('posts'),
+    queryCollectionSearchSections('posts').where('hidden', '<>', true),
     queryCollectionSearchSections('snippets'),
   ])
   return [
@@ -20,7 +20,7 @@ const { data: sections } = await useAsyncData('search-sections', async () => {
 
 const { data: navigation } = await useAsyncData('search-navigation', async () => {
   const [posts, snippets] = await Promise.all([
-    queryCollectionNavigation('posts'),
+    queryCollectionNavigation('posts').where('hidden', '<>', true),
     queryCollectionNavigation('snippets'),
   ])
   return { posts, snippets }
