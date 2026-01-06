@@ -71,7 +71,7 @@ const suggestions = [
       <CardContent>
         <ChatPanel
           :suggestions="suggestions"
-          class="h-[calc(100vh-400px)]"
+          class="h-[calc(100vh-430px)]"
           :messages="chat.messages"
           :status="chat.status"
           @suggest="(text) => chat.sendMessage({ text })"
