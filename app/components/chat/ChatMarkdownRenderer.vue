@@ -81,6 +81,15 @@ const components = {
     margin-top: 0.8rem;
     margin-bottom: 0.8rem;
   }
+  h1 a,
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    cursor: default;
+    pointer-events: none;
+  }
   div,
   blockquote {
     margin-top: 0.5rem;
@@ -89,7 +98,7 @@ const components = {
   a span {
     background-color: transparent;
   }
-  a:hover {
+  a:not(h1 *, h2 *, h3 *, h4 *, h5 *, h6 *):hover {
     text-decoration: underline;
     text-underline-offset: 0.25rem;
   }
