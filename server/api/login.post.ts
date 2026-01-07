@@ -1,3 +1,5 @@
+import { USER_ROLE_ENUM } from '~~/server/constants'
+
 export default defineEventHandler(async (event) => {
   const { code } = await readBody(event)
   const config = useRuntimeConfig()
@@ -5,7 +7,7 @@ export default defineEventHandler(async (event) => {
   if (code === config.siteAccessCode.toString()) {
     await setUserSession(event, {
       user: {
-        role: 'authorized_visitor',
+        role: USER_ROLE_ENUM.AUTHORIZED_VISITOR,
       },
       loggedInAt: new Date().toISOString(),
     })
