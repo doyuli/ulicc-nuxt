@@ -18,10 +18,15 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@vueuse/nuxt',
     'shadcn-nuxt',
+    'nuxt-auth-utils',
   ],
   css: [
     '~/assets/css/main.css',
   ],
+  runtimeConfig: {
+    aiGatewayApiKey: '',
+    siteAccessCode: '',
+  },
   content: {
     build: {
       markdown: {
