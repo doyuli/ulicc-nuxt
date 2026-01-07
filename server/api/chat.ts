@@ -1,7 +1,7 @@
 import type { UIMessage } from 'ai'
 import { createDeepSeek } from '@ai-sdk/deepseek'
 import { convertToModelMessages, stepCountIs, streamText } from 'ai'
-import { systemPrompt } from '../chat/prompts'
+import { BLOG_ASSISTANT_PROMPT } from '../chat/prompts/system'
 import { createPostsTool, createPostTool, createWeatherTool } from '../chat/tools'
 
 export default defineLazyEventHandler(async () => {
@@ -16,7 +16,7 @@ export default defineLazyEventHandler(async () => {
 
     const result = streamText({
       model: deepseek('deepseek-chat'),
-      system: systemPrompt,
+      system: BLOG_ASSISTANT_PROMPT,
       messages: await convertToModelMessages(messages),
       stopWhen: stepCountIs(5),
       tools: {

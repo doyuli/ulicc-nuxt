@@ -5,18 +5,21 @@ import { z } from 'zod'
 
 export function createPostTool(event: H3Event) {
   return tool({
-    description: `Retrieves the full content and details of a specific Nuxt blog post.
+    description: `Retrieves the full Markdown content and metadata for a specific blog post.
 
-WHEN TO USE: Use this tool when you know the EXACT path to a blog post. Common scenarios:
-- User asks for a specific post: "Get the blog post about Nuxt 4" → /blog/v4
-- You found a relevant post from list_blog_posts and want the full content
-- You know the post slug from context
+WHEN TO USE: 
+- Crucial for answering detailed questions about a post's content.
+- Use this ONLY when you have a validated 'path' (typically obtained from 'tool-posts').
+- Essential when metadata (title/description) is insufficient to satisfy the user's query.
 
-WHEN NOT TO USE: If you don't know the exact path and need to search/discover, use tool-posts first.
+WHEN NOT TO USE: 
+- Do NOT guess, speculate, or hallucinate a path. 
+- If no exact path is known, use 'tool-posts' first to discover the correct identifier.
 
-EXAMPLES: "/posts/async-catch", "/posts/css-behavior"`,
+INPUT REQUIREMENT:
+- The 'path' must be a relative string starting with '/posts/'.`,
     inputSchema: z.object({
-      path: z.string().describe('The path to the blog post (e.g., /posts/async-catch)'),
+      path: z.string().describe('The absolute path identifier of the post, e.g., "/posts/variable-interceptor"'),
     }),
     execute: async ({ path }) => {
       const post = await queryCollection(event, 'posts')
