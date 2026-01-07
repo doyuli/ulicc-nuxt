@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronRight, FileText, LinkIcon, SquareChevronRight } from 'lucide-vue-next'
+import { ChevronRight, FileText, LinkIcon, SquareChevronRight, TextSearch } from 'lucide-vue-next'
 import { useConfigProviderContext } from '~/components/ConfigProvider.vue'
 
 const emits = defineEmits(['close'])
@@ -40,7 +40,16 @@ function navigateAndClose(path: string, _blank = false) {
   <Command class="**:data-[slot=command-input-wrapper]:bg-input/50 **:data-[slot=command-input-wrapper]:border-input rounded-none bg-transparent **:data-[slot=command-input]:h-9! **:data-[slot=command-input]:py-0 **:data-[slot=command-input-wrapper]:mb-0 **:data-[slot=command-input-wrapper]:h-9! **:data-[slot=command-input-wrapper]:rounded-md **:data-[slot=command-input-wrapper]:border">
     <CommandInput placeholder="Search documentation..." />
     <CommandList>
-      <CommandEmpty>No results found.</CommandEmpty>
+      <CommandEmpty>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <TextSearch />
+            </EmptyMedia>
+            <EmptyTitle>No results found.</EmptyTitle>
+          </EmptyHeader>
+        </Empty>
+      </CommandEmpty>
       <template v-for="(value, key) in navigation" :key="key">
         <CommandGroup v-for="nav in value" :key="nav.stem" :heading="nav.title">
           <CommandItem v-for="child in nav.children" :key="child.stem" :value="child.title" @select="navigateAndClose(child.path)">
