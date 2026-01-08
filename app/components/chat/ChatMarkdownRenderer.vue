@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DefineComponent } from 'vue'
 import ProseA from '../content/ProseA.vue'
-import ProseBlockQuote from '../content/ProseBlockQuote.vue'
+import ProseBlockquote from '../content/ProseBlockquote.vue'
 import ProseCode from '../content/ProseCode.vue'
 import ProseEm from '../content/ProseEm.vue'
 import ProseH1 from '../content/ProseH1.vue'
@@ -37,7 +37,7 @@ const components = {
   a: ProseA,
   em: ProseEm,
   strong: ProseStrong,
-  blockquote: ProseBlockQuote,
+  blockquote: ProseBlockquote,
   hr: ProseHr,
   ul: ProseUl,
   ol: ProseOl,
