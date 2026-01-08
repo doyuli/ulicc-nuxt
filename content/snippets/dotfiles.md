@@ -5,7 +5,7 @@ language: json
 tags: [setting]
 ---
 
-[查看最新配置 →](https://github.com/doyuli/dotfiles){target="\_blank"}
+[查看最新配置 →](https://github.com/doyuli/dotfiles)
 
 ::code-collapse
 ::code-group

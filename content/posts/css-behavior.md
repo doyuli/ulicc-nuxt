@@ -114,5 +114,5 @@ Grid 最大的优势是用 CSS 控制 HTML 结构的视觉排列，无需改动 
 ```
 
 ::tip
-文章部分内容参考并融合自御守老师的[《个人向 CSS 编码风格汇总》](https://archive.bikari.top/book/daily/44dc7f8){target="\_blank"}，在此致谢。
+文章部分内容参考并融合自御守老师的 [《个人向 CSS 编码风格汇总》](https://archive.bikari.top/book/daily/44dc7f8) ，在此致谢。
 ::

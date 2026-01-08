@@ -41,7 +41,7 @@ currentStacks:
 
 如果你有有趣的创意想一起实现，或者单纯想交流一下，欢迎通过以下方式找到我：
 
-- [**GitHub**](https://github.com/doyuli){target="\_blank"}
-- [**Email**](mailto::https://doyulicc@gmail.com)
+- [**GitHub**](https://github.com/doyuli)
+- [**Email**](mailto:doyulicc@gmail.com)
 
 > _"The best way to predict the future is to invent it."_
