@@ -11,7 +11,7 @@ export default defineLazyEventHandler(async () => {
 
   const deepseek = createDeepSeek({ apiKey })
 
-  return defineEventHandler(async (event: any) => {
+  return defineEventHandler(async (event) => {
     const { messages }: { messages: UIMessage[] } = await readBody(event)
 
     const result = streamText({
