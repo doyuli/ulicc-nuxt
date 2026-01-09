@@ -33,15 +33,15 @@ defineProps<{
           <NavigationMenuContent>
             <ul class="grid gap-2">
               <li v-for="child in menu.children" :key="child.label">
-                <NavigationMenuLink as-child>
-                  <NuxtLink class="text-nowrap" :to="child.href">
+                <NavigationMenuLink class="text-nowrap" as-child>
+                  <NuxtLink :to="child.href">
                     <div class="flex items-center gap-2">
-                      <component :is="child.icon" v-if="child.icon" class="size-4 shrink-0 text-muted-foreground" />
+                      <component :is="child.icon" v-if="child.icon" class="size-4 shrink-0 opacity-70" />
                       <span>
                         {{ child.label }}
                       </span>
                     </div>
-                    <div v-if="child.description" class="text-muted-foreground">
+                    <div v-if="child.description" class="opacity-50">
                       {{ child.description }}
                     </div>
                   </NuxtLink>
@@ -51,7 +51,7 @@ defineProps<{
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem v-else>
-          <NavigationMenuLink as-child :class="cn(navigationMenuTriggerStyle(), 'text-nowrap transition-none')">
+          <NavigationMenuLink as-child :class="cn(navigationMenuTriggerStyle(), 'transition-none')">
             <NuxtLink :to="menu.href">
               {{ menu.label }}
             </NuxtLink>

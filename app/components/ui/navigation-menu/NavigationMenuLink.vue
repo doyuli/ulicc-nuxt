@@ -19,7 +19,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <NavigationMenuLink
     data-slot="navigation-menu-link"
     v-bind="forwarded"
-    :class="cn('data-active:focus:bg-primary/5 data-active:hover:bg-primary/5 data-active:bg-primary/5 data-active:text-accent-foreground hover:bg-primary/5 hover:text-accent-foreground focus:bg-primary/5 focus:text-accent-foreground ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 [&_svg:not([class*=\'text-\'])]:text-muted-foreground flex flex-col gap-1 rounded-sm p-2 text-sm transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1 [&_svg:not([class*=\'size-\'])]:size-4', props.class)"
+    :class="cn('data-active:focus:bg-primary/5 data-active:hover:bg-primary/5 data-active:bg-primary/5 data-active:text-primary hover:bg-primary/5 hover:text-primary focus:bg-primary/5 focus:text-primary ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 [&_svg:not([class*=\'text-\'])]:text-muted-foreground flex flex-col gap-1 rounded-sm p-2 text-sm transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1 [&_svg:not([class*=\'size-\'])]:size-4', props.class)"
   >
     <slot />
   </NavigationMenuLink>

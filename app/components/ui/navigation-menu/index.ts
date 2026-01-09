@@ -10,5 +10,12 @@ export { default as NavigationMenuTrigger } from './NavigationMenuTrigger.vue'
 export { default as NavigationMenuViewport } from './NavigationMenuViewport.vue'
 
 export const navigationMenuTriggerStyle = cva(
-  'group text-base inline-flex h-8 w-max items-center justify-center rounded-md px-4 py-1 font-medium hover:bg-primary/5 hover:text-accent-foreground focus:bg-primary/5 focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-primary/5 data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-primary/5 data-[state=open]:bg-primary/5 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1',
+  [
+    'group relative inline-flex h-8 w-max items-center justify-center text-base text-nowrap rounded-md px-4 py-1 font-medium outline-none transition-[color,box-shadow]',
+    'hover:bg-transparent hover:text-primary data-[state=open]:hover:bg-transparent data-[state=open]:text-primary data-[state=open]:focus:bg-transparent data-[state=open]:bg-transparent',
+    'focus:bg-transparent focus:text-primary focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-1',
+    'disabled:pointer-events-none disabled:opacity-50',
+    // overlay navigation-menu-link style
+    'data-active:focus:bg-transparent data-active:hover:bg-transparent data-active:bg-transparent data-active:text-primary',
+  ],
 )
