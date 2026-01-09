@@ -4,6 +4,7 @@ date: 2025-12-27
 description: 结合中文、英文与代码块内容，在 Nuxt Content 的 afterParse hook 中实现一个更合理的文章阅读时间自动计算方案。
 tags:
   - 技术分享
+  - Plugin
 ---
 
 ## 前置场景
