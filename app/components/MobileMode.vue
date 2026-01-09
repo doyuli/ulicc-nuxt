@@ -73,7 +73,7 @@ const siteMeta = computed(() => {
           </CardContent>
         </Card>
         <DefineLinkTemplate v-slot="{ link }">
-          <Button size="lg" variant="outline" as-child>
+          <Button size="lg" variant="outline" class="transition-none" as-child>
             <NuxtLink :to="link.href" @click="open = false">
               <component :is="link.icon" v-if="link.icon" class="size-4 shrink-0 text-muted-foreground" />
               <span>{{ link.label }}</span>
