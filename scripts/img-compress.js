@@ -52,9 +52,10 @@ export async function compressImages(files) {
     if (isEfficient)
       await fs.writeFile(outFile, outBuffer)
 
+    const type = isEfficient ? 'comp' : 'skip'
     return {
-      type: isEfficient ? 'comp' : 'skip',
-      message: `[${isEfficient ? 'COMP' : 'SKIP'}] ${diffText} ${ratioText}  ${inFile}`,
+      type,
+      message: `[${type.toLocaleUpperCase()}] ${diffText} ${ratioText}  ${inFile}`,
     }
   }))
 }
