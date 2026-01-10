@@ -26,6 +26,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     aiGatewayApiKey: '',
     siteAccessCode: '',
+    siteHostname: '',
   },
   content: {
     build: {
@@ -46,6 +47,11 @@ export default defineNuxtConfig({
     charsPerMinute: 300,
     wordsPerMinute: 180,
     codeLinesPerMinute: 60,
+  },
+  routeRules: {
+    '/': { prerender: true },
+    '/robots.txt': { prerender: true },
+    '/sitemap.xml': { prerender: true },
   },
   shadcn: {
     prefix: '',
