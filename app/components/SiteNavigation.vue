@@ -1,38 +1,46 @@
-<script setup lang="ts">
+<script lang="ts">
 import type { Component } from 'vue'
 import { navigationMenuTriggerStyle } from '~/components/ui/navigation-menu'
 import { cn } from '~/lib/utils'
 
-export interface NavMenu {
+export interface BaseItem {
   label: string
-  href?: string
   icon?: Component
-  children?: NavItem[]
 }
 
-export interface NavItem {
-  label: string
+export interface NavLink extends BaseItem {
   href: string
-  icon?: Component
   description?: string
 }
 
+export interface NavGroup extends BaseItem {
+  children: NavLink[]
+}
+
+export type NavItem = NavLink | NavGroup
+
+export function isNavGroup(item: NavItem): item is NavGroup {
+  return 'children' in item
+}
+</script>
+
+<script setup lang="ts">
 defineProps<{
-  menus: NavMenu[]
+  items: NavItem[]
 }>()
 </script>
 
 <template>
   <NavigationMenu :viewport="false">
     <NavigationMenuList>
-      <template v-for="menu in menus" :key="menu.label">
-        <NavigationMenuItem v-if="menu.children?.length">
+      <template v-for="item in items" :key="item.label">
+        <NavigationMenuItem v-if="isNavGroup(item)">
           <NavigationMenuTrigger>
-            {{ menu.label }}
+            {{ item.label }}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul class="grid gap-2">
-              <li v-for="child in menu.children" :key="child.label">
+              <li v-for="child in item.children" :key="child.label">
                 <NavigationMenuLink class="text-nowrap" as-child>
                   <NuxtLink :to="child.href">
                     <div class="flex items-center gap-2">
@@ -52,8 +60,8 @@ defineProps<{
         </NavigationMenuItem>
         <NavigationMenuItem v-else>
           <NavigationMenuLink as-child :class="cn(navigationMenuTriggerStyle(), 'transition-none')">
-            <NuxtLink :to="menu.href">
-              {{ menu.label }}
+            <NuxtLink :to="item.href">
+              {{ item.label }}
             </NuxtLink>
           </NavigationMenuLink>
         </NavigationMenuItem>

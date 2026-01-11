@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { navigation } from '~/constants/navigation'
+import { NAV_CONFIG } from '~/constants/navigation'
 import { cn } from '~/lib/utils'
 
 const { global, site } = useAppConfig()
@@ -43,7 +43,7 @@ function scrollTop() {
             isScrollingDown ? 'opacity-0 -translate-y-full pointer-events-none' : 'opacity-100 translate-y-0',
           )"
         >
-          <SiteNavigation :menus="navigation" />
+          <SiteNavigation :items="NAV_CONFIG" />
         </div>
 
         <div
@@ -61,7 +61,7 @@ function scrollTop() {
         <SearchMode />
         <RandomPost class="hidden md:inline-flex" />
         <ColorMode class="hidden md:inline-flex" />
-        <MobileMode :menus="navigation" class="md:hidden" />
+        <MobileMode :items="NAV_CONFIG" class="md:hidden" />
         <ScrollMode :scroll-y="y" @scroll-top="scrollTop" />
       </div>
     </div>

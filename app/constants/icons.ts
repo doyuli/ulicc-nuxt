@@ -1,4 +1,4 @@
-export const icons = {
+export const EXTENSION_ICONS = {
   'package.json': 'vscode-icons:file-type-node',
   'tsconfig.json': 'vscode-icons:file-type-tsconfig',
   '.npmrc': 'vscode-icons:file-type-npm',

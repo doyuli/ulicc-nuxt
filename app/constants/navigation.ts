@@ -1,7 +1,7 @@
-import type { NavMenu } from '~/components/SiteNavigation.vue'
+import type { NavItem } from '~/components/SiteNavigation.vue'
 import { BotIcon, FileTextIcon, HashIcon, PencilRuler, SquareChevronRight, UserRound } from 'lucide-vue-next'
 
-export const navigation: NavMenu[] = [
+export const NAV_CONFIG: NavItem[] = [
   {
     label: '文库',
     children: [

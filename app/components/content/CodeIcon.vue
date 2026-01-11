@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { icons } from '~/constants/icons'
+import { EXTENSION_ICONS } from '~/constants/icons'
 
 const props = defineProps<{
   icon?: string
@@ -16,7 +16,7 @@ const icon = computed(() => {
   const extension = cleanFilename.includes('.') && cleanFilename.split('.').pop()
   const name = cleanFilename.split('/').pop()
 
-  return (name && icons[name.toLowerCase()]) ?? (extension && (icons[extension] ?? `vscode-icons:file-type-${extension}`))
+  return (name && EXTENSION_ICONS[name.toLowerCase()]) ?? (extension && (EXTENSION_ICONS[extension] ?? `vscode-icons:file-type-${extension}`))
 })
 </script>
 

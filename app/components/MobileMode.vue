@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import type { HtmlHTMLAttributes } from 'vue'
-import type { NavMenu } from './SiteNavigation.vue'
+import type { NavItem, NavLink } from './SiteNavigation.vue'
 import { MenuIcon } from 'lucide-vue-next'
 import { GithubIcon } from '~/components/icons'
 import { cn } from '~/lib/utils'
 import { msToDaysCeil } from '~/utils/date'
 import { useConfigProviderContext } from './ConfigProvider.vue'
+import { isNavGroup } from './SiteNavigation.vue'
 
 defineProps<{
-  menus: NavMenu[]
+  items: NavItem[]
   class?: HtmlHTMLAttributes['class']
 }>()
 
 const open = shallowRef(false)
 
-const [DefineLinkTemplate, ReuseLinkTemplate] = createReusableTemplate<{ link: NavMenu }>()
+const [DefineLinkTemplate, ReuseLinkTemplate] = createReusableTemplate<{ link: NavLink }>()
 
 const { site, author } = useAppConfig()
 
@@ -80,14 +81,14 @@ const siteMeta = computed(() => {
             </NuxtLink>
           </Button>
         </DefineLinkTemplate>
-        <div v-for="menu in menus" :key="menu.label">
+        <div v-for="item in items" :key="item.label">
           <h4 class="mb-2 text-sm text-accent-foreground">
-            {{ menu.label }}
+            {{ item.label }}
           </h4>
-          <div v-if="menu.children?.length" class="grid grid-cols-2 gap-4">
-            <ReuseLinkTemplate v-for="child in menu.children" :key="child.label" :link="child" />
+          <div v-if="isNavGroup(item)" class="grid grid-cols-2 gap-4">
+            <ReuseLinkTemplate v-for="child in item.children" :key="child.label" :link="child" />
           </div>
-          <ReuseLinkTemplate v-else class="w-full" :link="menu" />
+          <ReuseLinkTemplate v-else class="w-full" :link="item" />
         </div>
       </div>
       <SheetFooter class="flex-row justify-center gap-4">
