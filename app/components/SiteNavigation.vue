@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 import { navigationMenuTriggerStyle } from '~/components/ui/navigation-menu'
 import { cn } from '~/lib/utils'
 
-export interface BaseItem {
+interface BaseItem {
   label: string
   icon?: Component
 }
@@ -19,9 +19,7 @@ export interface NavGroup extends BaseItem {
 
 export type NavItem = NavLink | NavGroup
 
-export function isNavGroup(item: NavItem): item is NavGroup {
-  return 'children' in item
-}
+export const isNavGroup = (item: NavItem): item is NavGroup => 'children' in item
 </script>
 
 <script setup lang="ts">
