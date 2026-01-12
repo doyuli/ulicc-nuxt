@@ -4,6 +4,9 @@
   "private": true,
   "description": "My Blog Theme with Nuxt Content.",
   "author": "doyuli",
+  "engines": {
+    "node": ">=22.6.0"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -11,7 +14,7 @@
     "preview": "nuxt preview",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "compress:images": "node scripts/img-compress-staged.js",
+    "compress:images": "node --experimental-strip-types scripts/img-compress-staged.ts",
     "postinstall": "simple-git-hooks"
   },
   "dependencies": {
@@ -39,6 +42,7 @@
     "@clack/prompts": "^0.11.0",
     "@nuxtjs/color-mode": "^4.0.0",
     "@tailwindcss/vite": "^4.1.17",
+    "@types/node": "^25.0.6",
     "@vueuse/core": "^14.1.0",
     "@vueuse/nuxt": "^14.1.0",
     "eslint": "^9.39.1",
@@ -54,7 +58,7 @@
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged",
-    "commit-msg": "node scripts/verify-commit.js"
+    "commit-msg": "node --experimental-strip-types scripts/verify-commit.ts"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json}": [

@@ -1,9 +1,8 @@
-// @ts-check
 import process from 'node:process'
 import { cancel, confirm, isCancel, spinner } from '@clack/prompts'
 import pico from 'picocolors'
 import Git from 'simple-git'
-import { compressImages } from './img-compress.js'
+import { batchCompress } from './img-compress.ts'
 
 async function main() {
   const git = Git()
@@ -30,7 +29,7 @@ async function main() {
     const s = spinner()
     s.start('Optimizing images...')
 
-    const result = await compressImages(images)
+    const result = await batchCompress(images)
 
     s.stop('Optimization finished')
 
