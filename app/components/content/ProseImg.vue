@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import type { HtmlHTMLAttributes } from 'vue'
 import ImageComponent from '#build/mdc-image-component.mjs'
 import { joinURL, withLeadingSlash, withTrailingSlash } from 'ufo'
+import { cn } from '~/lib/utils'
 
 const props = defineProps<{
   src: string
   alt: string
   width?: string | number
   height?: string | number
+  class?: HtmlHTMLAttributes['class']
 }>()
 
 const refinedSrc = computed(() => {
@@ -27,6 +30,6 @@ const refinedSrc = computed(() => {
     :alt="alt"
     :width="width"
     :height="height"
-    class="rounded-md w-full"
+    :class="cn('rounded-md w-full', $props.class)"
   />
 </template>
