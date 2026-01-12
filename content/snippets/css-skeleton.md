@@ -2,10 +2,10 @@
 title: 纯 CSS 骨架屏
 description: 使用纯 CSS 实现骨架屏效果，无需额外的 JavaScript 代码
 language: css
-tags: [css, skeleton]
+tags:
+  - css
+  - skeleton
 ---
-
-::code-collapse
 
 ```css
 @keyframes skeleton-shimmer {
@@ -47,5 +47,3 @@ tags: [css, skeleton]
   visibility: hidden !important;
 }
 ```
-
-::

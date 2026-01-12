@@ -1,8 +1,10 @@
 ---
 title: UniApp 请求封装
 description: 使用 uni.request 封装请求，支持全局配置和拦截器
-language: javascript
-tags: [uni-app, request]
+language: typescript
+tags:
+  - uni-app
+  - request
 ---
 
 ::code-group
