@@ -1,6 +1,6 @@
 ---
 title: 微信网页快捷登录原理解析
-date: 2026-01-12
+date: 2026-01-14
 description: 分析微信快捷登陆原理，解析第三方网页如何发现本地运行的微信并完成跨软件授权登陆。
 tags:
   - 技术分享
@@ -53,6 +53,35 @@ tags:
 
 3. **重定向**：网页重定向至 `redirect_url` 地址，随后后端通过常规的 OAuth 2.0 授权流程交换 `access_token` 并写入 Cookie。
 
+## 深度思考
+
+既然微信客户端暴露了监听接口，是否意味着任何网页都能探测我的微信状态，甚至窃取头像昵称？
+
+通过实操可以发现，普通网页直接调用 `/api/check-login` 会直接触发跨域错误，查看微信接口的响应头可以发现关键：
+
+```HTTP
+Access-Control-Allow-Origin: https://open.weixin.qq.com
+Access-Control-Allow-Methods: POST, GET, OPTIONS
+```
+
+这是典型的跨域资源白名单保护，微信通过浏览器底层的**同源策略**，建立了一个只响应来自微信官方域名的本地服务。
+
+那么新的问题来了，授权的第三方网页是如何跨源通信的？
+
+![wechat-login-3](/images/wechat-login-3.png){class="max-w-md"}
+
+通过分析发现，这实际上是一个官方 Iframe。当第三方网页加载登录插件时，脚本其实是运行在 `open.weixin.qq.com` 的上下文中。
+当浏览器发起请求时，会根据**当前执行脚本的域名**自动带上 `Origin: https://open.weixin.qq.com`。
+
+当 Iframe 内部完成了与本地微信的握手并拿到了携带 `code` 的 `redirect_url` ，怎么让外层的第三方网页进行登陆跳转呢？
+这里有两种方案：
+
+- **通信模式**：使用 `postMessage` 跨文档通信，通过 `window.parent.postMessage` 向外层发送信号，父页面监听该事件并根据传回的数据执行跳转。这种方式最安全，也最符合现代前端架构。
+
+- **强制重定向**：在 Iframe 内部使用 `window.top` 强制重定向，优点是不需要父页面介入逻辑，Iframe 会直接通过 `window.top.location.href = redirect_url` 强行修改最外层浏览器窗口的地址。
+
+通过对官方代码的溯源，发现其目前采用的是第二种方案，这种设计极大地降低了第三方开发者的集成难度。
+
 ## 总体流程
 
-![wechat-login-3](/images/wechat-login-3.png)
+![wechat-login-4](/images/wechat-login-4.png)
