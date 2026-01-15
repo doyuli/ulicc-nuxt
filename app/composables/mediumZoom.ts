@@ -1,7 +1,8 @@
+import type { Zoom } from 'medium-zoom'
 import type { MaybeRef } from 'vue'
 import mediumZoom from 'medium-zoom'
 
-let zoom: ReturnType<typeof mediumZoom> | null = null
+let zoom: Zoom | null = null
 
 export function useMediumZoom(targetRef: MaybeRef<HTMLElement>) {
   if (import.meta.server)
@@ -19,7 +20,7 @@ export function useMediumZoom(targetRef: MaybeRef<HTMLElement>) {
     if (img) {
       zoom.attach(img)
 
-      onCleanup(() => zoom?.detach(img))
+      onCleanup(() => zoom.detach(img))
     }
   })
 }
