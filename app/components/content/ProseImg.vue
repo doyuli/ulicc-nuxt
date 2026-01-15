@@ -21,11 +21,15 @@ const refinedSrc = computed(() => {
   }
   return props.src
 })
+
+const target = useTemplateRef('image-component')
+useMediumZoom(target)
 </script>
 
 <template>
   <component
     :is="ImageComponent"
+    ref="image-component"
     :src="refinedSrc"
     :alt="alt"
     :width="width"
