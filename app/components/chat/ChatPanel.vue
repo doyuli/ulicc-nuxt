@@ -52,7 +52,7 @@ watch(() => props.status, (status) => {
 </script>
 
 <template>
-  <div ref="scroll-container" :class="cn('flex flex-col w-full overflow-y-auto scroll-smooth', $props.class)">
+  <div ref="scroll-container" :class="cn('flex flex-col size-full overflow-y-auto scroll-smooth', $props.class)">
     <div v-if="!messages?.length" class="flex-1 flex flex-col items-center justify-center gap-1">
       <h4 class="text-2xl font-bold text-secondary-foreground">
         有什么我可以帮忙的吗？

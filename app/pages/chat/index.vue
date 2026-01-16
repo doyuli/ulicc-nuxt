@@ -44,7 +44,7 @@ const suggestions = [
 
 <template>
   <PageSection class="max-w-3xl mx-auto w-full">
-    <Card class="rounded-2xl">
+    <Card class="rounded-2xl flex flex-col h-[calc(100vh-15rem)]">
       <CardHeader class="flex items-center justify-between border-b">
         <div class="flex items-center space-x-3">
           <div class="relative">
@@ -68,10 +68,9 @@ const suggestions = [
           <Trash2Icon class="text-muted-foreground/60 size-4 shrink-0" />
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent class="flex-1 min-h-0">
         <ChatPanel
           :suggestions="suggestions"
-          class="h-[calc(100vh-430px)]"
           :messages="chat.messages"
           :status="chat.status"
           @suggest="(text) => chat.sendMessage({ text })"
