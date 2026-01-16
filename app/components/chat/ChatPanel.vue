@@ -19,12 +19,14 @@ const emit = defineEmits<{
 const bottomAnchor = useTemplateRef<HTMLDivElement>('bottom-anchor')
 const scrollContainer = useTemplateRef<HTMLDivElement>('scroll-container')
 
+let isUserScrollingUp = false
+
 function isAtBottom() {
   const el = scrollContainer.value
   if (!el)
     return true
 
-  return el.scrollHeight - el.scrollTop <= el.clientHeight + 159
+  return el.scrollHeight - el.scrollTop <= el.clientHeight + 100
 }
 
 function scrollToBottom(behavior: ScrollBehavior = 'smooth') {
@@ -32,22 +34,30 @@ function scrollToBottom(behavior: ScrollBehavior = 'smooth') {
 }
 
 watch(() => props.messages?.length, () => {
+  isUserScrollingUp = false
   nextTick(() => scrollToBottom('smooth'))
 })
 
-watch(
+watchThrottled(
   () => props.messages,
   () => {
-    if (props.status === 'streaming' && isAtBottom())
+    if (props.status === 'streaming' && !isUserScrollingUp)
       scrollToBottom('auto')
   },
-  { deep: true },
+  { deep: true, throttle: 50 },
 )
 
 watch(() => props.status, (status) => {
   if (status === 'submitted') {
+    isUserScrollingUp = false
     nextTick(() => scrollToBottom('smooth'))
   }
+})
+
+onMounted(() => {
+  useEventListener(scrollContainer, 'scroll', () => {
+    isUserScrollingUp = !isAtBottom()
+  })
 })
 </script>
 
