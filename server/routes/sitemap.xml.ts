@@ -17,6 +17,7 @@ export default defineCachedEventHandler(
       { url: '/tags', changefreq: 'weekly', priority: 0.8 },
       { url: '/tools', changefreq: 'weekly', priority: 0.6 },
       { url: '/snippets', changefreq: 'weekly', priority: 0.6 },
+      { url: '/projects', changefreq: 'monthly', priority: 0.3 },
       { url: '/about', changefreq: 'monthly', priority: 0.3 },
     ]
 

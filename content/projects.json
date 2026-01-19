@@ -1,0 +1,54 @@
+{
+  "title": "我的项目",
+  "description": "个人业余项目展示",
+  "priority": 0,
+  "links": [
+    {
+      "name": "Blog Theme",
+      "description": "一个基于 Nuxt 4 的博客主题",
+      "type": "webapp",
+      "stack": [
+        "Nuxt 4",
+        "Tailwind CSS",
+        "Shadcn UI"
+      ],
+      "href": "https://b.ulicc.cn",
+      "github": "https://github.com/doyuli/ulicc-nuxt",
+      "status": "online"
+    },
+    {
+      "name": "Markdown Resume Generator",
+      "description": "在线简历生成器，支持多模板/主题定制/PDF 导出",
+      "type": "webapp",
+      "stack": [
+        "Vue 3",
+        "MarkdownIt",
+        "Express"
+      ],
+      "href": "https://resume-doyuli.vercel.app",
+      "github": "https://github.com/doyuli/resume",
+      "status": "online"
+    },
+    {
+      "name": "vue-codemirror-plus",
+      "description": "一个基于 Vue 3 的代码编辑器组件",
+      "type": "library",
+      "stack": [
+        "Vue 3",
+        "Codemirror"
+      ],
+      "github": "https://github.com/doyuli/vue-codemirror-plus"
+    },
+    {
+      "name": "Template-Kits",
+      "description": "快速生成你的模板代码",
+      "type": "library",
+      "stack": [
+        "Prompts",
+        "Ejs",
+        "Tsdown"
+      ],
+      "github": "https://github.com/doyuli/template-kits"
+    }
+  ]
+}

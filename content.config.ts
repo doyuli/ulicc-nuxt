@@ -38,6 +38,24 @@ function createSnippetsSchema() {
   })
 }
 
+function createProjectsSchema() {
+  return createBaseSchema().extend({
+    links: z.array(z.object({
+      name: z.string(),
+      description: z.string(),
+      type: z.enum(['webapp', 'library']),
+      stack: z.array(z.string()).default([]),
+      href: z.string().url(),
+      github: z.string().url().optional(),
+      status: z.enum(['online', 'offline', 'developing']).optional(),
+      metrics: z.array(z.object({
+        name: z.string(),
+        value: z.string(),
+      })).optional(),
+    })),
+  })
+}
+
 export default defineContentConfig({
   collections: {
     posts: defineCollection({
@@ -49,6 +67,11 @@ export default defineContentConfig({
       type: 'data',
       source: 'tools/*.json',
       schema: createToolsSchema(),
+    }),
+    projects: defineCollection({
+      type: 'data',
+      source: 'projects.json',
+      schema: createProjectsSchema(),
     }),
     snippets: defineCollection({
       type: 'page',

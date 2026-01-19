@@ -1,5 +1,14 @@
 import type { NavItem } from '~/components/SiteNavigation.vue'
-import { BotIcon, FileTextIcon, HashIcon, PencilRuler, SquareChevronRight, UserRound } from 'lucide-vue-next'
+import {
+  BotIcon,
+  FileTextIcon,
+  HashIcon,
+  PencilRuler,
+  Projector,
+  SmilePlus,
+  SquareChevronRight,
+  StoreIcon,
+} from 'lucide-vue-next'
 
 export const NAV_CONFIG: NavItem[] = [
   {
@@ -39,7 +48,19 @@ export const NAV_CONFIG: NavItem[] = [
   },
   {
     label: '关于',
-    href: '/about',
-    icon: UserRound,
+    icon: StoreIcon,
+    children: [
+      {
+        label: '关于博主',
+        href: '/about',
+        icon: SmilePlus,
+      },
+      {
+        label: '我的项目',
+        href: '/projects',
+        icon: Projector,
+      },
+    ],
   },
+
 ]
