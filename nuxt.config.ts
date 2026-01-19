@@ -27,6 +27,8 @@ export default defineNuxtConfig({
     aiGatewayApiKey: '',
     siteAccessCode: '',
     siteHostname: '',
+    databaseUrl: '',
+    siliconflowApiKey: '',
   },
   content: {
     build: {
