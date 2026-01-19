@@ -15,6 +15,7 @@ export interface NavLink extends BaseItem {
 
 export interface NavGroup extends BaseItem {
   children: NavLink[]
+  href?: never
 }
 
 export type NavItem = NavLink | NavGroup
