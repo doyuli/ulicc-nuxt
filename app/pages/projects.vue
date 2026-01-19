@@ -24,11 +24,12 @@ const StatusColorMap = {
         v-for="(link, i) in projects?.links"
         :key="i"
         as-child
+        variant="outline"
         class="group relative gap-5 bg-background shadow-(--card-shadow) hover:bg-background! hover:-translate-y-1 overflow-hidden transition-all! duration-500 animate-fade-up"
         :style="{ animationDelay: `${0.2 + i * 0.1}s` }"
       >
         <NuxtLink :to="link.href" target="_blank">
-          <div class="absolute -right-2 -top-4 text-9xl font-black text-gray-50/50 italic pointer-events-none select-none group-hover:text-gray-100 transition-colors duration-500">
+          <div class="absolute -right-2 -top-4 text-9xl font-black text-muted-foreground/5 italic pointer-events-none select-none group-hover:text-muted-foreground/10 transition-colors duration-500">
             {{ (i + 1).toString().padStart(2, '0') }}
           </div>
           <ItemHeader class="z-1">
@@ -39,7 +40,7 @@ const StatusColorMap = {
               </span>
               <span class="text-[10px] font-bold uppercase tracking-widest text-secondary-foreground/50">{{ link.status }}</span>
             </div>
-            <span class="text-[10px] text-secondary-foreground/50 uppercase font-medium tracking-wide bg-gray-50/50 p-1 rounded">
+            <span class="text-[10px] text-secondary-foreground/50 uppercase font-medium tracking-wide bg-muted/50 p-1 rounded">
               {{ link.type }}
             </span>
           </ItemHeader>
@@ -50,8 +51,8 @@ const StatusColorMap = {
             <ItemDescription class="text-xs leading-relaxed text-wrap">
               {{ link.description }}
             </ItemDescription>
-            <div v-if="link.metrics?.length" class="mt-4 grid grid-cols-3 gap-0 p-1 rounded-md border border-zinc-100 bg-zinc-50/50">
-              <div v-for="(metric, j) in link.metrics" :key="`${i} -${j}`" class="flex flex-col items-center py-2 px-1 hover:bg-white rounded-lg transition-colors">
+            <div v-if="link.metrics?.length" class="mt-4 grid grid-cols-3 gap-0 p-1 rounded-md border border-border/70 bg-muted/50">
+              <div v-for="(metric, j) in link.metrics" :key="`${i} -${j}`" class="flex flex-col items-center py-2 px-1 rounded-md">
                 <span class="text-[9px] text-secondary-foreground/40 font-bold uppercase tracking-tight">{{ metric.name }}</span>
                 <span class="text-[12px] font-mono font-bold text-secondary-foreground/80">{{ metric.value }}</span>
               </div>
@@ -62,7 +63,7 @@ const StatusColorMap = {
               <span
                 v-for="stack in link.stacks"
                 :key="stack"
-                class="text-[10px] font-bold tracking-tight text-secondary-foreground/60 border border-gray-100 px-1.5 py-0.5 rounded"
+                class="text-[10px] font-bold tracking-tight text-muted-foreground border px-1.5 py-0.5 rounded"
               >
                 {{ stack }}
               </span>
