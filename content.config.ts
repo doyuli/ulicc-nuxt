@@ -44,10 +44,10 @@ function createProjectsSchema() {
       name: z.string(),
       description: z.string(),
       type: z.enum(['webapp', 'library']),
-      stack: z.array(z.string()).default([]),
       href: z.string().url(),
       github: z.string().url().optional(),
       status: z.enum(['online', 'offline', 'developing']).optional(),
+      stacks: z.array(z.string()).default([]),
       metrics: z.array(z.object({
         name: z.string(),
         value: z.string(),

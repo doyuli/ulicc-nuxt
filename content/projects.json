@@ -1,54 +1,153 @@
 {
   "title": "我的项目",
-  "description": "个人业余项目展示",
+  "description": "我的一些练习与作品",
   "priority": 0,
   "links": [
     {
       "name": "Blog Theme",
-      "description": "一个基于 Nuxt 4 的博客主题",
+      "description": "基于 Nuxt 4 的高性能博客主题，集成 AI 功能",
       "type": "webapp",
-      "stack": [
+      "href": "https://b.ulicc.cn",
+      "github": "https://github.com/doyuli/ulicc-nuxt",
+      "status": "online",
+      "stacks": [
         "Nuxt 4",
         "Tailwind CSS",
         "Shadcn UI"
       ],
-      "href": "https://b.ulicc.cn",
-      "github": "https://github.com/doyuli/ulicc-nuxt",
-      "status": "online"
+      "metrics": [
+        {
+          "name": "Deploy",
+          "value": "Vercel"
+        },
+        {
+          "name": "Storage",
+          "value": "SQLite"
+        },
+        {
+          "name": "AI Provider",
+          "value": "Deepseek"
+        }
+      ]
     },
     {
       "name": "Markdown Resume Generator",
-      "description": "在线简历生成器，支持多模板/主题定制/PDF 导出",
+      "description": "在线简历生成器，支持多模板切换、自定义主题及 PDF 高保真导出",
       "type": "webapp",
-      "stack": [
+      "href": "https://resume-doyuli.vercel.app",
+      "github": "https://github.com/doyuli/resume",
+      "status": "online",
+      "stacks": [
         "Vue 3",
         "MarkdownIt",
         "Express"
       ],
-      "href": "https://resume-doyuli.vercel.app",
-      "github": "https://github.com/doyuli/resume",
-      "status": "online"
+      "metrics": [
+        {
+          "name": "Deploy",
+          "value": "Vercel"
+        },
+        {
+          "name": "Storage",
+          "value": "Pinia"
+        },
+        {
+          "name": "Engine",
+          "value": "MarkdownIt"
+        }
+      ]
     },
     {
       "name": "vue-codemirror-plus",
-      "description": "一个基于 Vue 3 的代码编辑器组件",
+      "description": "面向 Vue 3 的 Codemirror 适配组件，支持组合式 API 调用",
       "type": "library",
-      "stack": [
+      "href": "https://github.com/doyuli/vue-codemirror-plus",
+      "github": "https://github.com/doyuli/vue-codemirror-plus",
+      "status": "online",
+      "stacks": [
         "Vue 3",
         "Codemirror"
       ],
-      "github": "https://github.com/doyuli/vue-codemirror-plus"
+      "metrics": [
+        {
+          "name": "Mode",
+          "value": "Composable"
+        },
+        {
+          "name": "Engine",
+          "value": "Codemirror"
+        }
+      ]
     },
     {
       "name": "Template-Kits",
-      "description": "快速生成你的模板代码",
+      "description": "高性能 CLI 脚手架工具，支持交互式命令与 EJS 模板快速生成代码",
       "type": "library",
-      "stack": [
+      "href": "https://github.com/doyuli/template-kits",
+      "github": "https://github.com/doyuli/template-kits",
+      "status": "online",
+      "stacks": [
         "Prompts",
         "Ejs",
         "Tsdown"
       ],
-      "github": "https://github.com/doyuli/template-kits"
+      "metrics": [
+        {
+          "name": "Repo",
+          "value": "Monorepo"
+        },
+        {
+          "name": "Runing",
+          "value": "Terminal"
+        }
+      ]
+    },
+    {
+      "name": "DailyFun",
+      "description": "深入 VueUse 源码学习，面向现代前端开发的轻量级工具函数集合",
+      "type": "library",
+      "href": "https://github.com/doyuli/daily-fun",
+      "github": "https://github.com/doyuli/daily-fun",
+      "status": "online",
+      "stacks": [
+        "Monorepo",
+        "Vue",
+        "Vitepress",
+        "Tsdown"
+      ],
+      "metrics": [
+        {
+          "name": "Repo",
+          "value": "Monorepo"
+        },
+        {
+          "name": "Bundler",
+          "value": "Tsdown"
+        }
+      ]
+    },
+    {
+      "name": "VueLite",
+      "description": "Vue 3 核心原理实现，包含响应式系统与虚拟 DOM 的迷你版本",
+      "type": "library",
+      "href": "https://github.com/doyuli/vue-lite",
+      "github": "https://github.com/doyuli/vue-lite",
+      "status": "online",
+      "stacks": [
+        "Monorepo",
+        "Vue",
+        "Esbuild"
+      ],
+      "metrics": [
+        {
+          "name": "Repo",
+          "value": "Monorepo"
+        },
+        {
+          "name": "Bundler",
+          "value": "Esbuild"
+        }
+      ]
     }
   ]
 }
