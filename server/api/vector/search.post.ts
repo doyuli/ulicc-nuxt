@@ -2,12 +2,26 @@ import { queryCollection } from '@nuxt/content/server'
 import { cosineDistance, desc, gt, sql } from 'drizzle-orm'
 import { contentVectors } from '~~/server/db/schema'
 
+const checkRateLimit = useRateLimit({ intervalMs: 60 * 60 * 1000, limit: 30 })
+
 export default defineLazyEventHandler(async () => {
   const siliconflow = useSiliconflow()
   const model = siliconflow.embedding('Qwen/Qwen3-Embedding-0.6B')
   const db = useDb()
 
   return defineEventHandler(async (event) => {
+    const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'unknown'
+    const { allowed, remaining } = checkRateLimit(ip)
+
+    setResponseHeader(event, 'X-RateLimit-Remaining', remaining.toString())
+
+    if (!allowed) {
+      throw createError({
+        statusCode: 429,
+        message: 'Too many requests, please try again later',
+      })
+    }
+
     const { query } = await readBody(event)
     if (!query)
       throw createError({ statusCode: 400, message: 'Query is required' })
