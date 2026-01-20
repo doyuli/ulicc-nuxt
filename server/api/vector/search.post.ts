@@ -1,18 +1,10 @@
-import { createOpenAI } from '@ai-sdk/openai'
 import { queryCollection } from '@nuxt/content/server'
-import { embed } from 'ai'
-import { desc, gt, sql } from 'drizzle-orm'
-import { contentVectors } from '../db/schema'
+import { cosineDistance, desc, gt, sql } from 'drizzle-orm'
+import { contentVectors } from '~~/server/db/schema'
 
 export default defineLazyEventHandler(async () => {
-  const apiKey = useRuntimeConfig().siliconflowApiKey
-  if (!apiKey)
-    throw new Error('Missing AI Gateway API key')
-
-  const siliconflow = createOpenAI({
-    baseURL: 'https://api.siliconflow.cn/v1',
-    apiKey,
-  })
+  const siliconflow = useSiliconflow()
+  const model = siliconflow.embedding('Qwen/Qwen3-Embedding-0.6B')
   const db = useDb()
 
   return defineEventHandler(async (event) => {
@@ -20,22 +12,19 @@ export default defineLazyEventHandler(async () => {
     if (!query)
       throw createError({ statusCode: 400, message: 'Query is required' })
 
-    const { embedding } = await embed({
-      model: siliconflow.embedding('Qwen/Qwen3-Embedding-0.6B'),
-      value: `Queries: ${query}`,
-    })
+    const embedding = await generateEmbedding(query, model)
 
-    const similarity = sql<number>`1 - (${contentVectors.embedding} <=> ${JSON.stringify(embedding)})`
+    const similarity = sql<number>`1 - (${cosineDistance(contentVectors.embedding, embedding)})`
 
     const vectorResults = await db
       .select({
         contentId: contentVectors.contentId,
-        score: similarity,
+        similarity,
       })
       .from(contentVectors)
       .where(gt(similarity, 0.35))
-      .orderBy(desc(similarity))
-      .limit(10)
+      .orderBy(t => desc(t.similarity))
+      .limit(4)
 
     if (vectorResults.length === 0)
       return []
@@ -56,7 +45,7 @@ export default defineLazyEventHandler(async () => {
 
         return {
           ...post,
-          score: Number(v.score.toFixed(4)),
+          similarity: Number(v.similarity.toFixed(4)),
         }
       })
       .filter((item): item is NonNullable<typeof item> => item !== null)

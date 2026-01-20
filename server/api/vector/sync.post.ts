@@ -1,22 +1,16 @@
-import { createOpenAI } from '@ai-sdk/openai'
 import { queryCollection } from '@nuxt/content/server'
 import { embedMany } from 'ai'
 import { sql } from 'drizzle-orm'
-import { contentVectors } from '../db/schema'
+import { contentVectors } from '~~/server/db/schema'
 
 export default defineLazyEventHandler(async () => {
-  const apiKey = useRuntimeConfig().siliconflowApiKey
-  if (!apiKey)
-    throw new Error('Missing AI Gateway API key')
-
-  const siliconflow = createOpenAI({
-    baseURL: 'https://api.siliconflow.cn/v1',
-    apiKey,
-  })
+  const siliconflow = useSiliconflow()
+  const model = siliconflow.embedding('Qwen/Qwen3-Embedding-0.6B')
   const db = useDb()
 
   return defineEventHandler(async (event) => {
     const posts = await queryCollection(event, 'posts')
+      .where('hidden', '<>', true)
       .select('id', 'title', 'description', 'tags')
       .all()
 
@@ -24,19 +18,17 @@ export default defineLazyEventHandler(async () => {
       return { success: true, count: 0 }
 
     const values = posts.map((post) => {
-      const parts = [`Title: ${post.title}`]
+      const parts = [`文章标题: ${post.title}`]
       if (post.description)
-        parts.push(`Description: ${post.description}`)
+        parts.push(`内容摘要: ${post.description}`)
 
       if (post.tags?.length)
-        parts.push(`Tags: ${post.tags.join(', ')}`)
+        parts.push(`分类标签: ${post.tags.join(', ')}`)
 
-      return `${parts.join('. ')}.`
+      return `${parts.join('\n')}.`
     })
-    const { embeddings } = await embedMany({
-      model: siliconflow.embedding('Qwen/Qwen3-Embedding-0.6B'),
-      values,
-    })
+
+    const { embeddings } = await embedMany({ model, values })
 
     const records = posts.map((post, i) => ({
       contentId: post.id,
