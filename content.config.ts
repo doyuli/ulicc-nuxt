@@ -15,6 +15,7 @@ function createPostSchema() {
   return createBaseSchema().extend({
     minRead: z.number(),
     date: z.date(),
+    updatedAt: z.date().optional(),
     hidden: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
   })
