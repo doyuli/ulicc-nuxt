@@ -1,12 +1,14 @@
 import type { FileAfterParseHook } from '@nuxt/content'
-import { execSync } from 'node:child_process'
 import { defineNuxtModule } from 'nuxt/kit'
+import Git from 'simple-git'
 
 export default defineNuxtModule({
   meta: {
     name: 'content-mtime',
   },
   setup(_, nuxt) {
+    const git = Git()
+
     nuxt.hook('content:file:afterParse', async (ctx: FileAfterParseHook) => {
       const path = ctx.file.path
 
@@ -17,17 +19,18 @@ export default defineNuxtModule({
         return
 
       try {
-        const date = execSync(
-          `git log -1 --format=%cI -- "${path}"`,
-          { encoding: 'utf-8', cwd: nuxt.options.rootDir },
-        ).trim()
+        const log = await git.log({
+          file: path,
+          maxCount: 1,
+          strictDate: true,
+        })
 
-        if (date) {
-          ctx.content.updatedAt = new Date(date)
+        if (log.latest) {
+          ctx.content.updatedAt = new Date(log.latest.date)
         }
       }
       catch {
-        // File might not be tracked
+        console.warn(`[content-mtime] Failed to get git log for ${path}`)
       }
     })
   },
