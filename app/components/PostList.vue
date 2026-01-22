@@ -24,6 +24,16 @@ const { posts = [], variant = 'default' } = defineProps<{
       :style="{ animationDelay: `${0.2 + i * 0.1}s` }"
     >
       <NuxtLink :to="post.path">
+        <ItemHeader v-if="variant === 'default'" class="justify-baseline gap-4 text-xs text-muted-foreground">
+          <div class="flex items-center gap-1">
+            <CalendarIcon class="size-3 shrink-0" />
+            <span>{{ dateFormatter.custom(new Date(post.date), { dateStyle: 'medium' }) }}</span>
+          </div>
+          <div class="flex items-center gap-1 opacity-80">
+            <ClockIcon class="size-3 shrink-0" />
+            <span>{{ post.minRead }} min read</span>
+          </div>
+        </ItemHeader>
         <ItemContent>
           <ItemTitle>
             <span class="text-lg group-hover:text-primary">{{ post.title }}</span>
@@ -35,15 +45,15 @@ const { posts = [], variant = 'default' } = defineProps<{
             {{ post.description }}
           </ItemDescription>
         </ItemContent>
-        <ItemFooter v-if="variant === 'default'" class="justify-baseline gap-4 text-xs text-muted-foreground">
-          <div class="flex items-center gap-1">
-            <CalendarIcon class="size-3 shrink-0" />
-            <span>{{ dateFormatter.custom(new Date(post.date), { dateStyle: 'medium' }) }}</span>
-          </div>
-          <div class="flex items-center gap-1 opacity-80">
-            <ClockIcon class="size-3 shrink-0" />
-            <span>{{ post.minRead }} min read</span>
-          </div>
+        <ItemFooter v-if="variant === 'default' && post.tags?.length" class="justify-baseline gap-2">
+          <Badge
+            v-for="tag in post.tags"
+            :key="tag"
+            variant="secondary"
+            class="py-1 text-muted-foreground text-xs rounded"
+          >
+            {{ tag }}
+          </Badge>
         </ItemFooter>
       </NuxtLink>
     </Item>
