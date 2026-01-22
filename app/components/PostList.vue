@@ -50,7 +50,7 @@ const { posts = [], variant = 'default' } = defineProps<{
             v-for="tag in post.tags"
             :key="tag"
             variant="secondary"
-            class="py-1 text-muted-foreground text-xs rounded"
+            class="py-1 text-muted-foreground/80 text-xs rounded"
           >
             {{ tag }}
           </Badge>
