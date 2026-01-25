@@ -26,7 +26,7 @@ provideChatMessageContext({
 </script>
 
 <template>
-  <div :class="cn('w-full flex gap-2 py-2', role === 'user' ? 'flex-row-reverse' : 'flex-row', $props.class)">
+  <div :class="cn('w-full flex gap-2', role === 'user' ? 'flex-row-reverse' : 'flex-row', $props.class)">
     <slot />
   </div>
 </template>

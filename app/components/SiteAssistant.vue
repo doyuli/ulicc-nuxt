@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import { BotIcon, Loader2Icon, SendIcon, XIcon } from 'lucide-vue-next'
+import { BotIcon, XIcon } from 'lucide-vue-next'
+import {
+  ChatMarkdownRenderer,
+  Conversation,
+  ConversationContent,
+  ConversationSubmitted,
+  Message,
+  MessageContent,
+  PromptSubmit,
+} from '~/components/chat'
 import { cn } from '~/lib/utils'
 
-const isOpen = shallowRef(false)
-const inputText = shallowRef('')
-const isTyping = shallowRef(false)
-
-const messages = ref([
-  {
-    id: 1,
-    role: 'bot',
-    content: 'Hello! How can I help you today?',
-  },
-])
+const {
+  inputText,
+  status,
+  messages,
+  onSubmit,
+  regenerate,
+  stop,
+} = useChat('/api/chat')
 
 const target = useTemplateRef('target')
+const isOpen = shallowRef(false)
 
 onClickOutside(target, () => {
   if (isOpen.value)
@@ -22,16 +29,14 @@ onClickOutside(target, () => {
 })
 
 const inputRef = useTemplateRef<HTMLInputElement>('input')
-
 const { focused } = useFocus(inputRef)
+
 watch(isOpen, async (val) => {
   if (val) {
     await nextTick()
     focused.value = true
   }
 })
-
-function handleSubmit() {}
 </script>
 
 <template>
@@ -54,24 +59,42 @@ function handleSubmit() {}
             <XIcon class="size-4" />
           </button>
         </CardHeader>
-        <CardContent class="flex-1 overflow-y-auto p-4 space-y-4">
-          <div
-            v-for="msg in messages"
-            :key="msg.id"
-            :class="cn('flex', msg.role === 'user' ? 'justify-end' : 'justify-start')"
-          >
-            <div
-              :class="cn(
-                'px-4 py-2 rounded-2xl text-sm max-w-[85%]',
-                msg.role === 'user' ? 'bg-primary-light text-primary-foreground rounded-br-none' : 'bg-muted rounded-bl-none',
-              )"
-            >
-              <span>{{ msg.content }}</span>
-            </div>
-          </div>
+        <CardContent class="flex-1 overflow-y-auto p-0 space-y-4">
+          <Conversation>
+            <ConversationContent class="gap-2">
+              <template v-if="messages?.length">
+                <Message
+                  v-for="message in messages"
+                  :key="message.id"
+                  :role="message.role"
+                >
+                  <MessageContent class="text-sm" variant="ghost">
+                    <template v-for="(part, i) in message.parts" :key="i">
+                      <template v-if="part.type === 'text'">
+                        <p v-if="message.role === 'user'">
+                          {{ part.text }}
+                        </p>
+                        <ChatMarkdownRenderer v-else :value="part.text" :cache-key="`${message.id}-${i}`" />
+                      </template>
+                    </template>
+                  </MessageContent>
+                </Message>
+              </template>
+              <template v-else>
+                <Message role="system">
+                  <MessageContent class="text-sm">
+                    <p class="leading-7.5">
+                      你好，请问有什么可以帮您的吗
+                    </p>
+                  </MessageContent>
+                </Message>
+              </template>
+              <ConversationSubmitted v-if="status === 'submitted'" />
+            </ConversationContent>
+          </Conversation>
         </CardContent>
         <CardFooter class="py-3! border-t">
-          <form class="relative w-full flex items-center gap-2" @submit.prevent="handleSubmit">
+          <form class="relative w-full flex items-center gap-2" @submit.prevent="onSubmit">
             <Input
               ref="input"
               v-model="inputText"
@@ -79,15 +102,13 @@ function handleSubmit() {}
               placeholder="Ask about articles..."
               class="flex-1 bg-muted/30 border rounded-full py-2.5 pl-4 pr-12 text-sm ring-offset-0 focus-visible:ring-1 focus-visible:ring-primary/20"
             />
-            <Button
-              size="icon"
-              type="submit"
-              :disabled="!inputText.trim() || isTyping"
-              class="absolute size-7 right-1.5 p-1.5 bg-primary text-white rounded-full"
-            >
-              <Loader2Icon v-if="isTyping" class="size-3 animate-spin" />
-              <SendIcon v-else class="size-3" />
-            </Button>
+            <PromptSubmit
+              :status="status"
+              :disabled="!inputText.trim() && status === 'ready'"
+              class="absolute size-7 right-1.5 p-1.5"
+              @reload="regenerate"
+              @stop="stop"
+            />
           </form>
         </CardFooter>
       </Card>

@@ -1,8 +1,18 @@
 <script setup lang="ts">
-import { Chat } from '@ai-sdk/vue'
-import { DefaultChatTransport } from 'ai'
 import { Trash2Icon } from 'lucide-vue-next'
-import { ChatPanel, PromptInput, PromptSubmit } from '~/components/chat'
+import {
+  ChatMarkdownRenderer,
+  ChatTool,
+  Conversation,
+  ConversationContent,
+  ConversationSubmitted,
+  isTool,
+  Message,
+  MessageAvatar,
+  MessageContent,
+  PromptInput,
+  PromptSubmit,
+} from '~/components/chat'
 
 definePageMeta({
   middleware: 'auth',
@@ -12,27 +22,16 @@ usePageMeta({
   title: '站点助手',
 })
 
-const chat = new Chat({
-  transport: new DefaultChatTransport({
-    api: '/api/chat',
-  }),
-})
-
-const inputText = shallowRef('')
-const disabled = computed(() => !inputText.value.trim() && chat.status === 'ready')
-
-function onSubmit() {
-  if (disabled.value)
-    return
-
-  chat.sendMessage({ text: inputText.value })
-
-  inputText.value = ''
-}
-
-function clearMessages() {
-  chat.messages = []
-}
+const {
+  inputText,
+  status,
+  messages,
+  onSubmit,
+  clearMessages,
+  regenerate,
+  stop,
+  sendMessage,
+} = useChat('/api/chat')
 
 const suggestions = [
   '帮我构思一篇关于 2026 年前端发展的博客大纲',
@@ -64,21 +63,66 @@ const suggestions = [
             </p>
           </div>
         </div>
-        <Button v-if="chat.messages.length" variant="ghost" size="icon-sm" @click="clearMessages">
+        <Button v-if="messages.length" variant="ghost" size="icon-sm" @click="clearMessages">
           <Trash2Icon class="text-muted-foreground/60 size-4 shrink-0" />
         </Button>
       </CardHeader>
       <CardContent class="flex-1 min-h-0">
-        <ChatPanel
-          :suggestions="suggestions"
-          :messages="chat.messages"
-          :status="chat.status"
-          @suggest="(text) => chat.sendMessage({ text })"
-        />
+        <Conversation>
+          <ConversationContent>
+            <template v-if="messages?.length">
+              <Message
+                v-for="message in messages"
+                :key="message.id"
+                :role="message.role"
+              >
+                <MessageAvatar />
+                <MessageContent variant="ghost">
+                  <template v-for="(part, i) in message.parts" :key="i">
+                    <template v-if="part.type === 'text'">
+                      <p v-if="message.role === 'user'">
+                        {{ part.text }}
+                      </p>
+                      <ChatMarkdownRenderer v-else :value="part.text" :cache-key="`${message.id}-${i}`" />
+                    </template>
+                    <ChatTool v-else-if="isTool(part)" :part="part " :state="part.state" />
+                  </template>
+                </MessageContent>
+              </Message>
+            </template>
+            <template v-else>
+              <Message role="system">
+                <MessageAvatar class="size-8" />
+                <MessageContent variant="ghost">
+                  <p class="leading-8">
+                    你好，请问有什么可以帮您的吗
+                  </p>
+                </MessageContent>
+              </Message>
+              <div v-if="suggestions?.length" class="mt-8 flex flex-wrap justify-center gap-2">
+                <Button
+                  v-for="suggest in suggestions"
+                  :key="suggest"
+                  size="sm"
+                  variant="ghost"
+                  @click="() => sendMessage({ text: suggest })"
+                >
+                  {{ suggest }}
+                </Button>
+              </div>
+            </template>
+            <ConversationSubmitted v-if="status === 'submitted'" />
+          </ConversationContent>
+        </Conversation>
       </CardContent>
       <CardFooter>
         <PromptInput v-model="inputText" @submit="onSubmit">
-          <PromptSubmit :status="chat.status" :disabled="disabled" @reload="chat.regenerate()" @stop="chat.stop()" />
+          <PromptSubmit
+            :status="status"
+            :disabled="!inputText.trim() && status === 'ready'"
+            @reload="regenerate"
+            @stop="stop"
+          />
         </PromptInput>
       </CardFooter>
     </Card>
