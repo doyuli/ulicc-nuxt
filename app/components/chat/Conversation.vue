@@ -1,51 +1,54 @@
 <script setup lang="ts">
-import type { ChatStatus, UIMessage } from 'ai'
 import type { HtmlHTMLAttributes } from 'vue'
 import { cn } from '~/lib/utils'
 
 const props = defineProps<{
   class?: HtmlHTMLAttributes['class']
-  messages?: UIMessage[]
-  status?: ChatStatus
+  behavior?: ScrollBehavior
 }>()
 
 const scrollContainer = useTemplateRef<HTMLDivElement>('scroll-container')
+const scrollContent = useTemplateRef<HTMLDivElement>('scroll-content')
 
 let isUserScrollingUp = false
+const { y: scrollY, arrivedState, isScrolling } = useScroll(scrollContainer)
 
-watch(() => props.messages?.length, () => {
-  isUserScrollingUp = false
-  nextTick(() => scrollToBottom())
+watch(scrollY, (ny, oy) => {
+  if (!isScrolling.value)
+    return
+
+  if (arrivedState.bottom) {
+    isUserScrollingUp = false
+  }
+  else if (ny < oy) {
+    isUserScrollingUp = true
+  }
 })
 
-watchThrottled(
-  () => props.messages,
-  () => {
-    if (props.status === 'streaming' && !isUserScrollingUp)
-      scrollToBottom('auto')
-  },
-  { deep: true, throttle: 50 },
-)
+let prevHeight: number
+useResizeObserver(scrollContent, ([entry]) => {
+  if (!entry)
+    return
 
-onMounted(() => {
-  useEventListener(scrollContainer, 'scroll', () => {
-    isUserScrollingUp = !isAtBottom()
-  })
+  const { height } = entry.contentRect
+  const diff = height - (prevHeight ?? height)
+
+  if (diff >= 0 && !isUserScrollingUp) {
+    scrollToBottom(props.behavior)
+  }
+  else {
+    if (arrivedState.bottom || scrollY.value === 0) {
+      isUserScrollingUp = false
+    }
+  }
+  prevHeight = height
 })
 
-function isAtBottom() {
+function scrollToBottom(behavior: ScrollBehavior = 'smooth') {
   const el = unrefElement(scrollContainer)
-  if (!el)
-    return true
-
-  return el.scrollHeight - el.scrollTop <= el.clientHeight + 100
-}
-
-async function scrollToBottom(behavior: ScrollBehavior = 'smooth') {
-  await nextTick()
-  if (scrollContainer.value) {
-    scrollContainer.value.scrollTo({
-      top: scrollContainer.value.scrollHeight,
+  if (el) {
+    el.scrollTo({
+      top: el.scrollHeight,
       behavior,
     })
   }
@@ -54,6 +57,8 @@ async function scrollToBottom(behavior: ScrollBehavior = 'smooth') {
 
 <template>
   <div ref="scroll-container" :class="cn('flex flex-col size-full overflow-y-auto', $props.class)">
-    <slot />
+    <div ref="scroll-content">
+      <slot />
+    </div>
   </div>
 </template>
