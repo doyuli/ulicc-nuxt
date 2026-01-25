@@ -14,6 +14,9 @@ const emit = defineEmits<{
 
 const modelValue = defineModel<string>('modelValue', { default: '' })
 
+const inputRef = useTemplateRef<HTMLInputElement>('input')
+useFocus(inputRef, { initialValue: true })
+
 function submit(e: Event) {
   const text = modelValue.value.trim()
   if (!text)
@@ -27,6 +30,7 @@ function submit(e: Event) {
   <form :class="cn('w-full', $props.class)" @submit.prevent="submit">
     <InputGroup>
       <InputGroupTextarea
+        ref="input"
         v-model="modelValue"
         :disabled="disabled"
         :placeholder="placeholder"
