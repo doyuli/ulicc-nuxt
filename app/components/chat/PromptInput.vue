@@ -1,43 +1,42 @@
-<script setup lang="ts">
+<script lang="ts">
 import type { HtmlHTMLAttributes } from 'vue'
+import type { InputGroupVariants } from '~/components/ui/input-group'
 import { cn } from '~/lib/utils'
 
-const { placeholder = 'Say something...' } = defineProps<{
-  placeholder?: string
-  disabled?: boolean
+interface PromptInputContetx {
+  submit: (e: Event) => void
+}
+
+const [usePromptInputContext, providePromptInputContext] = createContext<PromptInputContetx>('PromptInput')
+
+export {
+  usePromptInputContext,
+}
+</script>
+
+<script setup lang="ts">
+defineProps<{
   class?: HtmlHTMLAttributes['class']
+  align?: InputGroupVariants['align']
 }>()
 
 const emit = defineEmits<{
   (e: 'submit', event: Event): void
 }>()
 
-const modelValue = defineModel<string>('modelValue', { default: '' })
+const submit = (e: Event) => emit('submit', e)
 
-const inputRef = useTemplateRef<HTMLInputElement>('input')
-useFocus(inputRef, { initialValue: true })
-
-function submit(e: Event) {
-  const text = modelValue.value.trim()
-  if (!text)
-    return
-
-  emit('submit', e)
-}
+providePromptInputContext({
+  submit,
+})
 </script>
 
 <template>
   <form :class="cn('w-full', $props.class)" @submit.prevent="submit">
     <InputGroup>
-      <InputGroupTextarea
-        ref="input"
-        v-model="modelValue"
-        :disabled="disabled"
-        :placeholder="placeholder"
-        @keydown.enter.exact.prevent="submit"
-      />
-      <InputGroupAddon align="inline-end">
-        <slot />
+      <slot />
+      <InputGroupAddon :align="align">
+        <slot name="addon" />
       </InputGroupAddon>
     </InputGroup>
   </form>
