@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { BotIcon, XIcon } from 'lucide-vue-next'
+import { DefaultChatTransport } from 'ai'
+import { BotIcon, CircleAlertIcon, Trash2Icon, XIcon } from 'lucide-vue-next'
+import { toast } from 'vue-sonner'
 import {
   ChatMarkdownRenderer,
   Conversation,
@@ -16,10 +18,35 @@ const {
   inputText,
   status,
   messages,
+  error,
   onSubmit,
   regenerate,
   stop,
-} = useChat('/api/chat/assistant')
+  clearMessages,
+  clearError,
+} = useChat(
+  {
+    transport: new DefaultChatTransport({
+      api: '/api/chat/assistant',
+    }),
+    onError: (error) => {
+      const { message } = normalizeChatError(error)
+      toast.error(message)
+    },
+  },
+  {
+    onBeforeSubmit: () => {
+      clearError()
+    },
+  },
+)
+
+const displayError = computed(() => normalizeChatError(error.value))
+
+function clean() {
+  clearMessages()
+  clearError()
+}
 
 const target = useTemplateRef('target')
 const isOpen = shallowRef(false)
@@ -41,7 +68,7 @@ watch(isOpen, async (val) => {
 </script>
 
 <template>
-  <div ref="target" class="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+  <div ref="target" class="fixed bottom-6 left-6 z-50 flex flex-col pointer-events-none">
     <Transition
       enter-active-class="transition duration-300 ease-out"
       enter-from-class="scale-90 opacity-0 translate-y-8"
@@ -53,14 +80,14 @@ watch(isOpen, async (val) => {
       <Card v-if="isOpen" class="py-0 flex flex-col gap-0 w-[calc(100vw-3rem)] sm:w-96 mb-4 h-[500px] shadow-2xl pointer-events-auto">
         <CardHeader class="py-3 flex items-center justify-between bg-muted">
           <div class="flex items-center gap-2">
-            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <div :class="cn('w-2 h-2 rounded-full animate-pulse', error ? 'bg-red-500' : 'bg-emerald-500')" />
             <span class="text-sm font-medium tracking-tight">SiteAssistant</span>
           </div>
-          <button class="text-muted-foreground transition-colors" @click="isOpen = false">
-            <XIcon class="size-4" />
+          <button v-if="messages.length" class="text-muted-foreground transition-colors" @click="clean">
+            <Trash2Icon class="text-muted-foreground/60 size-4 shrink-0" />
           </button>
         </CardHeader>
-        <CardContent class="flex-1 overflow-y-auto p-0 space-y-4">
+        <CardContent class="relative flex-1 overflow-y-auto p-0 space-y-4 flex flex-col">
           <Conversation>
             <ConversationContent class="gap-2">
               <template v-if="messages?.length">
@@ -90,6 +117,10 @@ watch(isOpen, async (val) => {
                   </MessageContent>
                 </Message>
               </template>
+              <div v-if="error" class="absolute max-w-3/4 bottom-2 left-1/2 -translate-x-1/2 flex items-center justify-center gap-1 text-nowrap text-xs text-muted-foreground px-2 py-1 bg-muted rounded-full">
+                <CircleAlertIcon class="size-3 shrink-0" />
+                <span class="truncate" :title="displayError.message">{{ displayError.message }}</span>
+              </div>
               <ConversationSubmitted v-if="status === 'submitted'" />
             </ConversationContent>
           </Conversation>
@@ -112,8 +143,8 @@ watch(isOpen, async (val) => {
 
     <button
       :class="cn(
-        'group flex items-center justify-center size-14 shadow-lg hover:shadow-xl transform hover:-translate-y-1 pointer-events-auto transition-all duration-500 rounded-full',
-        isOpen ? 'bg-card text-secondary-foreground border' : 'bg-primary text-primary-foreground',
+        'group flex items-center justify-center size-12 md:size-14 shadow-lg hover:shadow-xl transform hover:-translate-y-1 pointer-events-auto transition-all duration-500 rounded-full',
+        isOpen ? 'bg-card text-secondary-foreground border' : 'bg-primary text-primary-foreground opacity-70 hover:opacity-100',
       )"
       aria-label="Toggle Assistant"
       @click="isOpen = !isOpen"

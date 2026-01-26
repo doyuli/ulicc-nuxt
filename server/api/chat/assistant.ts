@@ -11,8 +11,10 @@ export default defineLazyEventHandler(async () => {
 
   const deepseek = createDeepSeek({ apiKey })
 
+  const checkRateLimit = useRateLimit({ intervalMs: 60 * 60 * 1000, limit: 1 })
+
   return defineEventHandler(async (event) => {
-    await requireUserSession(event)
+    useRateLimitHandler(event, checkRateLimit)
 
     const { messages }: { messages: UIMessage[] } = await readBody(event)
 

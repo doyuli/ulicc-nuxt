@@ -71,6 +71,9 @@ const components = {
   ol {
     margin: 0;
   }
+  ul {
+    list-style-position: inside;
+  }
   h1,
   h2,
   h3,

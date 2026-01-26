@@ -1,8 +1,22 @@
+import type { H3Event } from 'h3'
+import { RATE_LIMIT_ERROR } from '~~/shared/constants'
+
 const rateLimitStore = new Map<string, number[]>()
 
 export interface RateLimitOptions {
   intervalMs: number
   limit: number
+}
+
+export function useRateLimitHandler(event: H3Event, checker: ReturnType<typeof useRateLimit>) {
+  const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'unknown'
+  const { allowed, remaining } = checker(ip)
+
+  setResponseHeader(event, 'X-RateLimit-Remaining', remaining.toString())
+
+  if (!allowed) {
+    throw createError(RATE_LIMIT_ERROR)
+  }
 }
 
 export function useRateLimit(options: RateLimitOptions) {
@@ -30,17 +44,14 @@ export function useRateLimit(options: RateLimitOptions) {
   }
 }
 
-export function cleanupRateLimitStore(intervalMs: number) {
+const GLOBAL_MAX_INTERVAL = 3600_000
+export function cleanupRateLimitStore() {
   const now = Date.now()
-  const windowStart = now - intervalMs
 
   for (const [ip, timestamps] of rateLimitStore.entries()) {
-    const valid = timestamps.filter(t => t > windowStart)
-    if (valid.length === 0) {
+    const lastRequest = timestamps[timestamps.length - 1]
+    if (now - lastRequest > GLOBAL_MAX_INTERVAL) {
       rateLimitStore.delete(ip)
-    }
-    else {
-      rateLimitStore.set(ip, valid)
     }
   }
 }
