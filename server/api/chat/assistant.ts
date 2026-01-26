@@ -11,7 +11,7 @@ export default defineLazyEventHandler(async () => {
 
   const deepseek = createDeepSeek({ apiKey })
 
-  const checkRateLimit = useRateLimit({ intervalMs: 60 * 60 * 1000, limit: 1 })
+  const checkRateLimit = useRateLimit({ intervalMs: 60 * 60 * 1000, limit: 10 })
 
   return defineEventHandler(async (event) => {
     useRateLimitHandler(event, checkRateLimit)

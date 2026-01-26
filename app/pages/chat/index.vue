@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { DefaultChatTransport } from 'ai'
 import { Trash2Icon } from 'lucide-vue-next'
+import { toast } from 'vue-sonner'
 import {
   ChatMarkdownRenderer,
   ChatTool,
@@ -25,11 +26,16 @@ usePageMeta({
 })
 
 const { data: prompts } = useAsyncData('prompts', () => $fetch('/api/chat/prompts'))
-const currentPrompt = shallowRef('system')
+const currentPrompt = useLocalStorage<string>('system-chat-prompt', 'system')
 const currentPromptDisplay = computed(() => {
   const current = prompts.value?.find(v => v.value === currentPrompt.value)
   return current?.label
 })
+
+function onPromptClick(val: string) {
+  currentPrompt.value = val
+  clean()
+}
 
 const {
   inputText,
@@ -40,14 +46,38 @@ const {
   regenerate,
   stop,
   sendMessage,
-} = useChat({
-  transport: new DefaultChatTransport({
-    api: '/api/chat/system',
-    body: {
-      prompt: currentPrompt.value,
+  clearError,
+} = useChat(
+  {
+    transport: new DefaultChatTransport({
+      api: '/api/chat/system',
+      body: {
+        prompt: currentPrompt.value,
+      },
+    }),
+    onError: (error) => {
+      const { message } = normalizeChatError(error)
+      toast.error(message)
     },
-  }),
-})
+  },
+  {
+    onBeforeSubmit: (payload) => {
+      clearError()
+      payload.options = {
+        ...payload.options,
+        body: {
+          ...payload.options?.body,
+          prompt: currentPrompt.value,
+        },
+      }
+    },
+  },
+)
+
+function clean() {
+  clearMessages()
+  clearError()
+}
 
 const inputRef = useTemplateRef<HTMLInputElement>('input')
 useFocus(inputRef, { initialValue: true })
@@ -82,7 +112,7 @@ const suggestions = [
             </p>
           </div>
         </div>
-        <Button v-if="messages.length" variant="ghost" size="icon-sm" @click="clearMessages">
+        <Button v-if="messages.length" variant="ghost" size="icon-sm" @click="clean">
           <Trash2Icon class="text-muted-foreground/60 size-4 shrink-0" />
         </Button>
       </CardHeader>
@@ -148,7 +178,7 @@ const suggestions = [
                 <DropdownMenuItem
                   v-for="p in prompts"
                   :key="p.value"
-                  @click="currentPrompt = p.value"
+                  @click="onPromptClick(p.value)"
                 >
                   {{ p.label }}
                 </DropdownMenuItem>

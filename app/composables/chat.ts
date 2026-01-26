@@ -1,10 +1,16 @@
-import type { ChatInit, UIMessage } from 'ai'
+import type { ChatInit, ChatRequestOptions, UIMessage } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
 
 interface ExtraOptions {
-  onBeforeSubmit?: (text: string) => string | void
+  onBeforeSubmit?: (payload: ChatPayload) => boolean | void
   onError?: (error: any) => void
+  onSuccess?: () => void
+}
+
+export interface ChatPayload {
+  text: string
+  options?: ChatRequestOptions
 }
 
 export function useChat<T extends UIMessage>(
@@ -19,31 +25,34 @@ export function useChat<T extends UIMessage>(
       }
     : optionsOrUrl
 
-  const { onBeforeSubmit, onError } = extraOptions
+  const { onBeforeSubmit, onError, onSuccess } = extraOptions
 
   const chat = new Chat(options)
 
   const inputText = shallowRef('')
 
-  function onSubmit() {
-    let text = inputText.value.trim()
-
-    if (onBeforeSubmit) {
-      const result = onBeforeSubmit(text)
-      if (result !== undefined)
-        text = result
-    }
+  async function onSubmit() {
+    const text = inputText.value.trim()
 
     if (!text || chat.status === 'streaming' || chat.status === 'submitted')
       return
 
+    const payload: ChatPayload = { text, options: undefined }
+
+    if (onBeforeSubmit) {
+      const result = onBeforeSubmit(payload)
+      if (result === false)
+        return
+    }
+
     try {
-      chat.sendMessage({ text })
+      inputText.value = ''
+      await chat.sendMessage({ text: payload.text }, payload.options)
+      onSuccess?.()
     }
     catch (error) {
-      onError?.(error)
+      onError?.(normalizeChatError(error))
     }
-    inputText.value = ''
   }
 
   const status = computed(() => chat.status)
