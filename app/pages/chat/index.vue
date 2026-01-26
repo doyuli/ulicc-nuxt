@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { DefaultChatTransport } from 'ai'
 import { Trash2Icon } from 'lucide-vue-next'
 import {
   ChatMarkdownRenderer,
@@ -11,6 +12,7 @@ import {
   MessageAvatar,
   MessageContent,
   PromptInput,
+  PromptInputTextarea,
   PromptSubmit,
 } from '~/components/chat'
 
@@ -22,6 +24,13 @@ usePageMeta({
   title: '站点助手',
 })
 
+const { data: prompts } = useAsyncData('prompts', () => $fetch('/api/chat/prompts'))
+const currentPrompt = shallowRef('system')
+const currentPromptDisplay = computed(() => {
+  const current = prompts.value?.find(v => v.value === currentPrompt.value)
+  return current?.label
+})
+
 const {
   inputText,
   status,
@@ -31,7 +40,17 @@ const {
   regenerate,
   stop,
   sendMessage,
-} = useChat('/api/chat')
+} = useChat({
+  transport: new DefaultChatTransport({
+    api: '/api/chat/system',
+    body: {
+      prompt: currentPrompt.value,
+    },
+  }),
+})
+
+const inputRef = useTemplateRef<HTMLInputElement>('input')
+useFocus(inputRef, { initialValue: true })
 
 const suggestions = [
   '帮我构思一篇关于 2026 年前端发展的博客大纲',
@@ -116,13 +135,33 @@ const suggestions = [
         </Conversation>
       </CardContent>
       <CardFooter>
-        <PromptInput v-model="inputText" @submit="onSubmit">
-          <PromptSubmit
-            :status="status"
-            :disabled="!inputText.trim() && status === 'ready'"
-            @reload="regenerate"
-            @stop="stop"
-          />
+        <PromptInput align="block-end" @submit="onSubmit">
+          <PromptInputTextarea ref="input" v-model="inputText" />
+          <template #addon>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <InputGroupButton variant="ghost">
+                  {{ currentPromptDisplay }}
+                </InputGroupButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="top" align="start" class="[--radius:0.95rem]">
+                <DropdownMenuItem
+                  v-for="p in prompts"
+                  :key="p.value"
+                  @click="currentPrompt = p.value"
+                >
+                  {{ p.label }}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <PromptSubmit
+              class="ml-auto"
+              :status="status"
+              :disabled="!inputText.trim() && status === 'ready'"
+              @reload="regenerate"
+              @stop="stop"
+            />
+          </template>
         </PromptInput>
       </CardFooter>
     </Card>

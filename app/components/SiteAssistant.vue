@@ -7,6 +7,7 @@ import {
   ConversationSubmitted,
   Message,
   MessageContent,
+  PromptInput,
   PromptSubmit,
 } from '~/components/chat'
 import { cn } from '~/lib/utils'
@@ -18,7 +19,7 @@ const {
   onSubmit,
   regenerate,
   stop,
-} = useChat('/api/chat')
+} = useChat('/api/chat/assistant')
 
 const target = useTemplateRef('target')
 const isOpen = shallowRef(false)
@@ -94,22 +95,17 @@ watch(isOpen, async (val) => {
           </Conversation>
         </CardContent>
         <CardFooter class="py-3! border-t">
-          <form class="relative w-full flex items-center gap-2" @submit.prevent="onSubmit">
-            <Input
-              ref="input"
-              v-model="inputText"
-              type="text"
-              placeholder="Ask about articles..."
-              class="flex-1 bg-muted/30 border rounded-full py-2.5 pl-4 pr-12 text-sm ring-offset-0 focus-visible:ring-1 focus-visible:ring-primary/20"
-            />
-            <PromptSubmit
-              :status="status"
-              :disabled="!inputText.trim() && status === 'ready'"
-              class="absolute size-7 right-1.5 p-1.5"
-              @reload="regenerate"
-              @stop="stop"
-            />
-          </form>
+          <PromptInput class="[--radius:9999px]" align="inline-end" @submit="onSubmit">
+            <InputGroupInput ref="input" v-model="inputText" placeholder="Ask about articles..." />
+            <template #addon>
+              <PromptSubmit
+                :status="status"
+                :disabled="!inputText.trim() && status === 'ready'"
+                @reload="regenerate"
+                @stop="stop"
+              />
+            </template>
+          </PromptInput>
         </CardFooter>
       </Card>
     </Transition>
