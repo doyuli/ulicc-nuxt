@@ -1,7 +1,11 @@
 import type { H3Event } from 'h3'
+import { LRUCache } from 'lru-cache'
 import { RATE_LIMIT_ERROR } from '~~/shared/constants'
 
-const rateLimitStore = new Map<string, number[]>()
+const rateLimitStore = new LRUCache<string, number[]>({
+  max: 5000,
+  ttl: 1000 * 60 * 60,
+})
 
 export interface RateLimitOptions {
   intervalMs: number
@@ -26,9 +30,11 @@ export function useRateLimit(options: RateLimitOptions) {
     const now = Date.now()
     const windowStart = now - intervalMs
 
-    let timestamps = rateLimitStore.get(ip) ?? []
+    const timestamps = rateLimitStore.get(ip) ?? []
 
-    timestamps = timestamps.filter(t => t > windowStart)
+    while (timestamps.length > 0 && timestamps[0] <= windowStart) {
+      timestamps.shift()
+    }
 
     const allowed = timestamps.length < limit
 
@@ -40,18 +46,6 @@ export function useRateLimit(options: RateLimitOptions) {
     return {
       allowed,
       remaining: Math.max(0, limit - timestamps.length),
-    }
-  }
-}
-
-const GLOBAL_MAX_INTERVAL = 3600_000
-export function cleanupRateLimitStore() {
-  const now = Date.now()
-
-  for (const [ip, timestamps] of rateLimitStore.entries()) {
-    const lastRequest = timestamps[timestamps.length - 1]
-    if (now - lastRequest > GLOBAL_MAX_INTERVAL) {
-      rateLimitStore.delete(ip)
     }
   }
 }
