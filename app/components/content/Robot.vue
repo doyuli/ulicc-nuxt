@@ -5,7 +5,9 @@ import { RobotIcon } from '~/components/icons'
 import { cn } from '~/lib/utils'
 
 const props = defineProps<{
-  text: string
+  description?: string
+  summaryEnable?: boolean
+  path?: string
   class?: HtmlHTMLAttributes['class']
 }>()
 
@@ -40,10 +42,34 @@ function stopTyping() {
   isTyping.value = false
 }
 
+const { data: summary, pending, error } = useFetch(
+  '/api/chat/summary',
+  {
+    body: { path: props.path },
+    method: 'POST',
+    watch: [() => props.path],
+    immediate: props.summaryEnable && !!props.path,
+  },
+)
+
+const sourceText = computed(() => {
+  if (props.summaryEnable) {
+    if (pending.value)
+      return ''
+
+    if (error.value)
+      return props.description || ''
+
+    return summary.value
+  }
+
+  return props.description || ''
+})
+
 onMounted(() => {
   watch(
-    () => props.text,
-    (text, _, onCleanup) => {
+    [sourceText, () => props.path],
+    ([text], _, onCleanup) => {
       text && startTyping(text)
 
       onCleanup(stopTyping)
@@ -53,8 +79,11 @@ onMounted(() => {
 })
 
 function handleReTyped() {
+  if (!sourceText.value)
+    return
+
   stopTyping()
-  startTyping(props.text)
+  startTyping(sourceText.value)
 }
 </script>
 
@@ -71,7 +100,7 @@ function handleReTyped() {
         :disabled="isTyping"
         @click="handleReTyped"
       >
-        FakeGPT
+        Agent
       </Button>
     </CardHeader>
     <CardContent>
@@ -83,7 +112,7 @@ function handleReTyped() {
       </Card>
     </CardContent>
     <CardFooter>
-      <span class="text-xs text-muted-foreground">此内容根据文章生成，并经过人工审核，仅用于文章内容的解释与总结</span>
+      <span class="text-xs text-muted-foreground">此内容由 AI 自动生成，旨在提供文章要点总结，内容仅供参考</span>
     </CardFooter>
   </Card>
 </template>

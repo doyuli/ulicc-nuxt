@@ -2,6 +2,7 @@
 import { ContentToc } from '~/components/sidebar'
 
 const route = useRoute()
+const { content } = useAppConfig()
 
 const { data: post } = await useAsyncData(`post-${route.path}`, () => {
   return queryCollection('posts').path(route.path).first()
@@ -29,7 +30,13 @@ if (!post.value) {
       </template>
       <Card class="py-8 animate-fade-up delay-200">
         <CardContent class="px-6">
-          <Robot v-if="post?.description" class="mb-4 md:mb-6" :text="post.description" />
+          <Robot
+            v-if="post?.description || content.summary"
+            class="mb-4 md:mb-6"
+            :summary-enable="content.summary"
+            :description="post?.description"
+            :path="route.path"
+          />
           <ContentRenderer v-if="post" :value="post" />
         </CardContent>
       </Card>

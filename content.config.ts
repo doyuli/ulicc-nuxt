@@ -18,6 +18,7 @@ function createPostSchema() {
     updatedAt: z.string().date().optional(),
     hidden: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
+    rawbody: z.string(),
   })
 }
 

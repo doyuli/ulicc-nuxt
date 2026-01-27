@@ -1,6 +1,6 @@
 import { index, pgTable, text, timestamp, varchar, vector } from 'drizzle-orm/pg-core'
 
-export const contentVectors = pgTable(
+export const vectorsTable = pgTable(
   'content_vectors',
   {
     id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
@@ -12,4 +12,15 @@ export const contentVectors = pgTable(
   table => ({
     embeddingIndex: index('embedding_idx').using('hnsw', table.embedding.op('vector_cosine_ops')),
   }),
+)
+
+export const summarysTable = pgTable(
+  'content_summarys',
+  {
+    id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
+    contentId: varchar('content_id', { length: 191 }).notNull().unique(),
+    title: text('title').notNull(),
+    summary: text('summary').notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
 )

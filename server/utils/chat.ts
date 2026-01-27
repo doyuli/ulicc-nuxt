@@ -1,3 +1,4 @@
+import { createDeepSeek } from '@ai-sdk/deepseek'
 import { createOpenAI } from '@ai-sdk/openai'
 
 export function useSiliconflow() {
@@ -11,4 +12,14 @@ export function useSiliconflow() {
   })
 
   return siliconflow
+}
+
+export function useDeepSeek() {
+  const apiKey = useRuntimeConfig().aiGatewayApiKey
+  if (!apiKey)
+    throw new Error('Missing AI Gateway API key')
+
+  const deepseek = createDeepSeek({ apiKey })
+
+  return deepseek
 }
