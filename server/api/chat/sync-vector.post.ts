@@ -1,7 +1,7 @@
 import { queryCollection } from '@nuxt/content/server'
 import { embedMany } from 'ai'
 import { inArray, sql } from 'drizzle-orm'
-import { contentVectors } from '~~/server/db/schema'
+import { vectorsTable } from '~~/server/db/schema'
 
 export default defineLazyEventHandler(async () => {
   const siliconflow = useSiliconflow()
@@ -26,11 +26,11 @@ export default defineLazyEventHandler(async () => {
 
     const existingVectors = await db
       .select({
-        contentId: contentVectors.contentId,
-        updatedAt: contentVectors.updatedAt,
+        contentId: vectorsTable.contentId,
+        updatedAt: vectorsTable.updatedAt,
       })
-      .from(contentVectors)
-      .where(inArray(contentVectors.contentId, posts.map(p => p.id)))
+      .from(vectorsTable)
+      .where(inArray(vectorsTable.contentId, posts.map(p => p.id)))
 
     const existingMap = new Map(existingVectors.map(v => [v.contentId, v.updatedAt]))
 
@@ -67,10 +67,10 @@ export default defineLazyEventHandler(async () => {
       updatedAt: new Date(),
     }))
 
-    await db.insert(contentVectors)
+    await db.insert(vectorsTable)
       .values(records)
       .onConflictDoUpdate({
-        target: contentVectors.contentId,
+        target: vectorsTable.contentId,
         set: {
           embedding: sql`EXCLUDED.embedding`,
           content: sql`EXCLUDED.content`,
