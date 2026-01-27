@@ -16,6 +16,7 @@
     "lint:fix": "eslint --fix",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
     "compress:images": "node --experimental-strip-types scripts/img-compress-staged.ts",
     "postinstall": "simple-git-hooks"
   },
