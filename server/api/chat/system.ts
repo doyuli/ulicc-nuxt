@@ -1,16 +1,11 @@
 import type { UIMessage } from 'ai'
 import type { PromptsKey } from '~~/server/chat/prompts'
-import { createDeepSeek } from '@ai-sdk/deepseek'
 import { convertToModelMessages, stepCountIs, streamText } from 'ai'
 import { prompts } from '~~/server/chat/prompts'
 import { createPostsTool, createPostTool, createWeatherTool } from '~~/server/chat/tools'
 
 export default defineLazyEventHandler(async () => {
-  const apiKey = useRuntimeConfig().aiGatewayApiKey
-  if (!apiKey)
-    throw new Error('Missing AI Gateway API key')
-
-  const deepseek = createDeepSeek({ apiKey })
+  const deepseek = useDeepSeek()
 
   return defineEventHandler(async (event) => {
     await requireUserSession(event)

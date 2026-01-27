@@ -1,15 +1,10 @@
 import type { UIMessage } from 'ai'
-import { createDeepSeek } from '@ai-sdk/deepseek'
 import { convertToModelMessages, stepCountIs, streamText } from 'ai'
 import { prompts } from '~~/server/chat/prompts'
-import { createPostsTool, createPostTool, createWeatherTool } from '~~/server/chat/tools'
+import { createPostsTool, createPostTool, createSearchTool, createWeatherTool } from '~~/server/chat/tools'
 
 export default defineLazyEventHandler(async () => {
-  const apiKey = useRuntimeConfig().aiGatewayApiKey
-  if (!apiKey)
-    throw new Error('Missing AI Gateway API key')
-
-  const deepseek = createDeepSeek({ apiKey })
+  const deepseek = useDeepSeek()
 
   const checkRateLimit = useRateLimit({ intervalMs: 60 * 60 * 1000, limit: 10 })
 
@@ -27,6 +22,7 @@ export default defineLazyEventHandler(async () => {
         weather: createWeatherTool(),
         post: createPostTool(event),
         posts: createPostsTool(event),
+        search: createSearchTool(event),
       },
     })
 
