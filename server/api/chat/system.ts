@@ -2,7 +2,7 @@ import type { UIMessage } from 'ai'
 import type { PromptsKey } from '~~/server/chat/prompts'
 import { convertToModelMessages, stepCountIs, streamText } from 'ai'
 import { prompts } from '~~/server/chat/prompts'
-import { createPostsTool, createPostTool, createSearchTool, createWeatherTool } from '~~/server/chat/tools'
+import { createTools } from '~~/server/chat/tools'
 
 export default defineLazyEventHandler(async () => {
   const deepseek = useDeepSeek()
@@ -19,12 +19,7 @@ export default defineLazyEventHandler(async () => {
       system,
       messages: await convertToModelMessages(messages),
       stopWhen: stepCountIs(5),
-      tools: {
-        weather: createWeatherTool(),
-        post: createPostTool(event),
-        posts: createPostsTool(event),
-        search: createSearchTool(event),
-      },
+      tools: createTools(event),
     })
 
     return result.toUIMessageStreamResponse()
