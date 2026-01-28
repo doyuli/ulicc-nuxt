@@ -14,6 +14,8 @@ import {
 } from '~/components/chat'
 import { cn } from '~/lib/utils'
 
+const route = useRoute()
+
 const {
   inputText,
   status,
@@ -35,8 +37,17 @@ const {
     },
   },
   {
-    onBeforeSubmit: () => {
+    onBeforeSubmit: (payload) => {
       clearError()
+      payload.options = {
+        ...payload.options,
+        body: {
+          ...payload.options?.body,
+          context: {
+            path: route.path,
+          },
+        },
+      }
     },
   },
 )
