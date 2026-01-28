@@ -21,10 +21,10 @@ export default defineEventHandler(async (event) => {
   const postIds = posts.map(p => p.id)
 
   const vectorizedIds = await db
-    .select({ contentId: vectorsTable.contentId })
+    .selectDistinct({ postId: vectorsTable.postId })
     .from(vectorsTable)
-    .where(inArray(vectorsTable.contentId, postIds))
-    .then(rows => new Set(rows.map(r => r.contentId)))
+    .where(inArray(vectorsTable.postId, postIds))
+    .then(rows => new Set(rows.map(r => r.postId)))
 
   const summarizedIds = await db
     .select({ contentId: summarysTable.contentId })

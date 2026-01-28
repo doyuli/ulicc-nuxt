@@ -1,7 +1,21 @@
-import { queryCollection } from '@nuxt/content/server'
+import { queryCollection, queryCollectionSearchSections } from '@nuxt/content/server'
 import { embedMany } from 'ai'
 import { inArray, notInArray, sql } from 'drizzle-orm'
 import { vectorsTable } from '~~/server/db/schema'
+
+const getPostId = (sectionId: string) => `${sectionId.split('#')[0]}.md`
+
+interface ShouldProcessSectionItem {
+  id: string
+  title: string
+  titles: string[]
+  level: number
+  content: string
+  postId: string
+  postTitle: string
+  postUpdatedAt: string | undefined
+  heading: string | null
+}
 
 export default defineLazyEventHandler(async () => {
   const siliconflow = useSiliconflow()
@@ -15,90 +29,127 @@ export default defineLazyEventHandler(async () => {
 
     const posts = await queryCollection(event, 'posts')
       .where('hidden', '<>', true)
-      .select('id', 'title', 'description', 'tags', 'updatedAt')
+      .select('path', 'title', 'updatedAt')
       .all()
 
-    const len = posts.length
-
-    if (!len) {
+    if (!posts.length) {
       const deleteds = await db
         .delete(vectorsTable)
-        .returning({ contentId: vectorsTable.contentId })
+        .returning({ sectionId: vectorsTable.sectionId })
 
       result.deleted = deleteds.length
-
       return result
     }
 
-    result.total = len
+    const postsMap = new Map(posts.map(p => [p.path, p]))
 
-    const postIds = posts.map(p => p.id)
+    const sections = (await queryCollectionSearchSections(event, 'posts', {
+      ignoredTags: [
+        'pre',
+        'html',
+        'script',
+        'style',
+        'img',
+        'svg',
+        'path',
+        'canvas',
+        'iframe',
+        'video',
+        'audio',
+      ],
+    }).where('hidden', '<>', true)).filter(s => s.content.trim())
+
+    const sectionIds = sections.map(s => s.id)
 
     const deleteds = await db
       .delete(vectorsTable)
-      .where(notInArray(vectorsTable.contentId, postIds))
-      .returning({ contentId: vectorsTable.contentId })
+      .where(notInArray(vectorsTable.sectionId, sectionIds))
+      .returning({ sectionId: vectorsTable.sectionId })
 
     result.deleted = deleteds.length
 
     const existing = await db
       .select({
-        contentId: vectorsTable.contentId,
+        sectionId: vectorsTable.sectionId,
         updatedAt: vectorsTable.updatedAt,
       })
       .from(vectorsTable)
-      .where(inArray(vectorsTable.contentId, postIds))
+      .where(inArray(vectorsTable.sectionId, sectionIds))
 
-    const existingUpdatedAtMap = new Map(existing.map(v => [v.contentId, v.updatedAt]))
+    const existingUpdatedAtMap = new Map(existing.map(v => [v.sectionId, v.updatedAt]))
 
-    const shouldAddPosts: typeof posts = []
-    const shouldUpdatePosts: typeof posts = []
+    const shouldAddSections: ShouldProcessSectionItem[] = []
+    const shouldUpdateSections: ShouldProcessSectionItem[] = []
 
-    for (const post of posts) {
-      const updatedAt = existingUpdatedAtMap.get(post.id)
+    for (const section of sections) {
+      const updatedAt = existingUpdatedAtMap.get(section.id)
+      const postId = getPostId(section.id)
+      const postUpdatedAt = postsMap.get(postId)?.updatedAt
+
+      const createProcessSection = () => Object.assign(
+        section,
+        {
+          postId,
+          postTitle: postsMap.get(postId)?.title ?? '',
+          postUpdatedAt: postsMap.get(postId)?.updatedAt,
+          heading: section.titles?.at(-1) ?? null,
+        },
+      )
+
       if (!updatedAt) {
-        shouldAddPosts.push(post)
+        shouldAddSections.push(createProcessSection())
       }
-      else if (post.updatedAt && new Date(post.updatedAt) > new Date(updatedAt)) {
-        shouldUpdatePosts.push(post)
+      else if (postUpdatedAt && new Date(postUpdatedAt) > new Date(updatedAt)) {
+        shouldUpdateSections.push(createProcessSection())
       }
     }
 
-    const shouldProcessPosts = [...shouldAddPosts, ...shouldUpdatePosts]
-    result.added = shouldAddPosts.length
-    result.updated = shouldUpdatePosts.length
-    result.skipped = len - shouldProcessPosts.length
+    const shouldProcessSections = [...shouldAddSections, ...shouldUpdateSections]
+    result.added = shouldAddSections.length
+    result.updated = shouldUpdateSections.length
+    result.skipped = sections.length - shouldProcessSections.length
 
-    if (shouldProcessPosts.length === 0)
+    if (shouldProcessSections.length === 0)
       return result
 
-    const values = shouldProcessPosts.map((post) => {
-      const parts = [`文章标题: ${post.title}`]
-      if (post.description)
-        parts.push(`内容摘要: ${post.description}`)
+    const values = shouldProcessSections.map((section) => {
+      const parts = []
 
-      if (post.tags?.length)
-        parts.push(`分类标签: ${post.tags.join(', ')}`)
+      if (section.postTitle)
+        parts.push(`标题: ${section.postTitle}`)
 
-      return `${parts.join('\n')}.`
+      if (section.heading)
+        parts.push(`章节: ${section.heading}`)
+
+      parts.push(`内容: ${section.content}`)
+
+      return parts.join('\n')
     })
 
     const { embeddings } = await embedMany({ model, values })
 
-    const records = shouldProcessPosts.map((post, i) => ({
-      contentId: post.id,
-      content: values[i],
-      embedding: embeddings[i],
-      updatedAt: new Date(),
-    }))
+    const records = shouldProcessSections.map((section, i) => {
+      const postId = getPostId(section.id)
+      return {
+        postId,
+        sectionId: section.id,
+        title: section.postTitle,
+        heading: section.heading,
+        content: values[i]!,
+        embedding: embeddings[i]!,
+        updatedAt: new Date(),
+      }
+    })
 
     await db.insert(vectorsTable)
       .values(records)
       .onConflictDoUpdate({
-        target: vectorsTable.contentId,
+        target: vectorsTable.sectionId,
         set: {
           embedding: sql`EXCLUDED.embedding`,
           content: sql`EXCLUDED.content`,
+          title: sql`EXCLUDED.title`,
+          heading: sql`EXCLUDED.heading`,
           updatedAt: sql`EXCLUDED.updated_at`,
         },
       })

@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     .count()
 
   const vectorized = await db
-    .select({ count: sql<number>`count(*)::int` })
+    .select({ count: sql<number>`count(DISTINCT ${vectorsTable.postId})::int` })
     .from(vectorsTable)
     .then(r => r[0]?.count ?? 0)
 

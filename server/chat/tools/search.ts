@@ -37,29 +37,42 @@ export function createSearchTool(event: H3Event) {
 
       const vectorResults = await db
         .select({
-          contentId: vectorsTable.contentId,
+          postId: vectorsTable.postId,
           similarity,
         })
         .from(vectorsTable)
         .where(gt(similarity, 0.35))
         .orderBy(t => desc(t.similarity))
-        .limit(4)
+        .limit(12)
 
       if (vectorResults.length === 0)
         return []
 
-      const contentIds = vectorResults.map(r => r.contentId)
+      const postScores = new Map<string, number>()
+      for (const r of vectorResults) {
+        const current = postScores.get(r.postId) ?? 0
+        if (r.similarity > current) {
+          postScores.set(r.postId, r.similarity)
+        }
+      }
+
+      const topPosts = [...postScores.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4)
+
+      const topPostIds = topPosts.map(([id]) => id)
+
       const posts = await queryCollection(event, 'posts')
-        .where('id', 'IN', contentIds)
+        .where('id', 'IN', topPostIds)
         .select('id', 'title', 'path', 'description', 'date', 'tags')
         .all()
 
       const postsMap = new Map(posts.map(p => [p.id, p]))
 
-      return vectorResults
-        .map((v) => {
-          const post = postsMap.get(v.contentId)
-          return post ? { ...post, similarity: Number(v.similarity.toFixed(4)) } : null
+      return topPosts
+        .map(([postId, similarity]) => {
+          const post = postsMap.get(postId)
+          return post ? { ...post, similarity: Number(similarity.toFixed(4)) } : null
         })
         .filter(Boolean)
     },
