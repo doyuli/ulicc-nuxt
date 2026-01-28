@@ -9,8 +9,8 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="cn('flex items-center gap-2 py-6 opacity-50', $props.class)">
+  <p :class="cn('flex items-center gap-2 opacity-50', $props.class)">
     <Loader2Icon class="size-4 animate-spin" />
     <span class="text-xs font-medium">正在思考...</span>
-  </div>
+  </p>
 </template>

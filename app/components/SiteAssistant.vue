@@ -122,7 +122,7 @@ watch(isOpen, async (val) => {
               <template v-else>
                 <Message role="system">
                   <MessageContent class="text-sm">
-                    <p class="leading-7.5">
+                    <p class="leading-6">
                       你好，请问有什么可以帮您的吗
                     </p>
                   </MessageContent>

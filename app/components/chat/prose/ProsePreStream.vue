@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { HtmlHTMLAttributes } from 'vue'
 import { ShikiCachedRenderer } from 'shiki-stream/vue'
+import ProsePre from '~/components/content/ProsePre.vue'
 
 const props = defineProps<{
   code: string

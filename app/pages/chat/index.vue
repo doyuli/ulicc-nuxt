@@ -126,7 +126,7 @@ const suggestions = [
                 :role="message.role"
               >
                 <MessageAvatar />
-                <MessageContent variant="ghost">
+                <MessageContent variant="ghost" class="[&_p]:leading-8">
                   <template v-for="(part, i) in message.parts" :key="i">
                     <template v-if="part.type === 'text'">
                       <p v-if="message.role === 'user'">
