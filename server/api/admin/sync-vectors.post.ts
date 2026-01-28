@@ -11,41 +11,37 @@ export default defineLazyEventHandler(async () => {
   return defineEventHandler(async (event) => {
     await requireUserSession(event)
 
-    if (!import.meta.dev) {
-      throw createError({
-        statusCode: 403,
-        message: 'Sync API is only available in development mode',
-      })
-    }
+    const result = { total: 0, added: 0, updated: 0, skipped: 0, deleted: 0 }
 
     const posts = await queryCollection(event, 'posts')
       .where('hidden', '<>', true)
       .select('id', 'title', 'description', 'tags', 'updatedAt')
       .all()
 
+    const len = posts.length
+
+    if (!len) {
+      const deleteds = await db
+        .delete(vectorsTable)
+        .returning({ contentId: vectorsTable.contentId })
+
+      result.deleted = deleteds.length
+
+      return result
+    }
+
+    result.total = len
+
     const postIds = posts.map(p => p.id)
 
-    let deleted = 0
+    const deleteds = await db
+      .delete(vectorsTable)
+      .where(notInArray(vectorsTable.contentId, postIds))
+      .returning({ contentId: vectorsTable.contentId })
 
-    if (postIds.length > 0) {
-      const deleteResult = await db
-        .delete(vectorsTable)
-        .where(notInArray(vectorsTable.contentId, postIds))
-        .returning({ contentId: vectorsTable.contentId })
-      deleted = deleteResult.length
-    }
-    else {
-      const deleteResult = await db
-        .delete(vectorsTable)
-        .returning({ contentId: vectorsTable.contentId })
-      deleted = deleteResult.length
-    }
+    result.deleted = deleteds.length
 
-    if (!posts.length) {
-      return { total: 0, added: 0, updated: 0, skipped: 0, deleted }
-    }
-
-    const existingVectors = await db
+    const existing = await db
       .select({
         contentId: vectorsTable.contentId,
         updatedAt: vectorsTable.updatedAt,
@@ -53,29 +49,30 @@ export default defineLazyEventHandler(async () => {
       .from(vectorsTable)
       .where(inArray(vectorsTable.contentId, postIds))
 
-    const existingMap = new Map(existingVectors.map(v => [v.contentId, v.updatedAt]))
+    const existingUpdatedAtMap = new Map(existing.map(v => [v.contentId, v.updatedAt]))
 
-    const postsToAdd: typeof posts = []
-    const postsToUpdate: typeof posts = []
+    const shouldAddPosts: typeof posts = []
+    const shouldUpdatePosts: typeof posts = []
 
     for (const post of posts) {
-      const existingUpdatedAt = existingMap.get(post.id)
-      if (!existingUpdatedAt) {
-        postsToAdd.push(post)
+      const updatedAt = existingUpdatedAtMap.get(post.id)
+      if (!updatedAt) {
+        shouldAddPosts.push(post)
       }
-      else if (post.updatedAt && new Date(post.updatedAt) > existingUpdatedAt) {
-        postsToUpdate.push(post)
+      else if (post.updatedAt && new Date(post.updatedAt) > new Date(updatedAt)) {
+        shouldUpdatePosts.push(post)
       }
     }
 
-    const postsToProcess = [...postsToAdd, ...postsToUpdate]
-    const skipped = posts.length - postsToProcess.length
+    const shouldProcessPosts = [...shouldAddPosts, ...shouldUpdatePosts]
+    result.added = shouldAddPosts.length
+    result.updated = shouldUpdatePosts.length
+    result.skipped = len - shouldProcessPosts.length
 
-    if (postsToProcess.length === 0) {
-      return { total: posts.length, added: 0, updated: 0, skipped, deleted }
-    }
+    if (shouldProcessPosts.length === 0)
+      return result
 
-    const values = postsToProcess.map((post) => {
+    const values = shouldProcessPosts.map((post) => {
       const parts = [`文章标题: ${post.title}`]
       if (post.description)
         parts.push(`内容摘要: ${post.description}`)
@@ -88,7 +85,7 @@ export default defineLazyEventHandler(async () => {
 
     const { embeddings } = await embedMany({ model, values })
 
-    const records = postsToProcess.map((post, i) => ({
+    const records = shouldProcessPosts.map((post, i) => ({
       contentId: post.id,
       content: values[i],
       embedding: embeddings[i],
@@ -106,12 +103,6 @@ export default defineLazyEventHandler(async () => {
         },
       })
 
-    return {
-      total: posts.length,
-      added: postsToAdd.length,
-      updated: postsToUpdate.length,
-      skipped,
-      deleted,
-    }
+    return result
   })
 })

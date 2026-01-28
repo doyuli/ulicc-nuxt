@@ -9,6 +9,7 @@ import {
   Server,
   Terminal,
 } from 'lucide-vue-next'
+import { cn } from '~/lib/utils'
 
 definePageMeta({
   middleware: 'auth',
@@ -34,7 +35,9 @@ async function handleSync() {
     return
 
   isSyncing.value = true
-  syncLogs.value = ['> 初始化同步进程...', '> 连接 SQLite 内容源...']
+  syncLogs.value = ['> 初始化同步进程...', '> 连接 Content 内容源...']
+
+  const start = performance.now()
 
   try {
     const result = await $fetch('/api/admin/sync-vectors', {
@@ -48,6 +51,7 @@ async function handleSync() {
       `> ⏭️ 跳过未变: ${result.skipped}`,
       `> 🗑️ 清理失效: ${result.deleted}`,
       `> 同步完成于 ${new Date().toLocaleTimeString()}`,
+      `> 用时 ${Math.round(performance.now() - start)}ms`,
     )
 
     await Promise.all([refreshStats(), refreshPosts()])
@@ -75,87 +79,68 @@ async function checkHealth() {
   }
 }
 
+const statCards = computed(() => {
+  const total = stats.value.totalPosts || 1
+
+  return [
+    {
+      title: '总文章数',
+      icon: FileText,
+      value: stats.value.totalPosts,
+      subtext: 'Nuxt Content 本地源',
+    },
+    {
+      title: '向量覆盖率',
+      icon: Database,
+      value: `${Math.round((stats.value.vectorized / total) * 100)}%`,
+      subtext: `${stats.value.vectorized} / ${stats.value.totalPosts} 已索引`,
+    },
+    {
+      title: 'AI 摘要覆盖率',
+      icon: Server,
+      value: `${Math.round((stats.value.summarized / total) * 100)}%`,
+      subtext: `${stats.value.summarized} / ${stats.value.totalPosts} 已生成`,
+    },
+    {
+      title: '系统状态',
+      icon: Activity,
+      value: systemStatus.value === 'connected' ? '运行正常' : '服务异常',
+      subtext: `API 延迟: ${systemLatency.value}ms`,
+      class: systemStatus.value === 'connected' ? 'text-foreground' : 'text-red-500',
+    },
+  ]
+})
+
 onMounted(checkHealth)
 </script>
 
 <template>
   <PageSection>
     <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
+      <Card v-for="item in statCards" :key="item.title">
         <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle class="text-sm font-medium">
-            总文章数
+            {{ item.title }}
           </CardTitle>
-          <FileText class="h-4 w-4 text-muted-foreground" />
+          <component :is="item.icon" class="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div class="text-2xl font-bold">
-            {{ stats.totalPosts }}
+          <div :class="cn('text-2xl font-bold', item.class)">
+            {{ item.value }}
           </div>
           <p class="text-xs text-muted-foreground">
-            Nuxt Content 本地源
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle class="text-sm font-medium">
-            向量覆盖率
-          </CardTitle>
-          <Database class="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div class="text-2xl font-bold">
-            {{ Math.round((stats.vectorized / stats.totalPosts) * 100) }}%
-          </div>
-          <p class="text-xs text-muted-foreground">
-            {{ stats.vectorized }} / {{ stats.totalPosts }} 已索引
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle class="text-sm font-medium">
-            AI 摘要覆盖率
-          </CardTitle>
-          <Server class="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div class="text-2xl font-bold">
-            {{ Math.round((stats.summarized / stats.totalPosts) * 100) }}%
-          </div>
-          <p class="text-xs text-muted-foreground">
-            {{ stats.summarized }} / {{ stats.totalPosts }} 已生成
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle class="text-sm font-medium">
-            系统状态
-          </CardTitle>
-          <Activity class="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div class="text-2xl font-bold">
-            {{ systemStatus === 'connected' ? '运行正常' : '服务异常' }}
-          </div>
-          <p class="text-xs text-muted-foreground">
-            API 延迟: {{ systemLatency }}ms
+            {{ item.subtext }}
           </p>
         </CardContent>
       </Card>
     </div>
 
-    <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
-      <Card class="col-span-4 flex flex-col">
+    <div class="grid gap-4 grid-cols-1 lg:grid-cols-7">
+      <Card class="col-span-4">
         <CardHeader>
           <CardTitle>向量数据库同步</CardTitle>
           <CardDescription>
-            将 SQLite/Markdown 内容增量同步至 PostgreSQL 向量库 (pgvector)
+            将 Markdown 内容增量同步至 PostgreSQL 向量库
           </CardDescription>
         </CardHeader>
         <CardContent class="flex-1 flex flex-col gap-4">
@@ -165,7 +150,7 @@ onMounted(checkHealth)
                 手动触发同步
               </p>
               <p class="text-sm text-muted-foreground">
-                系统将计算 Content Hash，仅更新变更的文章。
+                系统将计算 Content Updated，仅更新变更的文章。
               </p>
             </div>
             <Button
@@ -190,7 +175,7 @@ onMounted(checkHealth)
                 </div>
                 <div v-for="(log, i) in syncLogs" :key="i" class="break-all">
                   <span class="text-green-500 mr-2">$</span>
-                  <span :class="{ 'text-red-400': log.includes('Error'), 'text-yellow-400': log.includes('跳过') }">
+                  <span :class="{ 'text-red-400': log.includes('Error') }">
                     {{ log }}
                   </span>
                 </div>
@@ -200,7 +185,7 @@ onMounted(checkHealth)
         </CardContent>
       </Card>
 
-      <Card class="col-span-3 flex flex-col">
+      <Card class="col-span-3">
         <CardHeader>
           <CardTitle>最新文章状态</CardTitle>
           <CardDescription>监控最近发布的文章及其索引情况</CardDescription>
