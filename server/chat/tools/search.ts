@@ -16,10 +16,9 @@ export function createSearchTool(event: H3Event) {
   const db = useDb()
 
   return tool({
-    description: `Search for blog posts using natural language semantic search. 
-                  Best for finding topics, features, or updates even when keywords don't match exactly.`,
+    description: `[PRIMARY TOOL] Performs a semantic vector search. Use this for ANY technical questions, concept lookups, or "how-to" queries (e.g., "optimization", "Nuxt auth"). It finds relevant articles based on meaning even without exact keyword matches.`,
     inputSchema: z.object({
-      query: z.string().describe('The search query in natural language (e.g., "performance optimization tips")'),
+      query: z.string().describe('The search query in natural language.'),
     }),
     execute: async ({ query }) => {
       let embedding = embeddingCache.get(query)
