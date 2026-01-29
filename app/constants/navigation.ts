@@ -1,6 +1,5 @@
 import type { NavItem } from '~/components/SiteNavigation.vue'
 import {
-  BotIcon,
   FileTextIcon,
   HashIcon,
   PencilRuler,
@@ -38,11 +37,6 @@ export const NAV_CONFIG: NavItem[] = [
         label: '代码片段',
         href: '/snippets',
         icon: SquareChevronRight,
-      },
-      {
-        label: '站点助手',
-        href: '/chat',
-        icon: BotIcon,
       },
     ],
   },
