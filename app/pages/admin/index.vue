@@ -39,7 +39,7 @@ const totalPosts = computed(() => postsData.value.total)
 const isSyncing = shallowRef(false)
 const syncLogs = ref<string[]>([])
 
-async function handleSync() {
+async function handleSyncVector() {
   if (isSyncing.value)
     return
 
@@ -70,6 +70,24 @@ async function handleSync() {
   }
   finally {
     isSyncing.value = false
+  }
+}
+
+const summaryLoadingPaths = ref(new Set<string>())
+async function handleGenerateSummary(path: string, isSummary?: boolean) {
+  if (isSummary || summaryLoadingPaths.value.has(path))
+    return
+
+  summaryLoadingPaths.value.add(path)
+  try {
+    await $fetch('/api/chat/summary', {
+      body: { path },
+      method: 'POST',
+    })
+    await Promise.all([refreshStats(), refreshPosts()])
+  }
+  finally {
+    summaryLoadingPaths.value.delete(path)
   }
 }
 
@@ -165,7 +183,7 @@ onMounted(checkHealth)
             <Button
               :disabled="isSyncing"
               :class="{ 'opacity-80': isSyncing }"
-              @click="handleSync"
+              @click="handleSyncVector"
             >
               <RefreshCw class="mr-2 size-4" :class="{ 'animate-spin': isSyncing }" />
               {{ isSyncing ? '同步中...' : '立即同步' }}
@@ -226,8 +244,18 @@ onMounted(checkHealth)
                 </TableCell>
                 <TableCell class="text-right">
                   <div class="flex flex-col items-end gap-1">
-                    <Badge variant="secondary" :class="cn('text-xs', !post.summary && 'bg-chart-1/10')">
-                      {{ post.summary ? 'SUMMARIZED' : 'NO SUMMARY' }}
+                    <Badge
+                      variant="secondary"
+                      :class="cn('text-xs', !post.summary && 'cursor-pointer bg-chart-1/10')"
+                      @click="handleGenerateSummary(post.path, post.summary)"
+                    >
+                      <template v-if="summaryLoadingPaths.has(post.path)">
+                        <RefreshCw class="mr-1 size-3 animate-spin" />
+                        GENERATING...
+                      </template>
+                      <template v-else>
+                        {{ post.summary ? 'SUMMARIZED' : 'NO SUMMARY' }}
+                      </template>
                     </Badge>
                     <div v-if="post.vector" class="flex items-center text-[10px] text-muted-foreground">
                       <CheckCircle2 class="size-3 mr-1 text-green-500" />

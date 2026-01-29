@@ -14,17 +14,18 @@ export default defineEventHandler(async (event) => {
   const result: {
     total: number
     posts: {
-      summary: boolean
-      vector: boolean
-      date: string
       id: string
       title: string
+      date: string
+      path: string
+      summary: boolean
+      vector: boolean
     }[]
   } = { total: 0, posts: [] }
 
   const posts = await queryCollection(event, 'posts')
     .where('hidden', '<>', true)
-    .select('id', 'title', 'date')
+    .select('id', 'title', 'date', 'path')
     .all()
 
   if (!posts.length)
