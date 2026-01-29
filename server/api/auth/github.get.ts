@@ -3,6 +3,17 @@ import { AUTH_LOGIN_TYPE } from '~~/shared/constants'
 
 export default defineOAuthGitHubEventHandler({
   async onSuccess(event, { user }) {
+    const rawAllowed = useRuntimeConfig().oauthGithubAllowedUsernames || ''
+
+    const allowedUsernames = rawAllowed.split(',').map(v => v.trim()).filter(Boolean)
+
+    const isAllowed = allowedUsernames.length === 0 || allowedUsernames.includes(user.login)
+
+    if (!isAllowed) {
+      console.warn(`[Auth] Unauthorized login attempt from GitHub user: ${user.login}`)
+      return sendRedirect(event, '/admin/login?error=unauthorized')
+    }
+
     await setUserSession(event, {
       user: {
         role: USER_ROLE_ENUM.AUTHORIZED_VISITOR,

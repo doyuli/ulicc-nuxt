@@ -29,6 +29,7 @@ export default defineNuxtConfig({
     siteHostname: '',
     databaseUrl: '',
     siliconflowApiKey: '',
+    oauthGithubAllowedUsernames: '',
   },
   content: {
     build: {
