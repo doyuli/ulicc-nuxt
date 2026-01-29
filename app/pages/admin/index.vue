@@ -23,11 +23,20 @@ const { data: stats, refresh: refreshStats } = await useFetch('/api/admin/stats'
   default: () => ({ totalPosts: 0, vectorized: 0, summarized: 0 }),
 })
 
-const { data: recentPosts, refresh: refreshPosts } = await useFetch('/api/admin/recent-posts', {
-  default: () => [],
+const currentPage = shallowRef(1)
+const pagesize = 4
+const { data: postsData, refresh: refreshPosts } = await useFetch('/api/admin/recent-posts', {
+  query: {
+    page: currentPage,
+    pagesize,
+  },
+  default: () => ({ total: 0, posts: [] }),
+  watch: [currentPage],
 })
+const recentPosts = computed(() => postsData.value.posts)
+const totalPosts = computed(() => postsData.value.total)
 
-const isSyncing = ref(false)
+const isSyncing = shallowRef(false)
 const syncLogs = ref<string[]>([])
 
 async function handleSync() {
@@ -64,8 +73,8 @@ async function handleSync() {
   }
 }
 
-const systemLatency = ref(0)
-const systemStatus = ref<'connected' | 'disconnected'>('connected')
+const systemLatency = shallowRef(0)
+const systemStatus = shallowRef<'connected' | 'disconnected'>('connected')
 
 async function checkHealth() {
   const start = performance.now()
@@ -190,7 +199,7 @@ onMounted(checkHealth)
           <CardTitle>最新文章状态</CardTitle>
           <CardDescription>监控最近发布的文章及其索引情况</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent class="flex-1">
           <Table>
             <TableHeader>
               <TableRow>
@@ -212,8 +221,8 @@ onMounted(checkHealth)
                 </TableCell>
                 <TableCell class="text-right">
                   <div class="flex flex-col items-end gap-1">
-                    <Badge variant="secondary" class="text-xs">
-                      {{ post.summary ? 'Summarized' : 'Pending' }}
+                    <Badge variant="secondary" :class="cn('text-xs', !post.summary && 'bg-chart-1/10')">
+                      {{ post.summary ? 'SUMMARIZED' : 'NO SUMMARY' }}
                     </Badge>
                     <div v-if="post.vector" class="flex items-center text-[10px] text-muted-foreground">
                       <CheckCircle2 class="h-3 w-3 mr-1 text-green-500" />
@@ -229,6 +238,24 @@ onMounted(checkHealth)
             </TableBody>
           </Table>
         </CardContent>
+        <CardFooter>
+          <Pagination
+            v-model:page="currentPage"
+            :items-per-page="pagesize"
+            :total="totalPosts"
+          >
+            <PaginationContent v-slot="{ items }">
+              <PaginationFirst />
+              <template v-for="(item, index) in items" :key="index">
+                <PaginationItem v-if="item.type === 'page'" :value="item.value" :is-active="item.value === currentPage">
+                  {{ item.value }}
+                </PaginationItem>
+                <PaginationEllipsis v-else-if="item.type === 'ellipsis'" :index="index" />
+              </template>
+              <PaginationLast />
+            </PaginationContent>
+          </Pagination>
+        </CardFooter>
       </Card>
     </div>
   </PageSection>

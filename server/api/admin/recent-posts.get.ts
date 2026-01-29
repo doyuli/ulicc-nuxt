@@ -7,36 +7,59 @@ export default defineEventHandler(async (event) => {
 
   const db = useDb()
 
+  let { page = 1, pagesize = 4 } = getQuery(event)
+  page = Number(page)
+  pagesize = Number(pagesize)
+
+  const result: {
+    total: number
+    posts: {
+      summary: boolean
+      vector: boolean
+      date: string
+      id: string
+      title: string
+    }[]
+  } = { total: 0, posts: [] }
+
   const posts = await queryCollection(event, 'posts')
     .where('hidden', '<>', true)
-    .order('date', 'DESC')
     .select('id', 'title', 'date')
-    .limit(4)
     .all()
 
-  if (!posts.length) {
-    return []
-  }
+  if (!posts.length)
+    return result
 
   const postIds = posts.map(p => p.id)
 
-  const vectorizedIds = await db
-    .selectDistinct({ postId: vectorsTable.postId })
-    .from(vectorsTable)
-    .where(inArray(vectorsTable.postId, postIds))
-    .then(rows => new Set(rows.map(r => r.postId)))
+  const [vectorizedIds, summarizedIds] = await Promise.all([
+    db.selectDistinct({ postId: vectorsTable.postId })
+      .from(vectorsTable)
+      .where(inArray(vectorsTable.postId, postIds))
+      .then(rows => new Set(rows.map(r => r.postId))),
+    db.select({ postId: summarysTable.postId })
+      .from(summarysTable)
+      .where(inArray(summarysTable.postId, postIds))
+      .then(rows => new Set(rows.map(r => r.postId))),
+  ])
 
-  const summarizedIds = await db
-    .select({ postId: summarysTable.postId })
-    .from(summarysTable)
-    .where(inArray(summarysTable.postId, postIds))
-    .then(rows => new Set(rows.map(r => r.postId)))
-
-  return posts.map(post => ({
-    id: post.id,
-    title: post.title,
-    date: post.date,
+  const sorted = posts.map(post => ({
+    ...post,
     summary: summarizedIds.has(post.id),
     vector: vectorizedIds.has(post.id),
-  }))
+  })).sort((a, b) => {
+    if (a.summary !== b.summary)
+      return a.summary ? 1 : -1
+
+    if (a.vector !== b.vector)
+      return a.vector ? 1 : -1
+
+    return new Date(b.date).getTime() - new Date(a.date).getTime()
+  })
+
+  const start = (page - 1) * pagesize
+  result.posts = sorted.slice(start, start + pagesize)
+  result.total = sorted.length
+
+  return result
 })
