@@ -1,5 +1,5 @@
 {
-  "id": "cce7564d-488a-4746-9935-ef7ba6d5d9db",
+  "id": "5ad35c80-ddef-41c0-a872-98c3757b6caf",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -66,15 +66,39 @@
           "primaryKey": true,
           "notNull": true
         },
-        "content_id": {
-          "name": "content_id",
+        "post_id": {
+          "name": "post_id",
           "type": "varchar(191)",
           "primaryKey": false,
           "notNull": true
         },
+        "section_id": {
+          "name": "section_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "heading": {
+          "name": "heading",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "content": {
           "name": "content",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content_hash": {
+          "name": "content_hash",
+          "type": "varchar(32)",
           "primaryKey": false,
           "notNull": true
         },
@@ -108,16 +132,31 @@
           "concurrently": false,
           "method": "hnsw",
           "with": {}
+        },
+        "post_id_idx": {
+          "name": "post_id_idx",
+          "columns": [
+            {
+              "expression": "post_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "content_vectors_content_id_unique": {
-          "name": "content_vectors_content_id_unique",
+        "content_vectors_section_id_unique": {
+          "name": "content_vectors_section_id_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "content_id"
+            "section_id"
           ]
         }
       },
