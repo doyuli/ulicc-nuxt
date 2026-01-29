@@ -1,5 +1,5 @@
 {
-  "id": "5ad35c80-ddef-41c0-a872-98c3757b6caf",
+  "id": "22cf57cf-22f0-4154-a738-2a45ef16aac0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -14,8 +14,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "content_id": {
-          "name": "content_id",
+        "post_id": {
+          "name": "post_id",
           "type": "varchar(191)",
           "primaryKey": false,
           "notNull": true
@@ -44,11 +44,11 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "content_summarys_content_id_unique": {
-          "name": "content_summarys_content_id_unique",
+        "content_summarys_post_id_unique": {
+          "name": "content_summarys_post_id_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "content_id"
+            "post_id"
           ]
         }
       },

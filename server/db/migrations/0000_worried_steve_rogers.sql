@@ -1,10 +1,10 @@
 CREATE TABLE "content_summarys" (
 	"id" varchar(191) PRIMARY KEY NOT NULL,
-	"content_id" varchar(191) NOT NULL,
+	"post_id" varchar(191) NOT NULL,
 	"title" text NOT NULL,
 	"summary" text NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "content_summarys_content_id_unique" UNIQUE("content_id")
+	CONSTRAINT "content_summarys_post_id_unique" UNIQUE("post_id")
 );
 --> statement-breakpoint
 CREATE TABLE "content_vectors" (

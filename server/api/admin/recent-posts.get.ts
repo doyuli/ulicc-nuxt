@@ -27,10 +27,10 @@ export default defineEventHandler(async (event) => {
     .then(rows => new Set(rows.map(r => r.postId)))
 
   const summarizedIds = await db
-    .select({ contentId: summarysTable.contentId })
+    .select({ postId: summarysTable.postId })
     .from(summarysTable)
-    .where(inArray(summarysTable.contentId, postIds))
-    .then(rows => new Set(rows.map(r => r.contentId)))
+    .where(inArray(summarysTable.postId, postIds))
+    .then(rows => new Set(rows.map(r => r.postId)))
 
   return posts.map(post => ({
     id: post.id,

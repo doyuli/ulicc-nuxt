@@ -23,7 +23,7 @@ export default defineLazyEventHandler(async () => {
     const existing = await db
       .select()
       .from(summarysTable)
-      .where(eq(summarysTable.contentId, post.id))
+      .where(eq(summarysTable.postId, post.id))
       .limit(1)
 
     if (existing.length > 0) {
@@ -44,13 +44,13 @@ export default defineLazyEventHandler(async () => {
       onFinish: async ({ text }) => {
         await db.insert(summarysTable)
           .values({
-            contentId: post.id,
+            postId: post.id,
             title: post.title,
             summary: text,
             updatedAt: new Date(),
           })
           .onConflictDoUpdate({
-            target: summarysTable.contentId,
+            target: summarysTable.postId,
             set: {
               summary: sql`EXCLUDED.summary`,
               updatedAt: sql`EXCLUDED.updated_at`,

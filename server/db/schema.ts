@@ -23,7 +23,7 @@ export const summarysTable = pgTable(
   'content_summarys',
   {
     id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
-    contentId: varchar('content_id', { length: 191 }).notNull().unique(),
+    postId: varchar('post_id', { length: 191 }).notNull().unique(),
     title: text('title').notNull(),
     summary: text('summary').notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
