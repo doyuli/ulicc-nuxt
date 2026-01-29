@@ -131,7 +131,7 @@ onMounted(checkHealth)
           <CardTitle class="text-sm font-medium">
             {{ item.title }}
           </CardTitle>
-          <component :is="item.icon" class="h-4 w-4 text-muted-foreground" />
+          <component :is="item.icon" class="size-4 shrink-0 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div :class="cn('text-2xl font-bold', item.class)">
@@ -167,14 +167,14 @@ onMounted(checkHealth)
               :class="{ 'opacity-80': isSyncing }"
               @click="handleSync"
             >
-              <RefreshCw class="mr-2 h-4 w-4" :class="{ 'animate-spin': isSyncing }" />
+              <RefreshCw class="mr-2 size-4" :class="{ 'animate-spin': isSyncing }" />
               {{ isSyncing ? '同步中...' : '立即同步' }}
             </Button>
           </div>
 
           <div class="mt-4 rounded-md bg-zinc-950 p-4 font-mono text-xs text-zinc-50 overflow-hidden flex flex-col h-[200px]">
             <div class="flex items-center gap-2 border-b border-zinc-800 pb-2 mb-2 text-zinc-400">
-              <Terminal class="h-3 w-3" />
+              <Terminal class="size-3" />
               <span>sync-process.log</span>
             </div>
             <div class="flex-1 overflow-y-auto">
@@ -195,9 +195,14 @@ onMounted(checkHealth)
       </Card>
 
       <Card class="col-span-3">
-        <CardHeader>
-          <CardTitle>最新文章状态</CardTitle>
-          <CardDescription>监控最近发布的文章及其索引情况</CardDescription>
+        <CardHeader class="flex flex-row items-center justify-between">
+          <div class="flex flex-col gap-1.5">
+            <CardTitle>文章状态</CardTitle>
+            <CardDescription>监控文章及其索引情况</CardDescription>
+          </div>
+          <Button size="icon" variant="ghost" @click="refreshPosts">
+            <RefreshCw class="size-4 shrink-0" />
+          </Button>
         </CardHeader>
         <CardContent class="flex-1">
           <Table>
@@ -225,11 +230,11 @@ onMounted(checkHealth)
                       {{ post.summary ? 'SUMMARIZED' : 'NO SUMMARY' }}
                     </Badge>
                     <div v-if="post.vector" class="flex items-center text-[10px] text-muted-foreground">
-                      <CheckCircle2 class="h-3 w-3 mr-1 text-green-500" />
+                      <CheckCircle2 class="size-3 mr-1 text-green-500" />
                       已索引
                     </div>
                     <div v-else class="flex items-center text-[10px] text-muted-foreground">
-                      <AlertCircle class="h-3 w-3 mr-1 text-yellow-500" />
+                      <AlertCircle class="size-3 mr-1 text-yellow-500" />
                       待索引
                     </div>
                   </div>
