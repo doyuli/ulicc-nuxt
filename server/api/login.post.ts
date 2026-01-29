@@ -4,6 +4,8 @@ export default defineEventHandler(async (event) => {
   const { code } = await readBody(event)
   const config = useRuntimeConfig()
 
+  await new Promise(resolve => setTimeout(resolve, 1000))
+
   if (code === config.siteAccessCode.toString()) {
     await setUserSession(event, {
       user: {

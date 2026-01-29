@@ -17,6 +17,7 @@ usePageMeta({
       <NuxtPage />
     </NuxtLayout>
     <ArtPlum />
+    <SiteAssistant />
     <Toaster position="top-center" />
   </ConfigProvider>
 </template>

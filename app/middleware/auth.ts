@@ -3,6 +3,6 @@ export default defineNuxtRouteMiddleware((to) => {
 
   if (!loggedIn.value) {
     const fullPath = encodeURIComponent(to.fullPath)
-    return navigateTo(`/login?redirect=${fullPath}`)
+    return navigateTo(`/admin/login?redirect=${fullPath}`)
   }
 })

@@ -26,26 +26,35 @@ function resetCode() {
 
 const redirectURI = computed(() => (route.query.redirect as string) || '/')
 
-async function login() {
+function login() {
+  if (isLoading.value)
+    return
+
   isLoading.value = true
-  try {
-    await $fetch('/api/login', {
-      method: 'POST',
-      body: { code: code.value },
-    })
-
-    await fetchSession()
-
-    await navigateTo(decodeURIComponent(redirectURI.value), { replace: true })
-  }
-  catch (e: any) {
-    resetCode()
-    toast.error(e.data?.message || '验证失败，请检查代码是否正确', { duration: 1000 })
-  }
-  finally {
+  const promise = $fetch('/api/login', {
+    method: 'POST',
+    body: { code: code.value },
+  }).finally(() => {
     isLoading.value = false
-  }
+  })
+
+  toast.promise(promise, {
+    loading: '验证中...',
+    success: async () => {
+      await fetchSession()
+
+      navigateTo(decodeURIComponent(redirectURI.value), { replace: true })
+      return '欢迎回来'
+    },
+    error: (e: any) => {
+      resetCode()
+      return e.data?.message || '验证失败，请检查代码是否正确'
+    },
+    duration: 600,
+  })
 }
+
+const debounceLogin = useDebounceFn(login, 300, { maxWait: 1200 })
 </script>
 
 <template>
@@ -75,7 +84,7 @@ async function login() {
               class="self-center"
               :maxlength="6"
               :pattern="REGEXP_ONLY_DIGITS_AND_CHARS"
-              @complete="login"
+              @complete="debounceLogin"
             >
               <InputOTPGroup>
                 <InputOTPSlot v-for="(_, i) in 6" :key="i" class="size-9 md:size-12" :index="i" />

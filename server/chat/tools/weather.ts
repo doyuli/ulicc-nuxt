@@ -3,11 +3,11 @@ import { z } from 'zod'
 
 export function createWeatherTool() {
   return tool({
-    description: 'A tool to get current weather information for a location',
+    description: 'Get current weather information for a specific city.',
     inputSchema: z.object({
       location: z
         .string()
-        .describe('The city or location to get weather for, in English only'),
+        .describe('City name (e.g., "Shanghai", "New York")'),
       units: z
         .enum(['metric', 'imperial'])
         .default('metric')

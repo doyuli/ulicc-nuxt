@@ -17,6 +17,9 @@ export default defineAppConfig({
     github: 'https://github.com/doyuli',
     email: 'doyulicc@gmail.com',
   },
+  content: {
+    summary: true,
+  },
   footer: {
     copyright: {
       icp: '粤ICP备2022120906号',

@@ -5,19 +5,7 @@ import { z } from 'zod'
 
 export function createPostTool(event: H3Event) {
   return tool({
-    description: `Retrieves the full Markdown content and metadata for a specific blog post.
-
-WHEN TO USE: 
-- Crucial for answering detailed questions about a post's content.
-- Use this ONLY when you have a validated 'path' (typically obtained from 'tool-posts').
-- Essential when metadata (title/description) is insufficient to satisfy the user's query.
-
-WHEN NOT TO USE: 
-- Do NOT guess, speculate, or hallucinate a path. 
-- If no exact path is known, use 'tool-posts' first to discover the correct identifier.
-
-INPUT REQUIREMENT:
-- The 'path' must be a relative string starting with '/posts/'.`,
+    description: `Retrieves the FULL Markdown content. Call this AFTER getting a specific 'path' from 'tool-search', 'tool-posts', or the 'path' tool. Required for answering detailed questions about specific content.`,
     inputSchema: z.object({
       path: z.string().describe('The absolute path identifier of the post, e.g., "/posts/variable-interceptor"'),
     }),

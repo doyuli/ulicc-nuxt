@@ -5,17 +5,7 @@ import { z } from 'zod'
 
 export function createPostsTool(event: H3Event) {
   return tool({
-    description: `Lists all blog posts with metadata including titles, date, minRead, tags, and descriptions.
-
-WHEN TO USE: Use this tool when you need to DISCOVER or SEARCH for blog posts. Common scenarios:
-- "When asked to count or summarize posts by certain criteria" - blog statistics
-- "Has there been any post about X feature?" - search by keywords in titles, descriptions, or tags
-- "Show me performance improvements" - finding specific technical topics or update logs.
-- "What's new in Blog?" - retrieving the latest updates sorted by date.
-
-WHEN NOT TO USE: If you already know the exact blog post path (e.g., "/posts/variable-interceptor"), use tool-post directly to fetch full content.
-
-OUTPUT: Returns a list of post objects {title, description, date, path, tags, minRead}. To provide detailed answers about a specific post's content, you must follow up by calling 'tool-post' with the relevant path.`,
+    description: `[LIST MODE] Retrieves a chronological list of all blog posts. Use ONLY when the user explicitly asks for a "list of articles", "latest posts", "archive", or "count". DO NOT use this for specific technical questions (use 'tool-search' instead).`,
     inputSchema: z.object({}),
     execute: async () => {
       const posts = await queryCollection(event, 'posts')
