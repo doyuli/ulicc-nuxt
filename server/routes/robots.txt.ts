@@ -11,7 +11,7 @@ export default defineCachedEventHandler(
       '',
       'Allow: /',
       '',
-      'Disallow: /login/',
+      'Disallow: /admin/',
       '',
       `Sitemap: ${hostname}/sitemap.xml`,
     ]
