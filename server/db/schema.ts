@@ -9,6 +9,7 @@ export const vectorsTable = pgTable(
     title: text('title').notNull(),
     heading: text('heading'),
     content: text('content').notNull(),
+    contentHash: varchar('content_hash', { length: 32 }).notNull(),
     embedding: vector('embedding', { dimensions: 1024 }).notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },

@@ -1,26 +1,16 @@
+import type { PostsCollectionItem } from '@nuxt/content'
+import type { ShouldProcessSectionItem } from '~~/server/utils/sync'
 import { queryCollection, queryCollectionSearchSections } from '@nuxt/content/server'
 import { embedMany } from 'ai'
 import { inArray, notInArray, sql } from 'drizzle-orm'
 import { vectorsTable } from '~~/server/db/schema'
-
-const getPostId = (sectionId: string) => `${sectionId.split('#')[0]}.md`
-
-interface ShouldProcessSectionItem {
-  id: string
-  title: string
-  titles: string[]
-  level: number
-  content: string
-  postId: string
-  postTitle: string
-  postUpdatedAt: string | undefined
-  heading: string | null
-}
+import { calculateHash, createProcessSection, getPostId, getTextToEmbed } from '~~/server/utils/sync'
 
 export default defineLazyEventHandler(async () => {
   const siliconflow = useSiliconflow()
   const model = siliconflow.embedding('Qwen/Qwen3-Embedding-0.6B')
   const db = useDb()
+  const BATCH_SIZE = 20
 
   return defineEventHandler(async (event) => {
     await requireUserSession(event)
@@ -29,7 +19,7 @@ export default defineLazyEventHandler(async () => {
 
     const posts = await queryCollection(event, 'posts')
       .where('hidden', '<>', true)
-      .select('path', 'title', 'updatedAt')
+      .select('id', 'title', 'tags')
       .all()
 
     if (!posts.length) {
@@ -41,17 +31,14 @@ export default defineLazyEventHandler(async () => {
       return result
     }
 
-    const postsMap = new Map(posts.map(p => [p.path, p]))
+    const postsMap = new Map(posts.map(p => [p.id, p]))
 
     const sections = (await queryCollectionSearchSections(event, 'posts', {
       ignoredTags: [
-        'pre',
-        'html',
         'script',
         'style',
         'img',
         'svg',
-        'path',
         'canvas',
         'iframe',
         'video',
@@ -71,88 +58,72 @@ export default defineLazyEventHandler(async () => {
     const existing = await db
       .select({
         sectionId: vectorsTable.sectionId,
-        updatedAt: vectorsTable.updatedAt,
+        contentHash: vectorsTable.contentHash,
       })
       .from(vectorsTable)
       .where(inArray(vectorsTable.sectionId, sectionIds))
 
-    const existingUpdatedAtMap = new Map(existing.map(v => [v.sectionId, v.updatedAt]))
+    const existingHashMap = new Map(existing.map(v => [v.sectionId, v.contentHash]))
 
-    const shouldAddSections: ShouldProcessSectionItem[] = []
-    const shouldUpdateSections: ShouldProcessSectionItem[] = []
+    const shouldProcessSections: (ShouldProcessSectionItem & {
+      action: 'update' | 'add'
+    })[] = []
 
     for (const section of sections) {
-      const updatedAt = existingUpdatedAtMap.get(section.id)
       const postId = getPostId(section.id)
-      const postUpdatedAt = postsMap.get(postId)?.updatedAt
-
-      const createProcessSection = () => Object.assign(
+      const processSection = createProcessSection(
+        postsMap.get(postId) as PostsCollectionItem,
         section,
-        {
-          postId,
-          postTitle: postsMap.get(postId)?.title ?? '',
-          postUpdatedAt: postsMap.get(postId)?.updatedAt,
-          heading: section.titles?.at(-1) ?? null,
-        },
       )
 
-      if (!updatedAt) {
-        shouldAddSections.push(createProcessSection())
-      }
-      else if (postUpdatedAt && new Date(postUpdatedAt) > new Date(updatedAt)) {
-        shouldUpdateSections.push(createProcessSection())
-      }
+      const textToEmbed = getTextToEmbed(processSection)
+      processSection.textToEmbed = textToEmbed
+      processSection.contentHash = calculateHash(textToEmbed)
+
+      const existingHash = existingHashMap.get(section.id)
+      if (existingHash === processSection.contentHash)
+        continue
+
+      shouldProcessSections.push({
+        ...processSection,
+        action: existingHash ? 'update' : 'add',
+      })
     }
 
-    const shouldProcessSections = [...shouldAddSections, ...shouldUpdateSections]
-    result.added = shouldAddSections.length
-    result.updated = shouldUpdateSections.length
+    result.total = sections.length
     result.skipped = sections.length - shouldProcessSections.length
 
-    if (shouldProcessSections.length === 0)
-      return result
+    for (let i = 0; i < shouldProcessSections.length; i += BATCH_SIZE) {
+      const batch = shouldProcessSections.slice(i, i + BATCH_SIZE)
+      const values = batch.map(s => s.textToEmbed)
 
-    const values = shouldProcessSections.map((section) => {
-      const parts = []
+      const { embeddings } = await embedMany({ model, values })
 
-      if (section.postTitle)
-        parts.push(`标题: ${section.postTitle}`)
-
-      if (section.heading)
-        parts.push(`章节: ${section.heading}`)
-
-      parts.push(`内容: ${section.content}`)
-
-      return parts.join('\n')
-    })
-
-    const { embeddings } = await embedMany({ model, values })
-
-    const records = shouldProcessSections.map((section, i) => {
-      const postId = getPostId(section.id)
-      return {
-        postId,
-        sectionId: section.id,
-        title: section.postTitle,
-        heading: section.heading,
-        content: values[i]!,
-        embedding: embeddings[i]!,
+      const records = batch.map((item, idx) => ({
+        postId: item.postId,
+        sectionId: item.id,
+        title: item.postTitle,
+        heading: item.heading,
+        content: values[idx],
+        embedding: embeddings[idx],
+        contentHash: item.contentHash,
         updatedAt: new Date(),
-      }
-    })
+      }))
 
-    await db.insert(vectorsTable)
-      .values(records)
-      .onConflictDoUpdate({
+      await db.insert(vectorsTable).values(records).onConflictDoUpdate({
         target: vectorsTable.sectionId,
         set: {
           embedding: sql`EXCLUDED.embedding`,
           content: sql`EXCLUDED.content`,
           title: sql`EXCLUDED.title`,
           heading: sql`EXCLUDED.heading`,
+          contentHash: sql`EXCLUDED.content_hash`,
           updatedAt: sql`EXCLUDED.updated_at`,
         },
       })
+
+      batch.forEach(b => b.action === 'add' ? result.added++ : result.updated++)
+    }
 
     return result
   })
