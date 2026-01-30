@@ -1,4 +1,5 @@
 import { USER_ROLE_ENUM } from '~~/server/constants'
+import { HTTP_STATUS } from '~~/shared/constants'
 
 export default defineEventHandler(async (event) => {
   const { code } = await readBody(event)
@@ -16,8 +17,5 @@ export default defineEventHandler(async (event) => {
     return { success: true }
   }
 
-  throw createError({
-    statusCode: 401,
-    message: '验证失败，请检查代码是否正确',
-  })
+  throw createError({ statusCode: HTTP_STATUS.UNAUTHORIZED, message: '验证失败，请检查代码是否正确' })
 })

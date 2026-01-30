@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { HTTP_STATUS } from '~~/shared/constants'
 import { ContentToc } from '~/components/sidebar'
 
 const route = useRoute()
@@ -14,7 +15,7 @@ usePageMeta({
 })
 
 if (!post.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
+  throw createError({ statusCode: HTTP_STATUS.NOT_FOUND, statusMessage: 'Page not found', fatal: true })
 }
 </script>
 

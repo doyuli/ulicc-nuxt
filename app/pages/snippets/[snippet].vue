@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { HTTP_STATUS } from '~~/shared/constants'
+
 const route = useRoute()
 
 const { data: snippet } = await useAsyncData(`snippet-${route.path}`, () => {
@@ -11,7 +13,7 @@ usePageMeta({
 })
 
 if (!snippet.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Snippet not found', fatal: true })
+  throw createError({ statusCode: HTTP_STATUS.NOT_FOUND, statusMessage: 'Snippet not found', fatal: true })
 }
 </script>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { MailIcon } from 'lucide-vue-next'
+import { HTTP_STATUS } from '~~/shared/constants'
 import { GithubIcon } from '~/components/icons'
 
 const route = useRoute()
@@ -15,7 +16,7 @@ usePageMeta({
 const { author } = useAppConfig()
 
 if (!about.value) {
-  throw createError({ statusCode: 404, statusMessage: 'About not found', fatal: true })
+  throw createError({ statusCode: HTTP_STATUS.NOT_FOUND, statusMessage: 'About not found', fatal: true })
 }
 </script>
 

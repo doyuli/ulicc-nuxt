@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 import { LRUCache } from 'lru-cache'
-import { RATE_LIMIT_ERROR } from '~~/shared/constants'
+import { HTTP_STATUS } from '~~/shared/constants'
 
 const rateLimitStore = new LRUCache<string, number[]>({
   max: 5000,
@@ -18,9 +18,8 @@ export function useRateLimitHandler(event: H3Event, checker: ReturnType<typeof u
 
   setResponseHeader(event, 'X-RateLimit-Remaining', remaining.toString())
 
-  if (!allowed) {
-    throw createError(RATE_LIMIT_ERROR)
-  }
+  if (!allowed)
+    throw createError({ statusCode: HTTP_STATUS.TOO_MANY_REQUESTS, message: '请求过于频繁，请稍后再试' })
 }
 
 export function useRateLimit(options: RateLimitOptions) {

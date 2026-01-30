@@ -2,6 +2,7 @@ import { queryCollection } from '@nuxt/content/server'
 import { generateText } from 'ai'
 import { eq, sql } from 'drizzle-orm'
 import { summarysTable } from '~~/server/db/schema'
+import { HTTP_STATUS } from '~~/shared/constants'
 
 export default defineLazyEventHandler(async () => {
   const deepseek = useDeepSeek()
@@ -10,7 +11,7 @@ export default defineLazyEventHandler(async () => {
     const { path, lang = 'zh-CN' } = await readBody(event)
 
     if (!path)
-      throw createError({ statusCode: 400, message: 'Path is required' })
+      throw createError({ statusCode: HTTP_STATUS.BAD_REQUEST, message: 'Path is required' })
 
     const post = await queryCollection(event, 'posts')
       .where('path', '=', path)
@@ -18,7 +19,7 @@ export default defineLazyEventHandler(async () => {
       .first()
 
     if (!post)
-      throw createError({ statusCode: 404, message: 'Post not found' })
+      throw createError({ statusCode: HTTP_STATUS.NOT_FOUND, message: 'Post not found' })
 
     const existing = await db
       .select()
