@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { DefaultChatTransport } from 'ai'
+import { defu } from 'defu'
 import { Trash2Icon } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import {
@@ -63,13 +64,11 @@ const {
   {
     onBeforeSubmit: (payload) => {
       clearError()
-      payload.options = {
-        ...payload.options,
-        body: {
-          ...payload.options?.body,
-          prompt: currentPrompt.value,
-        },
+
+      const options: typeof payload.options = {
+        body: { prompt: currentPrompt.value },
       }
+      payload.options = defu(options, payload.options)
     },
   },
 )
