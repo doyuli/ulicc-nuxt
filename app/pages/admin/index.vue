@@ -80,7 +80,7 @@ async function handleGenerateSummary(path: string, isSummary?: boolean) {
 
   summaryLoadingPaths.value.add(path)
   try {
-    await $fetch('/api/chat/summary', {
+    await $fetch('/api/admin/summary', {
       body: { path },
       method: 'POST',
     })

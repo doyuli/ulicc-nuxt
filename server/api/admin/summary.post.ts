@@ -8,6 +8,8 @@ export default defineLazyEventHandler(async () => {
   const deepseek = useDeepSeek()
   const db = useDb()
   return defineEventHandler(async (event) => {
+    await requireUserSession(event)
+
     const { path, lang = 'zh-CN' } = await readBody(event)
 
     if (!path)
@@ -21,15 +23,14 @@ export default defineLazyEventHandler(async () => {
     if (!post)
       throw createError({ statusCode: HTTP_STATUS.NOT_FOUND, message: 'Post not found' })
 
-    const existing = await db
-      .select()
+    const [existing] = await db
+      .select({ summary: summarysTable.summary })
       .from(summarysTable)
       .where(eq(summarysTable.postId, post.id))
       .limit(1)
 
-    if (existing.length > 0) {
-      return existing[0].summary
-    }
+    if (existing)
+      return existing.summary
 
     const cleanBody = post.rawbody.replace(/^---[\s\S]+?---/, '').trim()
 

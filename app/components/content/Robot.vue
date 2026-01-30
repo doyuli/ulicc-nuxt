@@ -42,18 +42,20 @@ function stopTyping() {
   isTyping.value = false
 }
 
+const isAutoSummary = computed(() => props.summaryEnable && !!props.path)
+
 const { data: summary, pending, error } = useFetch(
   '/api/chat/summary',
   {
-    body: { path: props.path },
-    method: 'POST',
+    query: { path: props.path },
+    method: 'GET',
     watch: [() => props.path],
-    immediate: props.summaryEnable && !!props.path,
+    immediate: isAutoSummary.value,
   },
 )
 
 const sourceText = computed(() => {
-  if (props.summaryEnable) {
+  if (isAutoSummary.value) {
     if (pending.value)
       return ''
 
