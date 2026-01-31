@@ -73,6 +73,43 @@ watch(isOpen, async (val) => {
     focused.value = true
   }
 })
+
+const suggestions = computed(() => {
+  const globalSuggestions = [
+    {
+      label: '关于博客',
+      value: '介绍下这个博客',
+    },
+    {
+      label: '推荐文章',
+      value: '我最近正在关注 Vue3 ，能推荐几篇你认为高质量的博客文章吗？',
+    },
+    {
+      label: '随便聊聊',
+      value: '作为 AI 助手，你可以为我做些什么？',
+    },
+  ]
+
+  const isPostPage = route.path.startsWith('/posts/')
+
+  const postSuggestions = [
+    {
+      label: '关于文章',
+      value: '这篇文章说了什么',
+    },
+    {
+      label: '核心要点',
+      value: '请列出这篇文章的关键知识点',
+    },
+  ]
+
+  return isPostPage ? [...postSuggestions, ...globalSuggestions] : globalSuggestions
+})
+
+function onSuggestion(text: string) {
+  inputText.value = text
+  onSubmit()
+}
 </script>
 
 <template>
@@ -133,7 +170,19 @@ watch(isOpen, async (val) => {
             </ConversationContent>
           </Conversation>
         </CardContent>
-        <CardFooter class="py-3! border-t">
+        <CardFooter class="py-3! border-t flex-col gap-3">
+          <div v-if="!messages.length" class="self-start w-full flex gap-x-2 overflow-x-auto scrollbar-hide">
+            <Button
+              v-for="(s, i) in suggestions"
+              :key="i"
+              class="rounded-full text-xs"
+              size="sm"
+              variant="outline"
+              @click="onSuggestion(s.value)"
+            >
+              {{ s.label }}
+            </Button>
+          </div>
           <PromptInput class="[--radius:9999px]" align="inline-end" @submit="onSubmit">
             <InputGroupInput ref="input" v-model="inputText" placeholder="Ask about articles..." />
             <template #addon>
