@@ -172,7 +172,7 @@ function onSuggestion(text: string) {
           </Conversation>
         </CardContent>
         <CardFooter class="py-3! border-t flex-col gap-3">
-          <div v-if="!messages.length" class="self-start w-full flex gap-x-2 overflow-x-auto scrollbar-hide">
+          <div class="self-start w-full flex gap-x-2 overflow-x-auto scrollbar-hide">
             <Button
               v-for="(s, i) in suggestions"
               :key="i"
