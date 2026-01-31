@@ -74,6 +74,7 @@ const {
 )
 
 function clean() {
+  stop()
   clearMessages()
   clearError()
 }

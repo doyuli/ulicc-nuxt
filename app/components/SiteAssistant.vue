@@ -52,6 +52,7 @@ const {
 const displayError = computed(() => normalizeChatError(error.value))
 
 function clean() {
+  stop()
   clearMessages()
   clearError()
 }
