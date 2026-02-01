@@ -114,7 +114,7 @@ function onSuggestion(text: string) {
 </script>
 
 <template>
-  <div ref="target" class="fixed bottom-6 left-6 z-50 flex flex-col pointer-events-none">
+  <div ref="target" class="fixed bottom-6 left-6 z-50 flex flex-col">
     <Transition
       enter-active-class="transition duration-300 ease-out"
       enter-from-class="scale-90 opacity-0 translate-y-8"
@@ -123,7 +123,7 @@ function onSuggestion(text: string) {
       leave-from-class="scale-100 opacity-100 translate-y-0"
       leave-to-class="scale-90 opacity-0 translate-y-8"
     >
-      <Card v-if="isOpen" class="py-0 flex flex-col gap-0 w-[calc(100vw-3rem)] sm:w-96 mb-4 h-[500px] shadow-2xl pointer-events-auto">
+      <Card v-if="isOpen" class="py-0 flex flex-col gap-0 w-[calc(100vw-3rem)] sm:w-96 mb-4 h-[500px] shadow-2xl">
         <CardHeader class="py-3 flex items-center justify-between bg-muted">
           <div class="flex items-center gap-2">
             <div :class="cn('w-2 h-2 rounded-full animate-pulse', error ? 'bg-red-500' : 'bg-emerald-500')" />
@@ -201,14 +201,36 @@ function onSuggestion(text: string) {
 
     <button
       :class="cn(
-        'group flex items-center justify-center size-12 md:size-14 shadow-lg hover:shadow-xl transform hover:-translate-y-1 pointer-events-auto transition-all duration-500 rounded-full',
-        isOpen ? 'bg-card text-secondary-foreground border' : 'bg-primary text-primary-foreground opacity-70 hover:opacity-100',
+        'group relative flex items-center justify-center size-12 px-3 rounded-full border bg-card text-secondary-foreground shadow-sm',
+        'hover:w-29 hover:justify-start hover:bg-primary hover:text-primary-foreground hover:shadow-md transition-all duration-500',
       )"
       aria-label="Toggle Assistant"
       @click="isOpen = !isOpen"
     >
-      <BotIcon :class="cn('size-6 absolute transition-all duration-500 ease-in-out', isOpen ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100')" />
-      <XIcon :class="cn('size-6 absolute transition-all duration-500 ease-in-out', isOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-180 scale-0 opacity-0')" />
+      <div class="relative size-6 shrink-0 z-10">
+        <BotIcon
+          :class="cn(
+            'absolute inset-0 size-6 transition-all duration-500 ease-in-out',
+            isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100',
+          )"
+        />
+
+        <XIcon
+          :class="cn(
+            'absolute inset-0 size-6 transition-all duration-500 ease-in-out',
+            isOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0',
+          )"
+        />
+      </div>
+
+      <span
+        :class="cn(
+          'opacity-0 w-0 -translate-x-2 whitespace-nowrap overflow-hidden text-sm font-medium transition-all duration-300',
+          'group-hover:w-auto group-hover:translate-x-2 group-hover:opacity-100 group-hover:delay-100',
+        )"
+      >
+        站点助手
+      </span>
     </button>
   </div>
 </template>
