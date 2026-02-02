@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { HtmlHTMLAttributes } from 'vue'
 import { DefaultChatTransport } from 'ai'
 import { defu } from 'defu'
 import { BotIcon, CircleAlertIcon, Trash2Icon, XIcon } from 'lucide-vue-next'
@@ -14,6 +15,10 @@ import {
   PromptSubmit,
 } from '~/components/chat'
 import { cn } from '~/lib/utils'
+
+defineProps<{
+  class?: HtmlHTMLAttributes['class']
+}>()
 
 const route = useRoute()
 
@@ -114,7 +119,7 @@ function onSuggestion(text: string) {
 </script>
 
 <template>
-  <div ref="target" class="fixed bottom-6 left-6 z-50 flex flex-col">
+  <div ref="target" :class="cn('fixed bottom-6 left-6 z-50 flex flex-col', $props.class)">
     <Transition
       enter-active-class="transition duration-300 ease-out"
       enter-from-class="scale-90 opacity-0 translate-y-8"
@@ -201,8 +206,8 @@ function onSuggestion(text: string) {
 
     <button
       :class="cn(
-        'group relative flex items-center justify-center size-12 px-3 rounded-full border bg-card text-secondary-foreground shadow-sm',
-        'hover:w-29 hover:justify-start hover:bg-primary hover:text-primary-foreground hover:shadow-md transition-all duration-500',
+        'group relative flex items-center size-12 px-3 rounded-full border bg-card text-secondary-foreground shadow-sm',
+        'hover:w-29 hover:bg-primary hover:text-primary-foreground hover:shadow-md transition-all duration-300',
       )"
       aria-label="Toggle Assistant"
       @click="isOpen = !isOpen"
