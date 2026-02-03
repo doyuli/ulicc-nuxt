@@ -212,17 +212,17 @@ function onSuggestion(text: string) {
       aria-label="Toggle Assistant"
       @click="isOpen = !isOpen"
     >
-      <div class="relative size-6 shrink-0 z-10">
+      <div style="--icon-size: 23px" class="relative size-(--icon-size) shrink-0 z-10">
         <BotIcon
           :class="cn(
-            'absolute inset-0 size-6 transition-all duration-500 ease-in-out',
+            'absolute inset-0 size-(--icon-size) transition-[opacity,rotate,scale] duration-500 ease-in-out',
             isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100',
           )"
         />
 
         <XIcon
           :class="cn(
-            'absolute inset-0 size-6 transition-all duration-500 ease-in-out',
+            'absolute inset-0 size-(--icon-size) transition-[opacity,rotate,scale] duration-500 ease-in-out',
             isOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0',
           )"
         />
@@ -230,7 +230,7 @@ function onSuggestion(text: string) {
 
       <span
         :class="cn(
-          'opacity-0 w-0 -translate-x-2 whitespace-nowrap overflow-hidden text-sm font-medium transition-all duration-300',
+          'opacity-0 w-0 -translate-x-2 whitespace-nowrap overflow-hidden text-sm text-primary-foreground font-medium transition-all duration-300',
           'group-hover:w-auto group-hover:translate-x-2 group-hover:opacity-100 group-hover:delay-100',
         )"
       >
