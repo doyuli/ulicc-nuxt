@@ -132,7 +132,7 @@ watchPostEffect((onCleanup) => {
   >
     <div
       :class="cn(
-        'absolute inset-0 text-sm flex items-center gap-3 text-primary-foreground opacity-0 z-2 transition-all duration-500',
+        'absolute inset-0 text-sm flex items-center gap-3 text-white opacity-0 z-2',
         'group-hover:opacity-100',
         isPlaying ? 'justify-end pr-4 bg-linear-to-l from-primary-light/90 via-primary-light/70 to-transparent' : 'justify-center bg-primary-light/80 backdrop-blur-md',
       )"
@@ -153,16 +153,27 @@ watchPostEffect((onCleanup) => {
 
 <style>
 #player-container {
+  --player-height: 42px;
+  --player-background: var(--color-background);
+  --player-progress: #ffffff;
+  --player-lrc: #ffffffb3;
+  --player-lrc-active: #ffffff;
+  --player-foreground: var(--color-secondary-foreground);
+  --player-border: var(--color-border);
+  --player-border-radius: 99px;
+
+  --player-active-background: color-mix(in oklab, var(--color-primary) 85%, white);
+
   .aplayer {
     display: flex;
     margin: 0;
-    height: 42px;
-    pointer-events: none;
+    height: var(--player-height);
+    transition: 0.3s all;
+    background: var(--player-background);
+    border: 1px solid var(--player-border);
+    border-radius: var(--player-border-radius);
     box-shadow: none;
-    transition: 0.3s;
-    background: var(--color-background);
-    border-radius: 99px;
-    border: 1px solid var(--color-border);
+    pointer-events: none;
   }
 
   .aplayer .aplayer-notice,
@@ -181,7 +192,7 @@ watchPostEffect((onCleanup) => {
     position: relative;
     display: flex;
     align-items: center;
-    padding: 0 8px;
+    padding-left: 8px;
     padding-right: 12px;
   }
 
@@ -203,21 +214,16 @@ watchPostEffect((onCleanup) => {
 
   .aplayer .aplayer-info .aplayer-music .aplayer-title {
     display: inline-block;
-    line-height: 1;
     max-width: 120px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s all;
   }
 
   .aplayer .aplayer-info .aplayer-controller {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    inset: 0;
   }
 
   .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap {
@@ -227,14 +233,14 @@ watchPostEffect((onCleanup) => {
 
   .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar {
     height: 100%;
-    background: 0 0;
     opacity: 0;
+    background: 0 0;
   }
 
   .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played {
     height: 100%;
     opacity: 0.1;
-    background-color: var(--color-background) !important;
+    background-color: var(--player-progress) !important;
     animation: ambient-flicker 5s ease infinite;
     animation-play-state: paused;
   }
@@ -244,29 +250,31 @@ watchPostEffect((onCleanup) => {
     margin-top: -2px;
     width: 0;
     opacity: 0;
-    transition: 0.3s;
+    transition: 0.3s all;
   }
 
   .aplayer .aplayer-lrc p {
-    color: #ffffffb3;
+    color: var(--player-lrc);
     filter: blur(0.8px);
   }
 
   .aplayer .aplayer-lrc p.aplayer-lrc-current {
-    color: #ffffff;
-    border: none;
+    color: var(--player-lrc-active);
     filter: blur(0);
+    border: none;
   }
 
   .aplayer.aplayer-withlrc .aplayer-pic {
+    position: relative;
     height: 25px;
     width: 25px;
     border-radius: 40px;
     z-index: 1;
-    transition: 0.3s;
+    transition: 0.3s all;
     transform: rotate(0) scale(1);
-    border: 1px solid var(--color-border);
-    animation: album-rotate-glow 24s linear infinite;
+    border: 1px solid var(--player-border);
+    box-shadow: 0 0 12px #ffffffa6;
+    animation: album-rotate 24s linear infinite;
     animation-play-state: paused;
   }
 
@@ -275,84 +283,57 @@ watchPostEffect((onCleanup) => {
     align-items: center;
     padding: 0;
     margin-left: 12px;
-    color: var(--color-secondary-foreground);
+    color: var(--player-foreground);
     height: 100%;
   }
-}
 
-#player-container.playing {
-  .aplayer {
-    background: var(--color-primary-light);
-    border: 1px solid var(--color-primary-light);
-    backdrop-filter: saturate(180%) blur(20px);
-    backdrop-filter: blur(20px);
-    transform: translateZ(0);
-  }
+  &.playing {
+    .aplayer {
+      background: var(--player-active-background);
+      backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: blur(20px);
+      transform: translateZ(0);
+    }
 
-  .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar {
-    opacity: 1;
-  }
+    .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar {
+      opacity: 1;
+    }
 
-  .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played {
-    animation-play-state: running;
-  }
+    .aplayer.aplayer-withlrc .aplayer-lrc {
+      margin-bottom: 0;
+      width: 200px;
+      opacity: 1;
+    }
 
-  .aplayer.aplayer-withlrc .aplayer-lrc {
-    margin-bottom: 0;
-    width: 200px;
-    opacity: 1;
-  }
+    .aplayer.aplayer-withlrc .aplayer-pic,
+    .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played {
+      animation-play-state: running;
+    }
 
-  .aplayer.aplayer-withlrc .aplayer-pic {
-    box-shadow: 0 0 14px #ffffffa6;
-    transform: rotate(0) scale(1.1);
-    border-color: var(--color-background);
-    animation-play-state: running;
-  }
-
-  .aplayer.aplayer-withlrc .aplayer-info {
-    color: var(--color-background);
+    .aplayer.aplayer-withlrc .aplayer-info {
+      color: var(--player-lrc-active);
+    }
   }
 }
 
-@keyframes album-rotate-glow {
-  0% {
+@keyframes album-rotate {
+  from {
     transform: rotate(0) scale(1.1);
-    box-shadow: 0 0 2px #ffffff00;
   }
-
-  25% {
-    transform: rotate(90deg) scale(1.1);
-    box-shadow: 0 0 10px #fff;
-  }
-
-  50% {
-    transform: rotate(180deg) scale(1.1);
-    box-shadow: 0 0 2px #ffffff00;
-  }
-
-  75% {
-    transform: rotate(270deg) scale(1.1);
-    box-shadow: 0 0 10px #fff;
-  }
-
-  100% {
+  to {
     transform: rotate(360deg) scale(1.1);
-    box-shadow: 0 0 2px #ffffff00;
   }
 }
 
 @keyframes ambient-flicker {
-  0% {
-    opacity: 0.1;
-  }
-
-  60% {
-    opacity: 0.3;
-  }
-
+  0%,
   100% {
     opacity: 0.1;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 0.25;
+    transform: translateX(1px);
   }
 }
 </style>
