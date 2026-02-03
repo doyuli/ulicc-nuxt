@@ -9,6 +9,8 @@ usePageMeta({
   description,
   titleTemplate: `%s - ${title.toLocaleUpperCase()}`,
 })
+
+const isPlayerReady = shallowRef(false)
 </script>
 
 <template>
@@ -17,8 +19,8 @@ usePageMeta({
       <NuxtPage />
     </NuxtLayout>
     <ArtPlum />
-    <SitePlayer class="left-5 bottom-5" />
-    <SiteAssistant class="left-5 bottom-18" />
+    <SitePlayer v-show="isPlayerReady" class="left-5 bottom-5" @ready="isPlayerReady = true" />
+    <SiteAssistant class="left-5 transition-[bottom] duration-300" :class="isPlayerReady ? ' bottom-18' : 'bottom-5'" />
     <Toaster position="top-center" />
   </ConfigProvider>
 </template>

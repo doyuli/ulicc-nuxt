@@ -52,6 +52,11 @@ const props = withDefaults(
   },
 )
 
+const emits = defineEmits<{
+  (e: 'ready'): void
+  (e: 'error', error: any): void
+}>()
+
 // TODO: Refactoring with Vue 3, not relying on Aplayer
 useHead({
   link: [{ rel: 'stylesheet', href: '/player/aplayer.min.css' }],
@@ -107,6 +112,8 @@ watchPostEffect((onCleanup) => {
 
   ap.on('play', () => (isPlaying.value = true))
   ap.on('pause', () => (isPlaying.value = false))
+  ap.on('error', (e: any) => emits('error', e))
+  ap.on('loadstart', () => emits('ready'))
 
   onCleanup(() => {
     ap?.destroy()
