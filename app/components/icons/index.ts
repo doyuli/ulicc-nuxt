@@ -1,4 +1,8 @@
 export { default as DarkIcon } from './DarkIcon.vue'
 export { default as GithubIcon } from './GithubIcon.vue'
+export { default as NextIcon } from './NextIcon.vue'
+export { default as PauseIcon } from './PauseIcon.vue'
+export { default as PlayIcon } from './PlayIcon.vue'
+export { default as PrevIcon } from './PrevIcon.vue'
 export { default as RobotIcon } from './RobotIcon.vue'
 export { default as TocIcon } from './TocIcon.vue'

@@ -206,13 +206,13 @@ function onSuggestion(text: string) {
 
     <button
       :class="cn(
-        'group relative flex items-center size-12 px-3 rounded-full border bg-card text-secondary-foreground shadow-sm',
+        'group relative flex items-center size-[42px] px-2.5 rounded-full border bg-card text-secondary-foreground shadow-sm',
         'hover:w-29 hover:bg-primary hover:text-primary-foreground hover:shadow-md transition-all duration-300',
       )"
       aria-label="Toggle Assistant"
       @click="isOpen = !isOpen"
     >
-      <div style="--icon-size: 23px" class="relative size-(--icon-size) shrink-0 z-10">
+      <div style="--icon-size: 20px" class="relative size-(--icon-size) shrink-0 z-10">
         <BotIcon
           :class="cn(
             'absolute inset-0 size-(--icon-size) transition-[opacity,rotate,scale] duration-500 ease-in-out',
