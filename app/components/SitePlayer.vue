@@ -60,8 +60,13 @@ const emits = defineEmits<{
 // TODO: Refactoring with Vue 3, not relying on Aplayer
 useHead({
   link: [{ rel: 'stylesheet', href: '/player/aplayer.min.css' }],
-  script: [{ src: '/player/aplayer.min.js' }],
 })
+
+const { load } = useScriptTag(
+  '/player/aplayer.min.js',
+  () => {},
+  { manual: true },
+)
 
 const PLAYER_SERVER_API = 'https://api.i-meto.com/meting/api'
 
@@ -72,7 +77,10 @@ const { data } = useFetch<AudioMeta[]>(
       server: props.server,
       type: props.type,
       id: props.id,
+      r: Math.random(),
     },
+    lazy: true,
+    server: false,
     default: () => [],
   },
 )
@@ -96,11 +104,13 @@ function playSkipForward() {
     ap.skipForward()
 }
 
-watchPostEffect((onCleanup) => {
+watchPostEffect(async (onCleanup) => {
   if (import.meta.server)
     return
   if (!data.value?.length)
     return
+
+  await load()
 
   const APlayer = (window as any).APlayer
 
