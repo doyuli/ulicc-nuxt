@@ -7,19 +7,17 @@ export default defineEventHandler(async (event) => {
 
   const db = useDb()
 
-  const totalPosts = await queryCollection(event, 'posts')
-    .where('hidden', '<>', true)
-    .count()
-
-  const vectorized = await db
-    .select({ count: sql<number>`count(DISTINCT ${vectorsTable.postId})::int` })
-    .from(vectorsTable)
-    .then(r => r[0]?.count ?? 0)
-
-  const summarized = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(summarysTable)
-    .then(r => r[0]?.count ?? 0)
+  const [totalPosts, vectorized, summarized] = await Promise.all([
+    queryCollection(event, 'posts')
+      .where('hidden', '<>', true)
+      .count(),
+    db.select({ count: sql<number>`count(DISTINCT ${vectorsTable.postId})::int` })
+      .from(vectorsTable)
+      .then(r => r[0]?.count ?? 0),
+    db.select({ count: sql<number>`count(*)::int` })
+      .from(summarysTable)
+      .then(r => r[0]?.count ?? 0),
+  ])
 
   return {
     totalPosts,
