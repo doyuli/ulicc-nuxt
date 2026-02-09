@@ -6,17 +6,17 @@ defineProps<{
 </script>
 
 <template>
-  <Item variant="outline" class="p-6 bg-background">
-    <ItemContent>
-      <ItemTitle class="text-3xl font-bold">
+  <div class="flex gap-4 py-4 items-center justify-between">
+    <div class="space-y-1">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
         {{ title }}
-      </ItemTitle>
-      <ItemDescription v-if="description">
+      </h1>
+      <p v-if="description" class="text-base md:text-lg text-muted-foreground">
         {{ description }}
-      </ItemDescription>
-    </ItemContent>
-    <ItemActions>
+      </p>
+    </div>
+    <div v-if="$slots.action" class="flex shrink-0 items-center gap-2">
       <slot name="action" />
-    </ItemActions>
-  </Item>
+    </div>
+  </div>
 </template>
