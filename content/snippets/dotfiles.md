@@ -277,9 +277,22 @@ tags:
     ],
     "description": "Export all module"
   },
-  "Destructure Object": {
+  "arrow-function": {
+    "scope": "javascript,typescript",
+    "prefix": "afn",
+    "body": [
+      "($2) => {",
+      "  $1",
+      "}"
+    ]
+  },
+  "destructure-object": {
+    "scope": "javascript,typescript",
     "prefix": "cc",
-    "body": "const { $2 } = $1"
+    "body": [
+      "const { $2 } = $1"
+    ],
+    "description": "Destructure Object"
   },
   "vue-template-ref": {
     "scope": "javascript,typescript,vue",
@@ -309,8 +322,10 @@ tags:
     "prefix": "<sc",
     "body": [
       "<script setup lang=\"ts\">",
-      "const props = defineProps<{",
-      "  modelValue?: boolean,",
+      "import { ref } from 'vue'",
+      "",
+      "defineProps<{",
+      "  modelValue?: boolean",
       "}>()",
       "$1",
       "</script>",
@@ -322,24 +337,25 @@ tags:
       "</template>"
     ]
   },
-  "vue-temp-script": {
+  "vue-script-setup-tailwind": {
     "scope": "vue",
-    "prefix": "vte",
+    "prefix": "<sct",
     "body": [
+      "<script setup lang=\"ts\">",
+      "import type { HTMLAttributes } from 'vue'",
+      "import { ref } from 'vue'",
+      "import { cn } from '@/lib/utils'",
+      "",
+      "defineProps<{",
+      "  class?: HTMLAttributes['class']",
+      "}>()",
+      "</script>",
+      "",
       "<template>",
-      "  <div>",
+      "  <div :class=\"cn('$1', \\$props.class)\">",
       "    <slot/>",
       "  </div>",
-      "</template>",
-      "",
-      "<script setup lang=\"ts\">",
-      "import { ref } from 'vue'",
-      "",
-      "const props = defineProps<{",
-      "  modelValue?: boolean,",
-      "}>()",
-      "$1",
-      "</script>"
+      "</template>"
     ]
   }
 }
