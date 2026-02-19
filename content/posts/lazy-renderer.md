@@ -61,11 +61,11 @@ export function useIntersectionObserver(
 有了这个工具函数之后，我们就可以实现一个简单的懒挂载组件：
 
 ```ts
-export const LazyRenderer = defineComponent < IntersectionObserverInit > ({
+export const LazyRenderer = defineComponent<IntersectionObserverInit>({
   name: 'LazyRenderer',
   props: ['root', 'rootMargin', 'threshold'],
   setup(props, { slots }) {
-    const container = ref < HTMLElement | null > (null)
+    const container = ref <HTMLElement | null> (null)
 
     const { isVisible } = useIntersectionObserver(container, props)
     return () => isVisible.value ? slots?.default() : h('div', { ref: container }, slots?.fallback())
