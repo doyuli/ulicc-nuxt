@@ -45,6 +45,7 @@ function scrollTop() {
         :class="cn('rounded-full group text-white', $props.class)"
         size="icon"
         aria-label="Scroll to top"
+        title="Scroll to top"
         @click="scrollTop"
       >
         <ArrowUpIcon class="hidden group-hover:block" />

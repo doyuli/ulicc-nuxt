@@ -31,6 +31,7 @@ watch([meta_k, ctrl_k], ([_meta_k, _ctrl_k]) => {
         variant="outline"
         size="icon"
         aria-label="Search"
+        title="Search"
         @click="open = true"
       >
         <SearchIcon class="size-4.5 shrink-0" />

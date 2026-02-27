@@ -26,6 +26,7 @@ function goToRandomPost() {
     variant="outline"
     size="icon"
     aria-label="Random Post"
+    title="Random Post"
     @click="goToRandomPost"
   >
     <Dice5Icon class="size-4.5 shrink-0" />

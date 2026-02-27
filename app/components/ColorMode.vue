@@ -55,6 +55,7 @@ function startViewTransition(event: MouseEvent) {
     variant="outline"
     size="icon"
     aria-label="Toggle theme"
+    title="Toggle theme"
     @click="startViewTransition"
   >
     <DarkIcon class="size-4.5 shrink-0" />
