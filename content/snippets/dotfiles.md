@@ -322,11 +322,7 @@ tags:
     "prefix": "<sc",
     "body": [
       "<script setup lang=\"ts\">",
-      "import { ref } from 'vue'",
-      "",
-      "defineProps<{",
-      "  modelValue?: boolean",
-      "}>()",
+      "import { shallowRef } from 'vue'",
       "$1",
       "</script>",
       "",
@@ -343,7 +339,7 @@ tags:
     "body": [
       "<script setup lang=\"ts\">",
       "import type { HTMLAttributes } from 'vue'",
-      "import { ref } from 'vue'",
+      "import { shallowRef } from 'vue'",
       "import { cn } from '@/lib/utils'",
       "",
       "defineProps<{",
