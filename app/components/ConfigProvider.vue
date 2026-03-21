@@ -28,6 +28,7 @@ const { data: posts } = await useAsyncData('all-posts', () => {
     .order('priority', 'DESC')
     .order('date', 'DESC')
     .all()
+    .then(raw => raw.map(p => ({ ...p, tags: p.tags?.sort() })))
 })
 
 const { data: tools } = await useAsyncData('all-tools', () => {
